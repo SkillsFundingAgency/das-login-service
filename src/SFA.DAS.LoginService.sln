@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.LoginService.Web.UnitTests", "SFA.DAS.LoginService.Web.UnitTests\SFA.DAS.LoginService.Web.UnitTests.csproj", "{A839DC78-980E-4BDD-A094-4AC15BA3B82A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.LoginService.Web", "SFA.DAS.LoginService.Web\SFA.DAS.LoginService.Web.csproj", "{1B61D1AA-4ABC-450A-BFDE-599D3EC31A80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{A839DC78-980E-4BDD-A094-4AC15BA3B82A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A839DC78-980E-4BDD-A094-4AC15BA3B82A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A839DC78-980E-4BDD-A094-4AC15BA3B82A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B61D1AA-4ABC-450A-BFDE-599D3EC31A80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B61D1AA-4ABC-450A-BFDE-599D3EC31A80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B61D1AA-4ABC-450A-BFDE-599D3EC31A80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B61D1AA-4ABC-450A-BFDE-599D3EC31A80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

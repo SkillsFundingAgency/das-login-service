@@ -56,7 +56,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
                 GivenName = "InvitedGivenName",
                 FamilyName = "InvitedFamilyName",
                 SourceId = "InvitedSourceId",
-                UserRedirect = new Uri("https://localhost/userredirect"),
+                UserRedirect = "https://localhost/userredirect",
                 Callback = new Uri("https://localhost/callback")
             };
             return createInvitationRequest;

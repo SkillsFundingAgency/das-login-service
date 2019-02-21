@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SFA.DAS.LoginService.Application.Interfaces;
+using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
+using SFA.DAS.LoginService.Application.Services;
+using SFA.DAS.LoginService.Data;
 
 namespace SFA.DAS.LoginService.Web
 {
@@ -34,6 +41,14 @@ namespace SFA.DAS.LoginService.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<LoginContext>(options => options.UseSqlServer("Data Source=.\\sql;Initial Catalog=SFA.DAS.LoginService;Integrated Security=True"));
+            
+            services.AddTransient<ILoginConfig, LoginConfig>();
+            services.AddTransient<ICodeGenerationService, CodeGenerationService>();
+            services.AddTransient<IHashingService, HashingService>();
+            services.AddTransient<IEmailService, EmailService>();
+            
+            services.AddMediatR(typeof(CreateInvitationHandler).Assembly);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             

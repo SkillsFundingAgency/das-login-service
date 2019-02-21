@@ -1,22 +1,22 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Data
 {
     public class LoginContext : DbContext
     {
         public LoginContext(DbContextOptions<LoginContext> dbContextOptions) : base(dbContextOptions){}
-        public DbSet<Invitation> Invitations { get; set; }
-    }
 
-    public class Invitation
-    {
-        public Guid Id { get; set; }
-        public string Email { get; set; }
-        public string GivenName { get; set; }
-        public string FamilyName { get; set; }
-        public string SourceId { get; set; }
-        public string Code { get; set; }
-        public DateTime ValidUntil { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Invitation>()
+                .Property(i => i.CallbackUri)
+                .HasConversion(
+                    v => v.ToString(), 
+                    v => new Uri(v));
+        }
+
+        public DbSet<Invitation> Invitations { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Data;
+using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
 {
@@ -44,7 +45,9 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
                 FamilyName = request.FamilyName,
                 SourceId = request.SourceId,
                 Code = hashedCode,
-                ValidUntil = SystemTime.UtcNow().AddHours(1)
+                ValidUntil = SystemTime.UtcNow().AddHours(1),
+                CallbackUri = request.Callback,
+                UserRedirectUri = request.UserRedirect
             };
             
             _loginContext.Invitations.Add(newInvitation);
@@ -65,7 +68,7 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
             if (string.IsNullOrWhiteSpace(request.GivenName)) errors.Add("GivenName");
             if (string.IsNullOrWhiteSpace(request.FamilyName)) errors.Add("FamilyName");
             if (string.IsNullOrWhiteSpace(request.SourceId)) errors.Add("SourceId");
-            if (request.UserRedirect == null) errors.Add("UserRedirect");
+            if (string.IsNullOrWhiteSpace(request.UserRedirect)) errors.Add("UserRedirect");
             if (request.Callback == null) errors.Add("Callback");
 
             if (errors.Any())

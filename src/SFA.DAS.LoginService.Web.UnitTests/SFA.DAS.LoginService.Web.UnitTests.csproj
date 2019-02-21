@@ -9,6 +9,7 @@
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="5.6.0" />
         <PackageReference Include="IdentityModel" Version="3.10.6" />
+        <PackageReference Include="MediatR" Version="6.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
         <PackageReference Include="NUnit" Version="3.11.0" />
@@ -17,6 +18,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\SFA.DAS.LoginService.Application\SFA.DAS.LoginService.Application.csproj" />
+      <ProjectReference Include="..\SFA.DAS.LoginService.Data\SFA.DAS.LoginService.Data.csproj" />
       <ProjectReference Include="..\SFA.DAS.LoginService.Web\SFA.DAS.LoginService.Web.csproj" />
     </ItemGroup>
 

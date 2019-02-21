@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="5.6.0" />
+        <PackageReference Include="MediatR" Version="6.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.2" />
+        <PackageReference Include="NSubstitute" Version="4.0.0" />
+        <PackageReference Include="NUnit" Version="3.11.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\SFA.DAS.LoginService.Application\SFA.DAS.LoginService.Application.csproj" />
+        <ProjectReference Include="..\SFA.DAS.LoginService.Data\SFA.DAS.LoginService.Data.csproj" />
+    </ItemGroup>
+    
+</Project>

@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="6.0.0" />
+      <PackageReference Include="PasswordGenerator.NetStandard" Version="1.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SFA.DAS.LoginService.Data\SFA.DAS.LoginService.Data.csproj" />
+    </ItemGroup>
+
+</Project>

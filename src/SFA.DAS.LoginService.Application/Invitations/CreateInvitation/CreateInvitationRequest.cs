@@ -12,7 +12,7 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
         [JsonProperty("family_name")]
         public string FamilyName { get; set; }
         public string SourceId { get; set; }
-        public string UserRedirect { get; set; }
+        public Uri UserRedirect { get; set; }
         public Uri Callback { get; set; }
     }
 }

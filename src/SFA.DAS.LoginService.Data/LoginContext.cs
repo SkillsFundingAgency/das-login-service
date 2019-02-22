@@ -15,6 +15,12 @@ namespace SFA.DAS.LoginService.Data
                 .HasConversion(
                     v => v.ToString(), 
                     v => new Uri(v));
+
+            modelBuilder.Entity<Invitation>()
+                .Property(i => i.UserRedirectUri)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => new Uri(v));
         }
 
         public DbSet<Invitation> Invitations { get; set; }

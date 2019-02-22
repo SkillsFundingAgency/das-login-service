@@ -58,4 +58,8 @@
   <ItemGroup>
     <Folder Include="Properties" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tables\IdentityTables.sql" />
+    <Content Include="Tables\Invitations.sql" />
+  </ItemGroup>
 </Project>

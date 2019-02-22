@@ -83,7 +83,7 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
             if (string.IsNullOrWhiteSpace(request.GivenName)) errors.Add("GivenName");
             if (string.IsNullOrWhiteSpace(request.FamilyName)) errors.Add("FamilyName");
             if (string.IsNullOrWhiteSpace(request.SourceId)) errors.Add("SourceId");
-            if (string.IsNullOrWhiteSpace(request.UserRedirect)) errors.Add("UserRedirect");
+            if (request.UserRedirect == null) errors.Add("UserRedirect");
             if (request.Callback == null) errors.Add("Callback");
 
             if (errors.Any())

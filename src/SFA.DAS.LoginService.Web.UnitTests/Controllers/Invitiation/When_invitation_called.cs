@@ -7,6 +7,7 @@ using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 using SFA.DAS.LoginService.Web.Controllers;
+using SFA.DAS.LoginService.Web.Controllers.InvitationApi;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.Invitiation
 {
@@ -80,9 +81,6 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.Invitiation
 
             response.Value.Should().BeOfType<CreateInvitationResponse>();
             response.Value.Invited.Should().BeTrue();
-//            var createInvitationResponse = (CreateInvitationResponse)((OkObjectResult)((ActionResult<CreateInvitationResponse>)response.Result).Result).Value;            
-//            createInvitationResponse.Should().BeOfType<CreateInvitationResponse>();
-//            createInvitationResponse.Invited.Should().BeTrue();
         }
     }
 }

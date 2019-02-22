@@ -17,7 +17,8 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
         protected IHashingService HashingService;
         protected IEmailService EmailService;
         protected ILoginConfig LoginConfig;
-        
+        protected IUserService UserService;
+
         [SetUp]
         public void SetUp()
         {
@@ -27,6 +28,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
             HashingService = Substitute.For<IHashingService>();
             EmailService = Substitute.For<IEmailService>();
             LoginConfig = Substitute.For<ILoginConfig>();
+            UserService = Substitute.For<IUserService>();
             
             CreateInvitationHandler = BuildCreateInvitationHandler();
         }
@@ -70,7 +72,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
 
         private CreateInvitationHandler BuildCreateInvitationHandler()
         {
-            return new CreateInvitationHandler(LoginContext, CodeGenerationService, HashingService, EmailService, LoginConfig);
+            return new CreateInvitationHandler(LoginContext, CodeGenerationService, HashingService, EmailService, LoginConfig, UserService);
         }
     }
 }

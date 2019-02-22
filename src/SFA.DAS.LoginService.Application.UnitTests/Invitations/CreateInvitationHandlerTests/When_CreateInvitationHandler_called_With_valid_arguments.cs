@@ -99,5 +99,14 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
             EmailService.Received().SendInvitationEmail(createInvitationRequest.Email, "ABC123XY",
                 "https://goodurl/Invitation/ConfirmCode/" + insertedInvitation.Id);
         }
+        
+        [Test]
+        public void Then_response_invited_is_true()
+        {
+            var createInvitationRequest = BuildCreateInvitationRequest();
+            var response = CreateInvitationHandler.Handle(createInvitationRequest, CancellationToken.None).Result;
+
+            response.Invited.Should().BeTrue();
+        }
     }
 }

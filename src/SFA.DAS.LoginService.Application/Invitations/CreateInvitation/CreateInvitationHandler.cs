@@ -19,15 +19,18 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
         private readonly IHashingService _hashingService;
         private readonly IEmailService _emailService;
         private readonly ILoginConfig _loginConfig;
+        private readonly IUserService _userService;
 
         public CreateInvitationHandler(LoginContext loginContext, ICodeGenerationService codeGenerationService,
-            IHashingService hashingService, IEmailService emailService, ILoginConfig loginConfig)
+            IHashingService hashingService, IEmailService emailService, ILoginConfig loginConfig,
+            IUserService userService)
         {
             _loginContext = loginContext;
             _codeGenerationService = codeGenerationService;
             _hashingService = hashingService;
             _emailService = emailService;
             _loginConfig = loginConfig;
+            _userService = userService;
         }
 
         public async Task<CreateInvitationResponse> Handle(CreateInvitationRequest request,
@@ -35,6 +38,18 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
         {
             ValidateRequest(request);
 
+            var userExists = await _userService.UserExists(request.Email);
+            if (userExists)
+            {
+                return new CreateInvitationResponse() {Message = "User already exists"};
+            }
+
+            var inviteExists = _loginContext.Invitations.SingleOrDefault(i => i.Email == request.Email);
+            if (inviteExists != null)
+            {
+                _loginContext.Invitations.Remove(inviteExists);
+            }
+            
             var plainTextCode = _codeGenerationService.GenerateCode();
             var hashedCode = _hashingService.GetHash(plainTextCode);
             
@@ -56,8 +71,8 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
             var linkUrl = _loginConfig.BaseUrl + "Invitation/ConfirmCode/" + newInvitation.Id;
 
             await _emailService.SendInvitationEmail(request.Email, plainTextCode, linkUrl);
-          
-            return new CreateInvitationResponse();
+
+            return new CreateInvitationResponse(){Invited = true};
         }
 
         private static void ValidateRequest(CreateInvitationRequest request)

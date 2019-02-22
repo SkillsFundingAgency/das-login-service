@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -16,6 +17,7 @@ using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Data;
+using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Web
 {
@@ -43,10 +45,17 @@ namespace SFA.DAS.LoginService.Web
 
             services.AddDbContext<LoginContext>(options => options.UseSqlServer("Data Source=.\\sql;Initial Catalog=SFA.DAS.LoginService;Integrated Security=True"));
             
+            services.AddDbContext<LoginUserContext>(options => options.UseSqlServer("Data Source=.\\sql;Initial Catalog=SFA.DAS.LoginService;Integrated Security=True"));
+            
+            services.AddIdentity<LoginUser, IdentityRole>()
+                .AddEntityFrameworkStores<LoginUserContext>()
+                .AddDefaultTokenProviders();
+            
             services.AddTransient<ILoginConfig, LoginConfig>();
             services.AddTransient<ICodeGenerationService, CodeGenerationService>();
             services.AddTransient<IHashingService, HashingService>();
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IUserService, UserService>();
             
             services.AddMediatR(typeof(CreateInvitationHandler).Assembly);
 

@@ -11,13 +11,13 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.ConfirmCodeTest
         [Test]
         public void ConfirmCodeRequest_implements_IRequest()
         {
-            typeof(ConfirmCodeViewModel).Should().Implement<IRequest<ConfirmCodeResponse>>();
+            typeof(ConfirmCodeRequest).Should().Implement<IRequest<ConfirmCodeResponse>>();
         }
 
         [Test]
         public void ConfirmCodeHandler_implements_IRequestHandler()
         {
-            typeof(ConfirmCodeHandler).Should().Implement<IRequestHandler<ConfirmCodeViewModel, ConfirmCodeResponse>>();
+            typeof(ConfirmCodeHandler).Should().Implement<IRequestHandler<ConfirmCodeRequest, ConfirmCodeResponse>>();
         }
     }
 }

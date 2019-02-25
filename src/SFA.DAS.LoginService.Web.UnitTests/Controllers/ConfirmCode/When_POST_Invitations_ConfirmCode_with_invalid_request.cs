@@ -11,7 +11,8 @@ using SFA.DAS.LoginService.Application.ConfirmCode;
 using SFA.DAS.LoginService.Application.GetInvitationById;
 using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Data.Entities;
-using SFA.DAS.LoginService.Web.Controllers.InvitationWeb;
+using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
+using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
 {
@@ -22,7 +23,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
         public void Then_ViewResult_to_Confirmcode_is_returned()
         {
             var mediator = Substitute.For<IMediator>();
-            mediator.Send(Arg.Any<ConfirmCodeViewModel>(), CancellationToken.None).Returns(new ConfirmCodeResponse() {IsValid = false});
+            mediator.Send(Arg.Any<ConfirmCodeRequest>(), CancellationToken.None).Returns(new ConfirmCodeResponse() {IsValid = false});
             
             var controller = new ConfirmCodeController(mediator);
             var result = controller.Post(new ConfirmCodeViewModel(Guid.NewGuid(), "code")).Result;
@@ -38,7 +39,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
             var invitationId = Guid.NewGuid();
             
             var mediator = Substitute.For<IMediator>();
-            mediator.Send(Arg.Any<ConfirmCodeViewModel>(), CancellationToken.None).Returns(new ConfirmCodeResponse() {IsValid = false});
+            mediator.Send(Arg.Any<ConfirmCodeRequest>(), CancellationToken.None).Returns(new ConfirmCodeResponse() {IsValid = false});
             mediator.Send(Arg.Any<GetInvitationByIdRequest>(), CancellationToken.None).Returns(new InvitationResponse(new Invitation
             {
                 Id = invitationId,
@@ -58,7 +59,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
         public void Then_ViewResult_contains_CodeNotValid_error_in_ModelState()
         {
             var mediator = Substitute.For<IMediator>();
-            mediator.Send(Arg.Any<ConfirmCodeViewModel>(), CancellationToken.None).Returns(new ConfirmCodeResponse() {IsValid = false});
+            mediator.Send(Arg.Any<ConfirmCodeRequest>(), CancellationToken.None).Returns(new ConfirmCodeResponse() {IsValid = false});
             mediator.Send(Arg.Any<GetInvitationByIdRequest>(), CancellationToken.None).Returns(new InvitationResponse(new Invitation
             {
                 Id = Guid.NewGuid(),

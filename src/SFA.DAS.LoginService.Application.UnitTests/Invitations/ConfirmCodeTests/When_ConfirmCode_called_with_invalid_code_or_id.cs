@@ -41,7 +41,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.ConfirmCodeTest
         [Test]
         public void Then_Invalid_Code_ConfirmCodeResponse_IsValid_is_false()
         {
-            var result = _handler.Handle(new ConfirmCodeViewModel(_invitationId, "ABADCODE"), CancellationToken.None).Result;
+            var result = _handler.Handle(new ConfirmCodeRequest(_invitationId, "ABADCODE"), CancellationToken.None).Result;
 
             result.IsValid.Should().BeFalse();
         }
@@ -49,7 +49,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.ConfirmCodeTest
         [Test]
         public void Then_Invalid_Id_ConfirmCodeResponse_IsValid_is_false()
         {
-            var result = _handler.Handle(new ConfirmCodeViewModel(Guid.NewGuid(), "code"), CancellationToken.None).Result;
+            var result = _handler.Handle(new ConfirmCodeRequest(Guid.NewGuid(), "code"), CancellationToken.None).Result;
 
             result.IsValid.Should().BeFalse();
         }

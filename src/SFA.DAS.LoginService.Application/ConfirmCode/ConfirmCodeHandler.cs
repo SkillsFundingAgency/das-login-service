@@ -3,12 +3,11 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.LoginService.Application.Interfaces;
-using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Data;
 
 namespace SFA.DAS.LoginService.Application.ConfirmCode
 {
-    public class ConfirmCodeHandler : IRequestHandler<ConfirmCodeViewModel, ConfirmCodeResponse>
+    public class ConfirmCodeHandler : IRequestHandler<ConfirmCodeRequest, ConfirmCodeResponse>
     {
         private readonly LoginContext _loginContext;
         private readonly IHashingService _hashingService;
@@ -19,15 +18,15 @@ namespace SFA.DAS.LoginService.Application.ConfirmCode
             _hashingService = hashingService;
         }
 
-        public async Task<ConfirmCodeResponse> Handle(ConfirmCodeViewModel viewModel, CancellationToken cancellationToken)
+        public async Task<ConfirmCodeResponse> Handle(ConfirmCodeRequest request, CancellationToken cancellationToken)
         {
-            var invitation = await _loginContext.Invitations.SingleOrDefaultAsync(i => i.Id == viewModel.InvitationId, cancellationToken: cancellationToken);
+            var invitation = await _loginContext.Invitations.SingleOrDefaultAsync(i => i.Id == request.InvitationId, cancellationToken: cancellationToken);
             if (invitation == null)
             {
                 return new ConfirmCodeResponse {IsValid = false};
             }
 
-            if (invitation.Code == _hashingService.GetHash(viewModel.Code))
+            if (invitation.Code == _hashingService.GetHash(request.Code))
             {
                 invitation.CodeConfirmed = true;
                 await _loginContext.SaveChangesAsync(cancellationToken);
@@ -36,4 +35,6 @@ namespace SFA.DAS.LoginService.Application.ConfirmCode
             return new ConfirmCodeResponse();
         }
     }
+
+    
 }

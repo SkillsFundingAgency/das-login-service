@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.ConfirmCode;
-using SFA.DAS.LoginService.Web.Controllers.InvitationWeb;
+using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
+using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
 {
@@ -19,21 +20,21 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
             var invitationId = Guid.NewGuid();
             
             var mediator = Substitute.For<IMediator>();
-            mediator.Send(Arg.Any<ConfirmCodeViewModel>(), CancellationToken.None).Returns(new ConfirmCodeResponse());
+            mediator.Send(Arg.Any<ConfirmCodeRequest>(), CancellationToken.None).Returns(new ConfirmCodeResponse());
             
             var controller = new ConfirmCodeController(mediator);
             
-            var confirmCodeRequest = new ConfirmCodeViewModel(invitationId, "code");
-            controller.Post(confirmCodeRequest).Wait();
+            var confirmCodeViewModel = new ConfirmCodeViewModel(invitationId, "code");
+            controller.Post(confirmCodeViewModel).Wait();
 
-            mediator.Received().Send(confirmCodeRequest);
+            mediator.Received().Send(Arg.Is<ConfirmCodeRequest>(r => r.InvitationId == invitationId));
         }
         
         [Test]
         public void Then_redirect_to_password_page_is_returned()
         {
             var mediator = Substitute.For<IMediator>();
-            mediator.Send(Arg.Any<ConfirmCodeViewModel>(), CancellationToken.None).Returns(new ConfirmCodeResponse() {IsValid = true});
+            mediator.Send(Arg.Any<ConfirmCodeRequest>(), CancellationToken.None).Returns(new ConfirmCodeResponse() {IsValid = true});
             
             var controller = new ConfirmCodeController(mediator);
             var result = controller.Post(new ConfirmCodeViewModel(Guid.NewGuid(), "code")).Result;

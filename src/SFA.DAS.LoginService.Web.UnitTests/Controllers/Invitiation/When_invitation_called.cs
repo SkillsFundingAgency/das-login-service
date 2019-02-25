@@ -7,7 +7,7 @@ using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 using SFA.DAS.LoginService.Web.Controllers;
-using SFA.DAS.LoginService.Web.Controllers.InvitationApi;
+using SFA.DAS.LoginService.Web.Controllers.InvitationsApi;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.Invitiation
 {

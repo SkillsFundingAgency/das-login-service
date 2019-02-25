@@ -42,7 +42,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.ConfirmCodeTest
         [Test]
         public void Then_ConfirmCodeResponse_is_returned()
         {
-            var result = _handler.Handle(new ConfirmCodeViewModel(_invitationId, "code"), CancellationToken.None).Result;
+            var result = _handler.Handle(new ConfirmCodeRequest(_invitationId, "code"), CancellationToken.None).Result;
             
             result.Should().BeOfType<ConfirmCodeResponse>();
         }
@@ -50,7 +50,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.ConfirmCodeTest
         [Test]
         public void Then_ConfirmCodeResponse_IsValid_is_true()
         {
-            var result = _handler.Handle(new ConfirmCodeViewModel(_invitationId, "code"), CancellationToken.None).Result;
+            var result = _handler.Handle(new ConfirmCodeRequest(_invitationId, "code"), CancellationToken.None).Result;
 
             result.IsValid.Should().BeTrue();
         }
@@ -58,7 +58,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.ConfirmCodeTest
         [Test]
         public void Then_Invitation_record_is_updated_with_CodeConfirmed_true()
         {
-            _handler.Handle(new ConfirmCodeViewModel(_invitationId, "code"), CancellationToken.None).Wait();
+            _handler.Handle(new ConfirmCodeRequest(_invitationId, "code"), CancellationToken.None).Wait();
             var invitation = _loginContext.Invitations.First(i => i.Id == _invitationId);
             
             invitation.CodeConfirmed.Should().BeTrue();

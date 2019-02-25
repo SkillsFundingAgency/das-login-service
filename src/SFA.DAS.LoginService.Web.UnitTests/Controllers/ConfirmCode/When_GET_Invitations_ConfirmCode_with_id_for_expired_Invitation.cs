@@ -6,7 +6,7 @@ using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.GetInvitationById;
 using SFA.DAS.LoginService.Data.Entities;
-using SFA.DAS.LoginService.Web.Controllers.InvitationWeb;
+using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
 {

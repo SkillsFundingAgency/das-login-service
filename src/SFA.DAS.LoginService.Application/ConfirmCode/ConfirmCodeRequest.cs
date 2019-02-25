@@ -3,11 +3,9 @@ using MediatR;
 
 namespace SFA.DAS.LoginService.Application.ConfirmCode
 {
-    public class ConfirmCodeViewModel : IRequest<ConfirmCodeResponse>
+    public class ConfirmCodeRequest : IRequest<ConfirmCodeResponse>
     {
-        public ConfirmCodeViewModel(){}
-        
-        public ConfirmCodeViewModel(Guid invitationId, string code)
+        public ConfirmCodeRequest(Guid invitationId, string code)
         {
             InvitationId = invitationId;
             Code = code;

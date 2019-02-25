@@ -1,11 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 
-namespace SFA.DAS.LoginService.Web.Controllers.InvitationApi
+namespace SFA.DAS.LoginService.Web.Controllers.InvitationsApi
 {
     public class InvitationsController : Controller
     {

@@ -16,11 +16,6 @@
 
 
     <ItemGroup>
-      <Folder Include="Models" />
-    </ItemGroup>
-
-
-    <ItemGroup>
       <ProjectReference Include="..\SFA.DAS.LoginService.Application\SFA.DAS.LoginService.Application.csproj" />
     </ItemGroup>
 

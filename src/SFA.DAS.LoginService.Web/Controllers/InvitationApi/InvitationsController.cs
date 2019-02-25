@@ -7,7 +7,6 @@ using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 
 namespace SFA.DAS.LoginService.Web.Controllers.InvitationApi
 {
-    [Authorize(AuthenticationSchemes = "Bearer")]
     public class InvitationsController : Controller
     {
         private readonly IMediator _mediator;

@@ -13,5 +13,6 @@ namespace SFA.DAS.LoginService.Data.Entities
         public DateTime ValidUntil { get; set; }
         public Uri CallbackUri { get; set; }
         public Uri UserRedirectUri { get; set; }
+        public bool CodeConfirmed { get; set; }
     }
 }

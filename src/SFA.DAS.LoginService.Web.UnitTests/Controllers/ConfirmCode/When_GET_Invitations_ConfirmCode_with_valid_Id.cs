@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NUnit.Framework;
+using SFA.DAS.LoginService.Application.ConfirmCode;
 using SFA.DAS.LoginService.Application.GetInvitationById;
 using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Web.Controllers.InvitationWeb;
@@ -59,7 +60,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
             
             var result = controller.Get(_invitationId).Result;
 
-            ((ViewResult) result).Model.Should().BeOfType<InvitationResponse>();
+            ((ViewResult) result).Model.Should().BeOfType<ConfirmCodeViewModel>();
         }
     }
 }

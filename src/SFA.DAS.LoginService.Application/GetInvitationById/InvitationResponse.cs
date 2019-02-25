@@ -16,8 +16,10 @@ namespace SFA.DAS.LoginService.Application.GetInvitationById
             UserRedirectUri = invitation.UserRedirectUri;
             CallbackUri = invitation.CallbackUri;
             Code = invitation.Code;
-            
+            CodeConfirmed = invitation.CodeConfirmed;
         }
+
+        public bool CodeConfirmed { get; set; }
 
         public string Code { get; set; }
 

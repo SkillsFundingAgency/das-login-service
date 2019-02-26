@@ -37,7 +37,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
             var confirmCodeResponse = await _mediator.Send(new ConfirmCodeRequest(confirmCodeViewModel.InvitationId, confirmCodeViewModel.Code));
             if (confirmCodeResponse.IsValid)
             {
-                return RedirectToAction("Get", "CreatePassword");
+                return RedirectToAction("Get", "CreatePassword", new {id = confirmCodeViewModel.InvitationId});
             }
 
             ModelState.AddModelError("Code","Code not valid");

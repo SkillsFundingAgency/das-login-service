@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +22,22 @@ using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Web
 {
+
+    public class HangfireActivator : JobActivator
+    {
+        private readonly IServiceProvider _serviceProvider;
+
+        public HangfireActivator(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+
+        public override object ActivateJob(Type type)
+        {
+            return _serviceProvider.GetService(type);
+        }
+    }
+    
     public class Startup
     {
         private readonly IHostingEnvironment _environment;
@@ -43,9 +60,13 @@ namespace SFA.DAS.LoginService.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<LoginContext>(options => options.UseSqlServer("Data Source=.;Initial Catalog=SFA.DAS.LoginService;Integrated Security=True"));
+            var connectionString = "Data Source=.;Initial Catalog=SFA.DAS.LoginService;Integrated Security=True";
             
-            services.AddDbContext<LoginUserContext>(options => options.UseSqlServer("Data Source=.;Initial Catalog=SFA.DAS.LoginService;Integrated Security=True"));
+            services.AddHangfire(configuration => configuration.UseSqlServerStorage(connectionString));
+            
+            services.AddDbContext<LoginContext>(options => options.UseSqlServer(connectionString));
+            
+            services.AddDbContext<LoginUserContext>(options => options.UseSqlServer(connectionString));
             
             services.AddIdentity<LoginUser, IdentityRole>()
                 .AddEntityFrameworkStores<LoginUserContext>()
@@ -56,6 +77,7 @@ namespace SFA.DAS.LoginService.Web
             services.AddTransient<IHashingService, HashingService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddHttpClient<ICallbackService, CallbackService>();
             
             services.AddMediatR(typeof(CreateInvitationHandler).Assembly);
 
@@ -77,7 +99,7 @@ namespace SFA.DAS.LoginService.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -92,6 +114,11 @@ namespace SFA.DAS.LoginService.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            GlobalConfiguration.Configuration
+                .UseActivator(new HangfireActivator(serviceProvider));
+            
+            app.UseHangfireServer();
             
             app.UseIdentityServer();
             

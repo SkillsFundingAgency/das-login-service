@@ -9,6 +9,7 @@ CREATE TABLE [dbo].[Invitations](
 	[CallbackUri] [nvarchar](250) NOT NULL,
 	[UserRedirectUri] [nvarchar](250) NOT NULL,
 	[CodeConfirmed] [bit] NOT NULL DEFAULT 0,
+	[IsComplete] [bit] NOT NULL DEFAULT 0,
 ) ON [PRIMARY]
 GO
 

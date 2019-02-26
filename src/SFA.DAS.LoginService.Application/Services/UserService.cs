@@ -21,7 +21,8 @@ namespace SFA.DAS.LoginService.Application.Services
 
         public async Task<CreateUserResponse> CreateUser(LoginUser newUser)
         {
-            throw new System.NotImplementedException();
+            var result = await _userManager.CreateAsync(newUser);
+            return new CreateUserResponse {Result = result, User = newUser};
         }
     }
 }

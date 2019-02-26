@@ -36,6 +36,17 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
         [HttpPost("/Invitations/CreatePassword/{id}")]
         public async Task<ActionResult> Post(CreatePasswordViewModel vm)
         {
+            var invitation = await _mediator.Send(new GetInvitationByIdRequest(vm.InvitationId));
+            if (invitation == null)
+            {
+                return BadRequest("Invitation does not exist");
+            }
+            
+            if (!invitation.CodeConfirmed)
+            {
+                return BadRequest("CodeConfirmed is false");
+            }
+            
             if (vm.Password == vm.ConfirmPassword)
             {
                 var response = await _mediator.Send(new CreatePasswordRequest {InvitationId = vm.InvitationId, Password = vm.Password});

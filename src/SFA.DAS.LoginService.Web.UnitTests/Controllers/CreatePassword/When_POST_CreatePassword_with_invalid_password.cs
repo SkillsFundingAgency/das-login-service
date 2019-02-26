@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.CreatePassword;
+using SFA.DAS.LoginService.Application.GetInvitationById;
+using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
 
@@ -20,6 +22,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         {
             var mediator = Substitute.For<IMediator>();
             mediator.Send(Arg.Any<CreatePasswordRequest>()).Returns(new CreatePasswordResponse() {PasswordValid = false});
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new InvitationResponse(new Invitation() {CodeConfirmed = true}));
             var controller = new CreatePasswordController(mediator);
 
             var invitationId = Guid.NewGuid();

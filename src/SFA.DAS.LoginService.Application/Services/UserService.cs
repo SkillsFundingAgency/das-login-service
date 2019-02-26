@@ -18,5 +18,10 @@ namespace SFA.DAS.LoginService.Application.Services
         {
              return (await _userManager.FindByIdAsync(email)) != null;
         }
+
+        public async Task<CreateUserResponse> CreateUser(LoginUser newUser)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

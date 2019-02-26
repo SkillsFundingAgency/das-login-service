@@ -14,5 +14,6 @@ namespace SFA.DAS.LoginService.Data.Entities
         public Uri CallbackUri { get; set; }
         public Uri UserRedirectUri { get; set; }
         public bool CodeConfirmed { get; set; }
+        public bool IsComplete { get; set; }
     }
 }

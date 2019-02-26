@@ -13,5 +13,11 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreatePasswordT
         {
             typeof(CreatePasswordRequest).Should().Implement<IRequest<CreatePasswordResponse>>();
         }
+
+        [Test]
+        public void CreatePasswordHandler_should_implement_IRequestHandler()
+        {
+            typeof(CreatePasswordHandler).Should().Implement<IRequestHandler<CreatePasswordRequest, CreatePasswordResponse>>();
+        }
     }
 }

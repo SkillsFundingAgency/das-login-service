@@ -17,7 +17,10 @@ namespace SFA.DAS.LoginService.Application.GetInvitationById
             CallbackUri = invitation.CallbackUri;
             Code = invitation.Code;
             CodeConfirmed = invitation.CodeConfirmed;
+            IsComplete = invitation.IsComplete;
         }
+
+        public bool IsComplete { get; set; }
 
         public bool CodeConfirmed { get; set; }
 

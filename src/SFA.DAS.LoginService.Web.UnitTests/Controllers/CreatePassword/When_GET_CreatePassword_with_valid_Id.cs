@@ -1,7 +1,12 @@
 using System;
 using FluentAssertions;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NSubstitute;
 using NUnit.Framework;
+using SFA.DAS.LoginService.Application.CreatePassword;
+using SFA.DAS.LoginService.Application.GetInvitationById;
+using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
 
@@ -13,7 +18,10 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         [Test]
         public void Then_correct_ViewResult_is_returned()
         {
-            var controller = new CreatePasswordController();
+            var mediator = Substitute.For<IMediator>();
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new InvitationResponse(new Invitation() {CodeConfirmed = true}));
+
+            var controller = new CreatePasswordController(mediator);
             var result = controller.Get(Guid.NewGuid()).Result;
             result.Should().BeOfType<ViewResult>();
             ((ViewResult) result).ViewName.Should().Be("CreatePassword");
@@ -22,7 +30,10 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         [Test]
         public void Then_correct_CreatePasswordViewModel_is_passed_to_View()
         {
-            var controller = new CreatePasswordController();
+            var mediator = Substitute.For<IMediator>();
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new InvitationResponse(new Invitation() {CodeConfirmed = true}));
+            
+            var controller = new CreatePasswordController(mediator);
             var invitationId = Guid.NewGuid();
             var result = controller.Get(invitationId).Result;
 

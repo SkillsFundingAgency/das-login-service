@@ -1,0 +1,59 @@
+using System;
+using System.Linq;
+using FluentAssertions;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using NSubstitute;
+using NUnit.Framework;
+using SFA.DAS.LoginService.Application.CreatePassword;
+using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
+using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
+
+namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
+{
+    [TestFixture]
+    public class When_POST_CreatePassword_with_non_matching_passwords
+    {
+        private CreatePasswordController _controller;
+        private Guid _invitationId;
+        private IMediator _mediator;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _mediator = Substitute.For<IMediator>();
+            _controller = new CreatePasswordController(_mediator);
+            _invitationId = Guid.NewGuid();
+        }
+        
+        [Test]
+        public void Then_mediator_is_not_called()
+        {
+            _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, Password = "Pa55word", ConfirmPassword = "P4ssword"}).Wait();
+            _mediator.DidNotReceiveWithAnyArgs().Send(Arg.Any<CreatePasswordRequest>());
+        }
+
+        [Test]
+        public void Then_CreatePassword_ViewResult_is_returned()
+        {
+            var result = _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, Password = "Pa55word", ConfirmPassword = "P4ssword"}).Result;
+
+            result.Should().BeOfType<ViewResult>();
+            ((ViewResult) result).ViewName.Should().Be("CreatePassword");
+            
+            _controller.ModelState.Count.Should().Be(1);
+            _controller.ModelState.ValidationState.Should().Be(ModelValidationState.Invalid);
+            _controller.ModelState.First().Key.Should().Be("Password");
+            _controller.ModelState.First().Value.Errors.First().ErrorMessage.Should().Be("Passwords should match");
+        }
+        
+        [Test]
+        public void Then_CreatePassword_ViewResult_contains_CreatePasswordViewModel()
+        {
+            var result = _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, Password = "Pa55word", ConfirmPassword = "P4ssword"}).Result;
+
+            ((ViewResult) result).Model.Should().BeOfType<CreatePasswordViewModel>();
+        }
+    }
+}

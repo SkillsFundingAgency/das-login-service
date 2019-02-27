@@ -18,6 +18,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
         protected IEmailService EmailService;
         protected ILoginConfig LoginConfig;
         protected IUserService UserService;
+        protected static Guid ClientId;
 
         [SetUp]
         public void SetUp()
@@ -52,6 +53,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
         
         protected static CreateInvitationRequest BuildCreateInvitationRequest()
         {
+            ClientId = Guid.NewGuid();
             var createInvitationRequest = new CreateInvitationRequest()
             {
                 Email = "invited@email.com",
@@ -60,7 +62,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
                 SourceId = "InvitedSourceId",
                 UserRedirect = new Uri("https://localhost/userredirect"),
                 Callback = new Uri("https://localhost/callback"),
-                ClientId = Guid.NewGuid()
+                ClientId = ClientId
             };
             return createInvitationRequest;
         }

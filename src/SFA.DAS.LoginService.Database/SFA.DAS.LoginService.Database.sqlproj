@@ -59,7 +59,11 @@
     <Folder Include="Properties" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Tables\Clients.sql" />
     <Content Include="Tables\IdentityTables.sql" />
     <Content Include="Tables\Invitations.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Schemas\LoginService.sql" />
   </ItemGroup>
 </Project>

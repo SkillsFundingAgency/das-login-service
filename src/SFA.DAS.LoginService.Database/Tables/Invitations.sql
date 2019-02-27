@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[Invitations](
+CREATE TABLE [LoginService].[Invitations](
 	[Id] [uniqueidentifier] NOT NULL,
 	[Email] [nvarchar](250) NOT NULL,
 	[GivenName] [nvarchar](250) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE [dbo].[Invitations](
 	[IsUserCreated] [bit] NOT NULL DEFAULT 0,
 	[IsCalledBack] [bit] NOT NULL DEFAULT 0,
 	[CallbackDate] [datetime2](7) NULL,
-	[Id] [uniqueidentifier] NOT NULL,
+	[ClientId] [uniqueidentifier] NOT NULL,
 ) ON [PRIMARY]
 GO
 

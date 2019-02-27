@@ -10,6 +10,8 @@ namespace SFA.DAS.LoginService.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("LoginService");
+            
             modelBuilder.Entity<Invitation>()
                 .Property(i => i.CallbackUri)
                 .HasConversion(

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Services;
@@ -38,6 +39,12 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
         {
             ValidateRequest(request);
 
+            var client = await _loginContext.Clients.SingleOrDefaultAsync(c => c.Id == request.ClientId, cancellationToken: cancellationToken);
+            if (client == null)
+            {
+                return new CreateInvitationResponse() {Message = "User already exists"};
+            }
+            
             var userExists = await _userService.UserExists(request.Email);
             if (userExists)
             {

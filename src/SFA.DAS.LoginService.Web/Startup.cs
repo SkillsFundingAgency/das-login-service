@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.LoginService.Application.Interfaces;
@@ -22,22 +16,34 @@ using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Web
 {
-
-    public class HangfireActivator : JobActivator
-    {
-        private readonly IServiceProvider _serviceProvider;
-
-        public HangfireActivator(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
-
-        public override object ActivateJob(Type type)
-        {
-            return _serviceProvider.GetService(type);
-        }
-    }
-    
+//    public class ServiceJobActivator : JobActivator
+//    {
+//        readonly IServiceScopeFactory _serviceScopeFactory;
+//        public ServiceJobActivator(IServiceScopeFactory serviceScopeFactory)
+//        {
+//            if (serviceScopeFactory == null) throw new ArgumentNullException(nameof(serviceScopeFactory));
+//            _serviceScopeFactory = serviceScopeFactory;
+//        }
+//
+//        public override JobActivatorScope BeginScope(JobActivatorContext context)
+//        {
+//            return new ServiceJobActivatorScope(_serviceScopeFactory.CreateScope());
+//        }
+//    }
+//
+//    public class ServiceJobActivatorScope : JobActivatorScope
+//    {
+//        readonly IServiceScope _serviceScope;
+//        public ServiceJobActivatorScope(IServiceScope serviceScope)
+//        {
+//            if (serviceScope == null) throw new ArgumentNullException(nameof(serviceScope));
+//            _serviceScope = serviceScope;
+//        }
+//        public override object Resolve(Type type)
+//        {
+//            return  _serviceScope.ServiceProvider.GetService(type);
+//        }
+//    }
     public class Startup
     {
         private readonly IHostingEnvironment _environment;
@@ -62,7 +68,6 @@ namespace SFA.DAS.LoginService.Web
 
             var connectionString = "Data Source=.;Initial Catalog=SFA.DAS.LoginService;Integrated Security=True";
             
-            services.AddHangfire(configuration => configuration.UseSqlServerStorage(connectionString));
             
             services.AddDbContext<LoginContext>(options => options.UseSqlServer(connectionString));
             
@@ -114,11 +119,6 @@ namespace SFA.DAS.LoginService.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            GlobalConfiguration.Configuration
-                .UseActivator(new HangfireActivator(serviceProvider));
-            
-            app.UseHangfireServer();
             
             app.UseIdentityServer();
             

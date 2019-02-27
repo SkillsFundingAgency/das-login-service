@@ -19,9 +19,9 @@ namespace SFA.DAS.LoginService.Application.Services
              return (await _userManager.FindByIdAsync(email)) != null;
         }
 
-        public async Task<CreateUserResponse> CreateUser(LoginUser newUser)
+        public async Task<CreateUserResponse> CreateUser(LoginUser newUser, string password)
         {
-            var result = await _userManager.CreateAsync(newUser);
+            var result = await _userManager.CreateAsync(newUser, password);
             return new CreateUserResponse {Result = result, User = newUser};
         }
     }

@@ -21,7 +21,7 @@ namespace SFA.DAS.LoginService.Application.ConfirmCode
         public async Task<ConfirmCodeResponse> Handle(ConfirmCodeRequest request, CancellationToken cancellationToken)
         {
             var invitation = await _loginContext.Invitations.SingleOrDefaultAsync(i => i.Id == request.InvitationId, cancellationToken: cancellationToken);
-            if (invitation == null)
+            if (invitation == null || invitation.IsUserCreated)
             {
                 return new ConfirmCodeResponse {IsValid = false};
             }

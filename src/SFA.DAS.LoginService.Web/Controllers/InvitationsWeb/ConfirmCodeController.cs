@@ -22,7 +22,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
         {
             var invitationResponse = await _mediator.Send(new GetInvitationByIdRequest(id));
             
-            if (invitationResponse != null)
+            if (invitationResponse != null && !invitationResponse.IsUserCreated)
             {
                 var confirmCodeViewModel = new ConfirmCodeViewModel(invitationResponse.Id, "");
                 return View("ConfirmCode", confirmCodeViewModel);

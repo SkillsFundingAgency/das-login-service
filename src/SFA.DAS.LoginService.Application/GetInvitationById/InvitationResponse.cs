@@ -17,10 +17,16 @@ namespace SFA.DAS.LoginService.Application.GetInvitationById
             CallbackUri = invitation.CallbackUri;
             Code = invitation.Code;
             CodeConfirmed = invitation.CodeConfirmed;
-            IsComplete = invitation.IsComplete;
+            IsUserCreated = invitation.IsUserCreated;
+            CallbackDate = invitation.CallbackDate;
+            IsCalledBack = invitation.IsCalledBack;
         }
 
-        public bool IsComplete { get; set; }
+        public bool IsCalledBack { get; set; }
+
+        public DateTime? CallbackDate { get; set; }
+
+        public bool IsUserCreated { get; set; }
 
         public bool CodeConfirmed { get; set; }
 

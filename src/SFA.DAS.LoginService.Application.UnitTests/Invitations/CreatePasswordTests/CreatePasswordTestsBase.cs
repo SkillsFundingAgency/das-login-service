@@ -1,7 +1,5 @@
 using System;
-using Hangfire;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.CreatePassword;
@@ -19,8 +17,8 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreatePasswordT
         protected LoginContext LoginContext;
         protected Guid InvitationId;
         protected CreatePasswordHandler Handler;
-        protected Mock<IBackgroundJobClient> BackgroundJobClient;
         protected Guid NewLoginUserId;
+        protected ICallbackService CallbackService;
 
         [SetUp]
         public void SetUp()
@@ -41,16 +39,13 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreatePasswordT
             });
             LoginContext.SaveChanges();
 
-            // Using Moq here instead of NSubstitute as it verifies calls to Hangfire's background queue better. 
-            BackgroundJobClient = new Mock<IBackgroundJobClient>();
-
-            var callbackService = Substitute.For<ICallbackService>();
+            CallbackService = Substitute.For<ICallbackService>();
 
             UserService = Substitute.For<IUserService>();
             NewLoginUserId = Guid.NewGuid();
             
             
-            Handler = new CreatePasswordHandler(UserService, LoginContext, BackgroundJobClient.Object, callbackService);
+            Handler = new CreatePasswordHandler(UserService, LoginContext, CallbackService);
         }
     }
 }

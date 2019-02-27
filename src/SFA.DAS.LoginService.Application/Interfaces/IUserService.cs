@@ -7,7 +7,7 @@ namespace SFA.DAS.LoginService.Application.Interfaces
     public interface IUserService
     {
         Task<bool> UserExists(string email);
-        Task<CreateUserResponse> CreateUser(LoginUser newUser);
+        Task<CreateUserResponse> CreateUser(LoginUser newUser, string password);
     }
 
     public class CreateUserResponse

@@ -33,6 +33,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
             insertedInvitation.SourceId.Should().Be(createInvitationRequest.SourceId);
             insertedInvitation.CallbackUri.Should().Be(createInvitationRequest.Callback.ToString());
             insertedInvitation.UserRedirectUri.Should().Be(createInvitationRequest.UserRedirect.ToString());
+            insertedInvitation.ClientId.Should().Be(createInvitationRequest.ClientId.ToString());
         }
 
         [Test]
@@ -97,7 +98,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
             var insertedInvitation = LoginContext.Invitations.Single();
 
             EmailService.Received().SendInvitationEmail(createInvitationRequest.Email, "ABC123XY",
-                "https://goodurl/Invitation/ConfirmCode/" + insertedInvitation.Id);
+                "https://goodurl/Invitations/ConfirmCode/" + insertedInvitation.Id);
         }
         
         [Test]

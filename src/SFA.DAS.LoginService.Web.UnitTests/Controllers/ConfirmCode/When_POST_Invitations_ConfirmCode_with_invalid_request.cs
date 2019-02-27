@@ -40,11 +40,11 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
             
             var mediator = Substitute.For<IMediator>();
             mediator.Send(Arg.Any<ConfirmCodeRequest>(), CancellationToken.None).Returns(new ConfirmCodeResponse() {IsValid = false});
-            mediator.Send(Arg.Any<GetInvitationByIdRequest>(), CancellationToken.None).Returns(new InvitationResponse(new Invitation
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>(), CancellationToken.None).Returns(new Invitation
             {
                 Id = invitationId,
                 ValidUntil = SystemTime.UtcNow().AddHours(1)
-            }));
+            });
             
             var controller = new ConfirmCodeController(mediator);
             
@@ -60,11 +60,11 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
         {
             var mediator = Substitute.For<IMediator>();
             mediator.Send(Arg.Any<ConfirmCodeRequest>(), CancellationToken.None).Returns(new ConfirmCodeResponse() {IsValid = false});
-            mediator.Send(Arg.Any<GetInvitationByIdRequest>(), CancellationToken.None).Returns(new InvitationResponse(new Invitation
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>(), CancellationToken.None).Returns(new Invitation
             {
                 Id = Guid.NewGuid(),
                 ValidUntil = SystemTime.UtcNow().AddHours(1)
-            }));
+            });
             
             var controller = new ConfirmCodeController(mediator);
             var invitationId = Guid.NewGuid();

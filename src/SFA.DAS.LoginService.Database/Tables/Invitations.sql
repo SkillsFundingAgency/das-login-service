@@ -11,7 +11,8 @@ CREATE TABLE [dbo].[Invitations](
 	[CodeConfirmed] [bit] NOT NULL DEFAULT 0,
 	[IsUserCreated] [bit] NOT NULL DEFAULT 0,
 	[IsCalledBack] [bit] NOT NULL DEFAULT 0,
-	[CallbackDate] [datetime2](7) NULL
+	[CallbackDate] [datetime2](7) NULL,
+	[Id] [uniqueidentifier] NOT NULL,
 ) ON [PRIMARY]
 GO
 

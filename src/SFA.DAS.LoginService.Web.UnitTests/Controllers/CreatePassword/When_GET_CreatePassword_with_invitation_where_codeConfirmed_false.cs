@@ -17,7 +17,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         public void Then_BadRequest_Is_Returned()
         {
             var mediator = Substitute.For<IMediator>();
-            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new InvitationResponse(new Invitation() {CodeConfirmed = false}));
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation() {CodeConfirmed = false});
             
             var controller = new CreatePasswordController(mediator);
             var result = controller.Get(Guid.NewGuid()).Result;

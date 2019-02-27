@@ -62,13 +62,14 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
                 Code = hashedCode,
                 ValidUntil = SystemTime.UtcNow().AddHours(1),
                 CallbackUri = request.Callback,
-                UserRedirectUri = request.UserRedirect
+                UserRedirectUri = request.UserRedirect,
+                ClientId = request.ClientId
             };
             
             _loginContext.Invitations.Add(newInvitation);
             await _loginContext.SaveChangesAsync(cancellationToken);
 
-            var linkUrl = _loginConfig.BaseUrl + "Invitation/ConfirmCode/" + newInvitation.Id;
+            var linkUrl = _loginConfig.BaseUrl + "Invitations/ConfirmCode/" + newInvitation.Id;
 
             await _emailService.SendInvitationEmail(request.Email, plainTextCode, linkUrl);
 

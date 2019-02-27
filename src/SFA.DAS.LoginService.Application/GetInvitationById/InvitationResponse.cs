@@ -20,7 +20,10 @@ namespace SFA.DAS.LoginService.Application.GetInvitationById
             IsUserCreated = invitation.IsUserCreated;
             CallbackDate = invitation.CallbackDate;
             IsCalledBack = invitation.IsCalledBack;
+            ClientId = invitation.ClientId;
         }
+
+        public Guid ClientId { get; set; }
 
         public bool IsCalledBack { get; set; }
 

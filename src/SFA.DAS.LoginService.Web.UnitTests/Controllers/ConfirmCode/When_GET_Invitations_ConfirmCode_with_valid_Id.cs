@@ -31,7 +31,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
             };
             
             _mediator = Substitute.For<IMediator>();
-            _mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new InvitationResponse(invitation));
+            _mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(invitation);
         }
         
         
@@ -39,6 +39,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
         public void Then_ViewResult_Is_Returned()
         {
             var controller = new ConfirmCodeController(_mediator);
+            
             var result = controller.Get(_invitationId).Result;
             result.Should().BeOfType<ViewResult>();
         }

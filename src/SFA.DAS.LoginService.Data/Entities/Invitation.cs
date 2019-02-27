@@ -17,5 +17,6 @@ namespace SFA.DAS.LoginService.Data.Entities
         public bool IsUserCreated { get; set; }
         public bool IsCalledBack { get; set; }
         public DateTime? CallbackDate { get; set; }
+        public Guid ClientId { get; set; }
     }
 }

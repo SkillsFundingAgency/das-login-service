@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.LoginService.Application.GetClientById;
 using SFA.DAS.LoginService.Application.GetInvitationById;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
 
@@ -30,8 +31,10 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
             {
                 return RedirectToAction("Get", "ConfirmCode");
             }
+
+            var client = await _mediator.Send(new GetClientByIdRequest() {ClientId = invitation.ClientId});
             
-            return View("SignUpComplete", new SignUpCompleteViewModel(){UserRedirectUri = invitation.UserRedirectUri});
+            return View("SignUpComplete", new SignUpCompleteViewModel(){UserRedirectUri = invitation.UserRedirectUri, ServiceName = client.ServiceName});
         }
     }
 }

@@ -17,7 +17,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
             _mediator = mediator;
         }
 
-        [HttpGet("/Invitations/ConfirmCode/{id}")]
+        [HttpGet("/Invitations/ConfirmCode/{invitationId}")]
         public async Task<ActionResult> Get(Guid id)
         {
             var invitationResponse = await _mediator.Send(new GetInvitationByIdRequest(id));
@@ -31,7 +31,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
             return View("InvitationExpired");
         }
 
-        [HttpPost("/Invitations/ConfirmCode/{id}")]
+        [HttpPost("/Invitations/ConfirmCode/{invitationId}")]
         public async Task<ActionResult> Post(ConfirmCodeViewModel confirmCodeViewModel)
         {
             var confirmCodeResponse = await _mediator.Send(new ConfirmCodeRequest(confirmCodeViewModel.InvitationId, confirmCodeViewModel.Code));

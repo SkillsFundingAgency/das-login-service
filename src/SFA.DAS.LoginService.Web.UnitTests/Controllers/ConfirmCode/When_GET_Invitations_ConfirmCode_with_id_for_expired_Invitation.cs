@@ -19,7 +19,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
             var invitationId = Guid.NewGuid();
             
             var mediator = Substitute.For<IMediator>();
-            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new InvitationResponse(new Invitation(){IsUserCreated = true}));
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation(){IsUserCreated = true});
             
             var controller = new ConfirmCodeController(mediator);
             
@@ -38,7 +38,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
             var invitationId = Guid.NewGuid();
             
             var mediator = Substitute.For<IMediator>();
-            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(default(InvitationResponse));
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(default(Invitation));
             
             var controller = new ConfirmCodeController(mediator);
             

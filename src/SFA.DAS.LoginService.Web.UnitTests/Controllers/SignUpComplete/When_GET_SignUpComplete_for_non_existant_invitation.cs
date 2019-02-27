@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.GetInvitationById;
+using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.SignUpComplete
 {
@@ -14,7 +15,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.SignUpComplete
         [Test]
         public async Task Then_BadRequest_is_returned()
         {
-            Mediator.Send(Arg.Any<GetInvitationByIdRequest>(), CancellationToken.None).Returns(default(InvitationResponse));
+            Mediator.Send(Arg.Any<GetInvitationByIdRequest>(), CancellationToken.None).Returns(default(Invitation));
             var result = await Controller.Get(InvitationId);
 
             result.Should().BeOfType<BadRequestResult>();

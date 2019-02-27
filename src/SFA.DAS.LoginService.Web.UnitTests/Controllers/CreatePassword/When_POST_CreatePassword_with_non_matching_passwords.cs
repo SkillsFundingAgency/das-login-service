@@ -39,7 +39,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         [Test]
         public void Then_CreatePassword_ViewResult_is_returned()
         {
-            _mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new InvitationResponse(new Invitation() {CodeConfirmed = true}));
+            _mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation() {CodeConfirmed = true});
             var result = _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, Password = "Pa55word", ConfirmPassword = "P4ssword"}).Result;
 
             result.Should().BeOfType<ViewResult>();
@@ -54,7 +54,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         [Test]
         public void Then_CreatePassword_ViewResult_contains_CreatePasswordViewModel()
         {
-            _mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new InvitationResponse(new Invitation() {CodeConfirmed = true}));
+            _mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation() {CodeConfirmed = true});
             var result = _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, Password = "Pa55word", ConfirmPassword = "P4ssword"}).Result;
 
             ((ViewResult) result).Model.Should().BeOfType<CreatePasswordViewModel>();

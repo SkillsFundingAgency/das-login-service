@@ -16,34 +16,6 @@ using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Web
 {
-//    public class ServiceJobActivator : JobActivator
-//    {
-//        readonly IServiceScopeFactory _serviceScopeFactory;
-//        public ServiceJobActivator(IServiceScopeFactory serviceScopeFactory)
-//        {
-//            if (serviceScopeFactory == null) throw new ArgumentNullException(nameof(serviceScopeFactory));
-//            _serviceScopeFactory = serviceScopeFactory;
-//        }
-//
-//        public override JobActivatorScope BeginScope(JobActivatorContext context)
-//        {
-//            return new ServiceJobActivatorScope(_serviceScopeFactory.CreateScope());
-//        }
-//    }
-//
-//    public class ServiceJobActivatorScope : JobActivatorScope
-//    {
-//        readonly IServiceScope _serviceScope;
-//        public ServiceJobActivatorScope(IServiceScope serviceScope)
-//        {
-//            if (serviceScope == null) throw new ArgumentNullException(nameof(serviceScope));
-//            _serviceScope = serviceScope;
-//        }
-//        public override object Resolve(Type type)
-//        {
-//            return  _serviceScope.ServiceProvider.GetService(type);
-//        }
-//    }
     public class Startup
     {
         private readonly IHostingEnvironment _environment;
@@ -54,7 +26,7 @@ namespace SFA.DAS.LoginService.Web
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -77,14 +49,7 @@ namespace SFA.DAS.LoginService.Web
                 .AddEntityFrameworkStores<LoginUserContext>()
                 .AddDefaultTokenProviders();
             
-            services.AddTransient<ILoginConfig, LoginConfig>();
-            services.AddTransient<ICodeGenerationService, CodeGenerationService>();
-            services.AddTransient<IHashingService, HashingService>();
-            services.AddTransient<IEmailService, EmailService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddHttpClient<ICallbackService, CallbackService>();
-            
-            services.AddMediatR(typeof(CreateInvitationHandler).Assembly);
+            WireUpDependencies(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
@@ -101,6 +66,18 @@ namespace SFA.DAS.LoginService.Web
                 .AddInMemoryClients(Config.GetClients())
                 .AddInMemoryApiResources(Config.GetApis())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources());
+        }
+
+        private static void WireUpDependencies(IServiceCollection services)
+        {
+            services.AddTransient<ILoginConfig, LoginConfig>();
+            services.AddTransient<ICodeGenerationService, CodeGenerationService>();
+            services.AddTransient<IHashingService, HashingService>();
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddHttpClient<ICallbackService, CallbackService>();
+
+            services.AddMediatR(typeof(CreateInvitationHandler).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

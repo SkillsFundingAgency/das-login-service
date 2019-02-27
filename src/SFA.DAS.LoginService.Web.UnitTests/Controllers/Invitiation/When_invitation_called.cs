@@ -8,6 +8,7 @@ using NUnit.Framework;
 using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 using SFA.DAS.LoginService.Web.Controllers;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsApi;
+using SFA.DAS.LoginService.Web.Controllers.InvitationsApi.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.Invitiation
 {
@@ -22,6 +23,19 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.Invitiation
 
             var sourceId = Guid.NewGuid();
 
+            var invitationRequest = new InvitationRequestViewModel()
+            {
+                Email = "email@email.com",
+                GivenName = "Dave",
+                FamilyName = "Smith",
+                SourceId = sourceId.ToString(),
+                Callback = new Uri("https://callback"),
+                UserRedirect = new Uri("https://userRedirect")
+            };
+
+            var clientId = Guid.NewGuid();
+            controller.Invite(clientId, invitationRequest).Wait();
+
             var createInvitationRequest = new CreateInvitationRequest()
             {
                 Email = "email@email.com",
@@ -31,9 +45,14 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.Invitiation
                 Callback = new Uri("https://callback"),
                 UserRedirect = new Uri("https://userRedirect")
             };
-            controller.Invite(createInvitationRequest).Wait();
-
-            mediator.Received().Send(createInvitationRequest);
+            
+            mediator.Received().Send(Arg.Is<CreateInvitationRequest>(r => r.Email == "email@email.com"
+                                                                          && r.GivenName == "Dave"
+                                                                          && r.FamilyName == "Smith"
+                                                                          && r.SourceId == sourceId.ToString()
+                                                                          && r.Callback == new Uri("https://callback")
+                                                                          && r.UserRedirect == new Uri("https://userRedirect")
+                                                                          && r.ClientId == clientId));
         }
 
         [Test]
@@ -45,7 +64,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.Invitiation
             
             var sourceId = Guid.NewGuid();
             
-            var createInvitationRequest = new CreateInvitationRequest()
+            var invitationRequest = new InvitationRequestViewModel()
             {
                 Email = "email@email.com",
                 GivenName = "Dave",
@@ -54,7 +73,9 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.Invitiation
                 Callback = new Uri("https://callback"),
                 UserRedirect = new Uri("https://userRedirect")
             };
-            var result = controller.Invite(createInvitationRequest).Result;
+            
+            var clientId = Guid.NewGuid();
+            var result = controller.Invite(clientId, invitationRequest).Result;
 
             result.Result.Should().BeOfType<BadRequestObjectResult>();
         }
@@ -68,7 +89,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.Invitiation
 
             var sourceId = Guid.NewGuid();
 
-            var createInvitationRequest = new CreateInvitationRequest()
+            var invitationRequest = new InvitationRequestViewModel()
             {
                 Email = "email@email.com",
                 GivenName = "Dave",
@@ -77,7 +98,8 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.Invitiation
                 Callback = new Uri("https://callback"),
                 UserRedirect = new Uri("https://userRedirect")
             };
-            var response = controller.Invite(createInvitationRequest).Result;
+            var clientId = Guid.NewGuid();
+            var response = controller.Invite(clientId, invitationRequest).Result;
 
             response.Value.Should().BeOfType<CreateInvitationResponse>();
             response.Value.Invited.Should().BeTrue();

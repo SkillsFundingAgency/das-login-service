@@ -14,10 +14,10 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.GetInvitationBy
     public class Get_InvitationByIdHandler_called_for_valid_invitation : GetInvitationByIdHandlerTestBase
     {
         [Test]
-        public void Then_InvitationResponse_returned()
+        public void Then_Invitation_returned()
         {
             var result = Handler.Handle(new GetInvitationByIdRequest(GoodInvitationId), CancellationToken.None).Result;
-            result.Should().BeOfType<InvitationResponse>();
+            result.Should().BeOfType<Invitation>();
         }
 
         [Test]

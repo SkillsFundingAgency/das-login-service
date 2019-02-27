@@ -1,4 +1,5 @@
 using System;
+using System.Security.Authentication.ExtendedProtection;
 using System.Threading;
 using MediatR;
 using NSubstitute;
@@ -15,37 +16,41 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.SignUpComplete
         protected IMediator Mediator;
         protected SignUpCompleteController Controller;
         protected Guid InvitationId;
+        protected Guid ClientId;
+        protected string ServiceName;
 
         [SetUp]
         public void SetUp()
         {
             Mediator = Substitute.For<IMediator>();
             Controller = new SignUpCompleteController(Mediator);
-            InvitationId = Guid.NewGuid();   
+            InvitationId = Guid.NewGuid();
+            ClientId = Guid.NewGuid();
+            ServiceName = "A Client Service";
         }
 
         protected void SetValidInvitationByIdRequest()
         {
             Mediator.Send(Arg.Any<GetInvitationByIdRequest>(), CancellationToken.None).Returns(
-                new InvitationResponse(
-                    new Invitation()
+                new Invitation()
                     {
                         UserRedirectUri = new Uri("https://localhost/redirect"), 
                         CodeConfirmed = true, 
-                        IsUserCreated = true
-                    }));
+                        IsUserCreated = true,
+                        ClientId = ClientId
+                    });
         }
         
         protected void SetUnconfirmedValidInvitationByIdRequest()
         {
             Mediator.Send(Arg.Any<GetInvitationByIdRequest>(), CancellationToken.None).Returns(
-                new InvitationResponse(
                     new Invitation()
                     {
                         UserRedirectUri = new Uri("https://localhost/redirect"), 
                         CodeConfirmed = false, 
-                        IsUserCreated = false
-                    }));
+                        IsUserCreated = false, 
+                        ClientId = ClientId
+                    });
         }
     }
 }

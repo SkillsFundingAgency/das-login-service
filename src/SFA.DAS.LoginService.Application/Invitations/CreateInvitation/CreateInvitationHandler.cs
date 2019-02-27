@@ -42,7 +42,7 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
             var client = await _loginContext.Clients.SingleOrDefaultAsync(c => c.Id == request.ClientId, cancellationToken: cancellationToken);
             if (client == null)
             {
-                return new CreateInvitationResponse() {Message = "User already exists"};
+                return new CreateInvitationResponse() {Message = "Client does not exist"};
             }
             
             var userExists = await _userService.UserExists(request.Email);

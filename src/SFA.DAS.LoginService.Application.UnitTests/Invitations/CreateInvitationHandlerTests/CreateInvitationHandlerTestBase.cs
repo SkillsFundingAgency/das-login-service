@@ -5,6 +5,7 @@ using NUnit.Framework;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 using SFA.DAS.LoginService.Data;
+using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitationHandlerTests
 {
@@ -41,6 +42,9 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
                 .Options;
 
             LoginContext = new LoginContext(dbContextOptions);
+            ClientId = Guid.NewGuid();
+            LoginContext.Clients.Add(new Client(){Id = ClientId});
+            LoginContext.SaveChanges();
         }
 
         [TearDown]
@@ -53,7 +57,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
         
         protected static CreateInvitationRequest BuildCreateInvitationRequest()
         {
-            ClientId = Guid.NewGuid();
             var createInvitationRequest = new CreateInvitationRequest()
             {
                 Email = "invited@email.com",

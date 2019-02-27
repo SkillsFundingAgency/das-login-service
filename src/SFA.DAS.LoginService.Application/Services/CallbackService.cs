@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -20,7 +21,16 @@ namespace SFA.DAS.LoginService.Application.Services
 
         public async Task Callback(Invitation invitation, string loginUserId)
         {
-            var response = await _httpClient.PostAsync(invitation.CallbackUri, new StringContent(JsonConvert.SerializeObject(new {sub=loginUserId, sourceId = invitation.SourceId})));
+            HttpResponseMessage response;
+            try
+            {
+                response = await _httpClient.PostAsync(invitation.CallbackUri, new StringContent(JsonConvert.SerializeObject(new {sub=loginUserId, sourceId = invitation.SourceId})));
+            }
+            catch (HttpRequestException)
+            {
+                return;
+            }
+            
             if (response.IsSuccessStatusCode)
             {
                 invitation.IsCalledBack = true;

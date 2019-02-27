@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -99,6 +100,34 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CallbackService
             
             callbackService.Callback(invitation, "LOGINUSERID");
 
+            var updatedInvitation = _loginContext.Invitations.Single(i => i.Id == invitationId);
+            updatedInvitation.IsCalledBack.Should().BeFalse();
+            updatedInvitation.CallbackDate.Should().BeNull();
+        }
+
+        [Test]
+        public void And_callback_target_url_cannot_be_resolved_Then_callback_fields_are_not_updated()
+        {
+            _mockHttp.When("https://localhost/callback").Throw(new HttpRequestException());
+            
+            var invitationId = Guid.NewGuid();
+            var invitation = new Invitation
+            {
+                Id = invitationId,
+                SourceId = "S0U4C31D",
+                CallbackUri = new Uri("https://localhost/callback")
+            };
+
+            _loginContext.Invitations.Add(invitation);
+            _loginContext.SaveChanges();
+            
+            var callbackService = new CallbackService(_mockHttp.ToHttpClient(), _loginContext);
+            
+
+            SystemTime.UtcNow = () => new DateTime(2018, 2, 27, 9, 0, 0);
+
+            callbackService.Invoking(cs => cs.Callback(invitation, "LOGINUSERID")).Should().NotThrow<HttpRequestException>();
+            
             var updatedInvitation = _loginContext.Invitations.Single(i => i.Id == invitationId);
             updatedInvitation.IsCalledBack.Should().BeFalse();
             updatedInvitation.CallbackDate.Should().BeNull();

@@ -29,6 +29,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
             result.Should().BeOfType<RedirectToActionResult>();
             ((RedirectToActionResult) result).ActionName.Should().Be("Get");
             ((RedirectToActionResult) result).ControllerName.Should().Be("SignUpComplete");
+            ((RedirectToActionResult) result).RouteValues["id"].Should().Be(invitationId);
         }
     }
 }

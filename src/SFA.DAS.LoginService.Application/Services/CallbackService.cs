@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SFA.DAS.LoginService.Application.Interfaces;
@@ -24,7 +25,14 @@ namespace SFA.DAS.LoginService.Application.Services
             HttpResponseMessage response;
             try
             {
-                response = await _httpClient.PostAsync(invitation.CallbackUri, new StringContent(JsonConvert.SerializeObject(new {sub=loginUserId, sourceId = invitation.SourceId})));
+                
+                response = await _httpClient.PostAsync(invitation.CallbackUri, 
+                    new StringContent(JsonConvert.SerializeObject(
+                        new
+                        {
+                            sub=loginUserId, 
+                            sourceId = invitation.SourceId
+                        }), Encoding.UTF8, "application/json"));
             }
             catch (HttpRequestException)
             {

@@ -1,0 +1,12 @@
+@model SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels.SignUpCompleteViewModel
+
+@{
+    ViewBag.Title = "Sign Up Complete";
+}
+
+<div class="jumbotron">
+    <h2>Sign Up Complete</h2>
+    <p>An account has been created.  Click below to continue to sign in to 'your service'.</p>
+</div>
+
+<a class="btn bg-success" href="@Model.UserRedirectUri">Return to 'your service'</a>

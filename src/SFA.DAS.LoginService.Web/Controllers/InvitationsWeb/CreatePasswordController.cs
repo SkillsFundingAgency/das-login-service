@@ -52,7 +52,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
                 var response = await _mediator.Send(new CreatePasswordRequest {InvitationId = vm.InvitationId, Password = vm.Password});
                 if (response.PasswordValid)
                 {
-                    return RedirectToAction("Get", "SignUpComplete");
+                    return RedirectToAction("Get", "SignUpComplete", new {id = vm.InvitationId});
                 }
 
                 ModelState.AddModelError("Password", "Password does not meet minimum complexity requirements");

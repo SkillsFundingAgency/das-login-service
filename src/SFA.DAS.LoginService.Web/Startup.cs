@@ -37,14 +37,12 @@ namespace SFA.DAS.LoginService.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            
+            var loginConfig = new LoginConfig();
 
-            //var connectionString = "Data Source=.\\sql;Initial Catalog=SFA.DAS.LoginService;Integrated Security=True";
-            var connectionString =
-                "Server=tcp:esfatemp.database.windows.net,1433;Initial Catalog=SFA.DAS.LoginService;Persist Security Info=False;User ID=esfa;Password=C0ventry18;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            services.AddDbContext<LoginContext>(options => options.UseSqlServer(loginConfig.SqlConnectionString));
             
-            services.AddDbContext<LoginContext>(options => options.UseSqlServer(connectionString));
-            
-            services.AddDbContext<LoginUserContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<LoginUserContext>(options => options.UseSqlServer(loginConfig.SqlConnectionString));
             
             services.AddIdentity<LoginUser, IdentityRole>()
                 .AddEntityFrameworkStores<LoginUserContext>()
@@ -66,12 +64,12 @@ namespace SFA.DAS.LoginService.Web
                 .AddDeveloperSigningCredential()
                 .AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString);
+                    options.ConfigureDbContext = builder => builder.UseSqlServer(loginConfig.SqlConnectionString);
                     options.DefaultSchema = "IdentityServer";
                 })
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString);
+                    options.ConfigureDbContext = builder => builder.UseSqlServer(loginConfig.SqlConnectionString);
                     options.DefaultSchema = "IdentityServer";
                     options.EnableTokenCleanup = true;
                 })

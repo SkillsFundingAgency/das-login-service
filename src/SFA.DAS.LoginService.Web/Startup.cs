@@ -19,6 +19,7 @@ namespace SFA.DAS.LoginService.Web
     public class Startup
     {
         private readonly IHostingEnvironment _environment;
+        private ILoginConfig _loginConfig;
 
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
@@ -38,17 +39,15 @@ namespace SFA.DAS.LoginService.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             
-            var loginConfig = new LoginConfig();
-
-            services.AddDbContext<LoginContext>(options => options.UseSqlServer(loginConfig.SqlConnectionString));
+            WireUpDependencies(services);
             
-            services.AddDbContext<LoginUserContext>(options => options.UseSqlServer(loginConfig.SqlConnectionString));
+            services.AddDbContext<LoginContext>(options => options.UseSqlServer(_loginConfig.SqlConnectionString));
+            
+            services.AddDbContext<LoginUserContext>(options => options.UseSqlServer(_loginConfig.SqlConnectionString));
             
             services.AddIdentity<LoginUser, IdentityRole>()
                 .AddEntityFrameworkStores<LoginUserContext>()
                 .AddDefaultTokenProviders();
-            
-            WireUpDependencies(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
@@ -64,21 +63,30 @@ namespace SFA.DAS.LoginService.Web
                 .AddDeveloperSigningCredential()
                 .AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = builder => builder.UseSqlServer(loginConfig.SqlConnectionString);
+                    options.ConfigureDbContext = builder => builder.UseSqlServer(_loginConfig.SqlConnectionString);
                     options.DefaultSchema = "IdentityServer";
                 })
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = builder => builder.UseSqlServer(loginConfig.SqlConnectionString);
+                    options.ConfigureDbContext = builder => builder.UseSqlServer(_loginConfig.SqlConnectionString);
                     options.DefaultSchema = "IdentityServer";
                     options.EnableTokenCleanup = true;
                 })
                 .AddAspNetIdentity<LoginUser>();
         }
 
-        private static void WireUpDependencies(IServiceCollection services)
+        private void WireUpDependencies(IServiceCollection services)
         {
-            services.AddTransient<ILoginConfig, LoginConfig>();
+            services.AddTransient<IConfigurationService, ConfigurationService>();
+            
+            _loginConfig = new ConfigurationService()
+                .GetLoginConfig(
+                    Configuration["EnvironmentName"], 
+                    Configuration["ConfigurationStorageConnectionString"],
+                    "1.0",
+                    "SFA.DAS.LoginService", _environment).Result;
+            
+            services.AddTransient(sp => _loginConfig);
             services.AddTransient<ICodeGenerationService, CodeGenerationService>();
             services.AddTransient<IHashingService, HashingService>();
             services.AddTransient<IEmailService, EmailService>();

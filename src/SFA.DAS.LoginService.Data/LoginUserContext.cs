@@ -10,5 +10,12 @@ namespace SFA.DAS.LoginService.Data
             : base(options)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.HasDefaultSchema("IdentityServer");
+        }
     }
 }

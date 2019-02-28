@@ -44,8 +44,15 @@ namespace SFA.DAS.LoginService.Web
             services.AddDbContext<LoginContext>(options => options.UseSqlServer(_loginConfig.SqlConnectionString));
             
             services.AddDbContext<LoginUserContext>(options => options.UseSqlServer(_loginConfig.SqlConnectionString));
-            
-            services.AddIdentity<LoginUser, IdentityRole>()
+
+            services.AddIdentity<LoginUser, IdentityRole>(
+                    options =>
+                    {
+                        options.Password.RequiredLength = 8;
+                        options.Password.RequireNonAlphanumeric = false;
+                        options.Password.RequireLowercase = false;
+                        options.Password.RequireUppercase = false;
+                    })
                 .AddEntityFrameworkStores<LoginUserContext>()
                 .AddDefaultTokenProviders();
 

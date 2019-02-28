@@ -8,7 +8,14 @@ namespace SFA.DAS.LoginService.Application.Services
         {
             var pwdGen = new PasswordGenerator(new PasswordGeneratorSettings(false, true, true, false, 8, 1, false));
 
-            return pwdGen.Next();
+            var code = pwdGen.Next();
+            
+            while (code == "Try again")
+            {
+                code = pwdGen.Next();
+            }
+
+            return code;
         }
     }
 }

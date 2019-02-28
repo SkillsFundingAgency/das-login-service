@@ -20,6 +20,16 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CodeGenerationT
         }
         
         [Test]
+        public void Then_a_code_of_Try_again_is_not_returned()
+        {
+            var codeGenerationService = new CodeGenerationService();
+
+            var result = codeGenerationService.GenerateCode();
+
+            result.Should().NotBe("Try again");
+        }
+        
+        [Test]
         public void Then_a_code_only_containing_uppercase_letters_is_returned()
         {
             var codeGenerationService = new CodeGenerationService();

@@ -38,8 +38,9 @@ namespace SFA.DAS.LoginService.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var connectionString = "Data Source=.\\sql;Initial Catalog=SFA.DAS.LoginService;Integrated Security=True";
-            
+            //var connectionString = "Data Source=.\\sql;Initial Catalog=SFA.DAS.LoginService;Integrated Security=True";
+            var connectionString =
+                "Server=tcp:esfatemp.database.windows.net,1433;Initial Catalog=SFA.DAS.LoginService;Persist Security Info=False;User ID=esfa;Password=C0ventry18;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             
             services.AddDbContext<LoginContext>(options => options.UseSqlServer(connectionString));
             
@@ -63,9 +64,18 @@ namespace SFA.DAS.LoginService.Web
             
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
-                .AddInMemoryClients(Config.GetClients())
-                .AddInMemoryApiResources(Config.GetApis())
-                .AddInMemoryIdentityResources(Config.GetIdentityResources());
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString);
+                    options.DefaultSchema = "IdentityServer";
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString);
+                    options.DefaultSchema = "IdentityServer";
+                    options.EnableTokenCleanup = true;
+                })
+                .AddAspNetIdentity<LoginUser>();
         }
 
         private static void WireUpDependencies(IServiceCollection services)

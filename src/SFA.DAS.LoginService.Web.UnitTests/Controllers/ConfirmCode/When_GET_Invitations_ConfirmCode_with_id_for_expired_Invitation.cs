@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.GetInvitationById;
+using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
+using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
 {
@@ -38,13 +40,16 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
             var invitationId = Guid.NewGuid();
             
             var mediator = Substitute.For<IMediator>();
-            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(default(Invitation));
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation(){ValidUntil = SystemTime.UtcNow().AddHours(-1)});
             
             var controller = new ConfirmCodeController(mediator);
             
             var result = controller.Get(invitationId).Result;
             
             ((ViewResult) result).ViewName.Should().Be("InvitationExpired");
+            ((ViewResult) result).Model.Should().BeOfType<InvitationExpiredViewModel>();
+
+            ((InvitationExpiredViewModel) ((ViewResult) result).Model).InvitationId.Should().Be(invitationId);
         }
     }
 }

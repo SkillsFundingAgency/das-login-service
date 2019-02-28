@@ -109,5 +109,16 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
 
             response.Invited.Should().BeTrue();
         }
+        
+        [Test]
+        public void Then_response_invitationId_is_correct()
+        {
+            var createInvitationRequest = BuildCreateInvitationRequest();
+            var response = CreateInvitationHandler.Handle(createInvitationRequest, CancellationToken.None).Result;
+
+            var invitationCreated = LoginContext.Invitations.Single();
+            
+            response.InvitationId.Should().Be(invitationCreated.Id);
+        }
     }
 }

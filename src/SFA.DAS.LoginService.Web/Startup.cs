@@ -38,7 +38,7 @@ namespace SFA.DAS.LoginService.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var connectionString = "Data Source=.;Initial Catalog=SFA.DAS.LoginService;Integrated Security=True";
+            var connectionString = "Data Source=.\\sql;Initial Catalog=SFA.DAS.LoginService;Integrated Security=True";
             
             
             services.AddDbContext<LoginContext>(options => options.UseSqlServer(connectionString));

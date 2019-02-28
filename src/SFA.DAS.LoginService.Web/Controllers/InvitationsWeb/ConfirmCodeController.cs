@@ -18,9 +18,9 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
         }
 
         [HttpGet("/Invitations/ConfirmCode/{invitationId}")]
-        public async Task<ActionResult> Get(Guid id)
+        public async Task<ActionResult> Get(Guid invitationId)
         {
-            var invitationResponse = await _mediator.Send(new GetInvitationByIdRequest(id));
+            var invitationResponse = await _mediator.Send(new GetInvitationByIdRequest(invitationId));
             
             if (invitationResponse != null && !invitationResponse.IsUserCreated)
             {
@@ -34,6 +34,13 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
         [HttpPost("/Invitations/ConfirmCode/{invitationId}")]
         public async Task<ActionResult> Post(ConfirmCodeViewModel confirmCodeViewModel)
         {
+            if (string.IsNullOrWhiteSpace(confirmCodeViewModel.Code))
+            {
+                ModelState.AddModelError("Code","Please supply code");
+            
+                return View("ConfirmCode", confirmCodeViewModel);
+            }
+            
             var confirmCodeResponse = await _mediator.Send(new ConfirmCodeRequest(confirmCodeViewModel.InvitationId, confirmCodeViewModel.Code));
             if (confirmCodeResponse.IsValid)
             {

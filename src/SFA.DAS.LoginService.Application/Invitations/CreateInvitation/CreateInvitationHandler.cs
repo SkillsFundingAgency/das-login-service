@@ -80,7 +80,7 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
 
             await _emailService.SendInvitationEmail(request.Email, plainTextCode, linkUrl);
 
-            return new CreateInvitationResponse(){Invited = true};
+            return new CreateInvitationResponse(){Invited = true, InvitationId = newInvitation.Id};
         }
 
         private static void ValidateRequest(CreateInvitationRequest request)

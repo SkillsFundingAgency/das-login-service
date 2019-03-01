@@ -1,12 +1,16 @@
 @model SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels.SignUpCompleteViewModel
 
 @{
-    ViewBag.Title = "Sign Up Complete";
+    ViewBag.Title = "Sign up complete";
 }
 
-<div class="jumbotron">
-    <h2>Sign Up Complete</h2>
-    <p>An account has been created.  Click below to continue to sign in to '@Model.ServiceName'.</p>
-</div>
-
-<a class="btn bg-success" href="@Model.UserRedirectUri">Return to '@Model.ServiceName'</a>
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h2></h2>
+            <h1 class="govuk-heading-xl">Sign up complete</h1>
+            <p class="govuk-body">An account has been created.  Click below to continue to sign in to @Model.ServiceName.</p>
+            <a class="govuk-link" href="@Model.UserRedirectUri">Return to @Model.ServiceName</a>
+        </div>
+    </div>
+</main>

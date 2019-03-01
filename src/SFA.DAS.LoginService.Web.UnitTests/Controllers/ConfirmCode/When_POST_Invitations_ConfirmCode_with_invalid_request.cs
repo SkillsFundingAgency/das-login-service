@@ -96,7 +96,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
             controller.ModelState.Count.Should().Be(1);
             controller.ModelState.ValidationState.Should().Be(ModelValidationState.Invalid);
             controller.ModelState.First().Key.Should().Be("Code");
-            controller.ModelState.First().Value.Errors.First().ErrorMessage.Should().Be("Please supply code");
+            controller.ModelState.First().Value.Errors.First().ErrorMessage.Should().Be("Enter confirmation code");
         }
     }
 }

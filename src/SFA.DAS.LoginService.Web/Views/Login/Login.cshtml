@@ -1,8 +1,46 @@
-@model TModel
+@model SFA.DAS.LoginService.Application.BuildLoginViewModel.LoginViewModel
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+    ViewBag.Title = "Sign In";
 }
 
-<h2>title</h2>
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            
+            <partial name="/Views/Partials/_validationErrorSummary.cshtml"/>
+
+            
+            <form asp-action="Login" asp-controller="Login">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-label--m" asp-for="Username">
+                        Email / Username
+                    </label>
+                    <span id="password-error" asp-validation-for="Username" class="govuk-error-message"></span>
+                    <input class="govuk-input govuk-input--width-10" asp-for="Username" type="text">
+                </div>
+
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-label--m" asp-for="Password">
+                        Password
+                    </label>
+                    <input class="govuk-input govuk-input--width-10" asp-for="Password" type="password">
+                </div>
+
+                @if (Model.AllowRememberLogin)
+                {
+                    <div class="form-group login-remember">
+                        <label asp-for="RememberLogin">
+                            <input asp-for="RememberLogin">
+                            <strong>Remember My Login</strong>
+                        </label>
+                    </div>
+                }
+                
+                <button type="submit" class="govuk-button">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+</main>

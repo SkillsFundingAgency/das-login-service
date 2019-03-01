@@ -15,9 +15,9 @@ namespace SFA.DAS.LoginService.Web.Controllers.Login
         }
 
         [HttpGet("/Account/Login")]
-        public async Task<IActionResult> GetLogin(string redirectUrl)
+        public async Task<IActionResult> GetLogin(string returnUrl)
         {
-            var viewModel = await _mediator.Send(new BuildLoginViewModelRequest() {returnUrl = redirectUrl});
+            var viewModel = await _mediator.Send(new BuildLoginViewModelRequest() {returnUrl = returnUrl});
             return View("Login", viewModel);
         }
     }

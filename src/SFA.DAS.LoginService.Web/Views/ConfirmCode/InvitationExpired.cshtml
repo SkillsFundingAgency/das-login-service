@@ -1,12 +1,19 @@
 @model SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels.InvitationExpiredViewModel
 
 @{
-    ViewBag.Title = "Invitation Expired";
+    ViewBag.Title = "Invitation expired";
 }
 
-<h2>Invitation expired</h2>
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
 
+            <h1 class="govuk-heading-xl">Invitation expired</h1>
 
-<form asp-action="Reinvite" asp-route-invitationId="@Model.InvitationId" >
-    <button type="submit" class="btn-primary">Click here to request a new link</button>
-</form>
+            <form asp-action="Reinvite" asp-route-invitationId="@Model.InvitationId" >
+                <button type="submit" class="govuk-button">Request a new link</button>
+            </form>
+
+        </div>
+    </div>
+</main>

@@ -1,7 +1,18 @@
 @model SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels.ReinvitedViewModel
 
 @{
-    ViewBag.Title = "Reinvited";
+    ViewBag.Title = "Invitation sent";
 }
 
-<p>An Invitation has been sent to @Model.Email</p>
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <h1 class="govuk-heading-xl">Invitation sent</h1>
+
+            <p class="govuk-body">An invitation has been sent to <span class="govuk-!-font-weight-bold">@Model.Email</span></p>
+
+        </div>
+    </div>
+</main>
+

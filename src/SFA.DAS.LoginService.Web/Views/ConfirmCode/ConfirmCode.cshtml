@@ -1,18 +1,50 @@
 @model SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels.ConfirmCodeViewModel
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Confirm code";
 }
 
-<h2>Confirm code</h2>
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
 
-<div asp-validation-summary="All" class="text-danger"></div>
+            <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+                <h2 class="govuk-error-summary__title" id="error-summary-title">
+                    There is a problem
+                </h2>
+                <div asp-validation-summary="All" class="govuk-error-summary__body"></div>
+                <!-- <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        <li>
+                            <a href="#passport-issued-error">The date your passport was issued must be in the past</a>
+                        </li>
+                        <li>
+                            <a href="#postcode-error">Enter a postcode, like AA1 1AA</a>
+                        </li>
+                    </ul>
+                </div> -->
+            </div>
 
-<form asp-action="Post">
-    <input type="hidden" asp-for="InvitationId"/>
-    <label asp-for="Code"></label>
-    <input type="text" asp-for="Code"/>
-    <span asp-validation-for="Code" class="text-danger"></span>
-    
-    <button type="submit">Submit</button>
-</form>
+            <form asp-action="Post" novalidate>
+                <input type="hidden" asp-for="InvitationId" />
+                <div class="govuk-form-group">
+                    <h1 class="govuk-label-wrapper">
+                        <label class="govuk-label govuk-label--xl" asp-for="Code">
+                            Confirm code
+                        </label>
+
+                    </h1>
+                    <span id="code-hint" class="govuk-hint">
+                        This is the 8 character code in the email we sent you
+                    </span>
+                    <span asp-validation-for="Code" class="govuk-error-message"></span>
+                    <input class="govuk-input govuk-input--width-10" asp-for="Code" type="text">
+                </div>
+
+                <button type="submit" class="govuk-button">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+</main>

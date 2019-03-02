@@ -13,6 +13,7 @@
             <h1>Sign In for @Model.ServiceName</h1>
             
             <form asp-action="Login" asp-controller="Login">
+                <input type="hidden" asp-for="ReturnUrl" />
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-label--m" asp-for="Username">
                         Email / Username
@@ -37,7 +38,7 @@
                         </label>
                     </div>
                 }
-                
+
                 <button type="submit" class="govuk-button">
                     Submit
                 </button>

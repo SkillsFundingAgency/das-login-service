@@ -20,5 +20,19 @@ namespace SFA.DAS.LoginService.Web.Controllers.Login
             var viewModel = await _mediator.Send(new BuildLoginViewModelRequest() {returnUrl = returnUrl});
             return View("Login", viewModel);
         }
+
+        [HttpPost("/Account/Login")]
+        public async Task<IActionResult> PostLogin(LoginViewModel loginViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                var viewModel = await _mediator.Send(new BuildLoginViewModelRequest()
+                    {returnUrl = loginViewModel.ReturnUrl});
+                
+                return View("Login", viewModel);
+            }
+            
+            return Ok();
+        }
     }
 }

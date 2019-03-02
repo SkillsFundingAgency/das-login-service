@@ -5,8 +5,15 @@ namespace SFA.DAS.LoginService.Data.Entities
 {
     public class Client
     {
-        public string ServiceName { get; set; }
         public Guid Id { get; set; }
         public string IdentityServerClientId { get; set; }
+        
+        public ServiceDetails ServiceDetails { get; set; }
+    }
+
+    public class ServiceDetails
+    {
+        public string ServiceName { get; set; }
+        public string SupportUrl { get; set; }
     }
 }

@@ -19,8 +19,8 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.SignUpComplete
         public async Task Then_mediator_is_asked_for_an_invitation()
         {
             SetValidInvitationByIdRequest();
-            
-            Mediator.Send(Arg.Any<GetClientByIdRequest>(), CancellationToken.None).Returns(new Client() {ServiceName = ServiceName});
+
+            Mediator.Send(Arg.Any<GetClientByIdRequest>(), CancellationToken.None).Returns(new Client(){ServiceDetails = new ServiceDetails {ServiceName = ServiceName}});
             
             await Controller.Get(InvitationId);
             await Mediator.Received().Send(Arg.Is<GetInvitationByIdRequest>(r => r.InvitationId == InvitationId), CancellationToken.None);
@@ -31,7 +31,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.SignUpComplete
         {            
             SetValidInvitationByIdRequest();
 
-            Mediator.Send(Arg.Any<GetClientByIdRequest>(), CancellationToken.None).Returns(new Client() {ServiceName = ServiceName});
+            Mediator.Send(Arg.Any<GetClientByIdRequest>(), CancellationToken.None).Returns(new Client(){ServiceDetails = new ServiceDetails {ServiceName = ServiceName}});
             
             var result = await Controller.Get(InvitationId);
 
@@ -47,7 +47,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.SignUpComplete
         {
             SetValidInvitationByIdRequest();
             
-            Mediator.Send(Arg.Any<GetClientByIdRequest>(), CancellationToken.None).Returns(new Client() {ServiceName = ServiceName});
+            Mediator.Send(Arg.Any<GetClientByIdRequest>(), CancellationToken.None).Returns(new Client(){ServiceDetails = new ServiceDetails {ServiceName = ServiceName}});
             
             await Controller.Get(InvitationId);
 

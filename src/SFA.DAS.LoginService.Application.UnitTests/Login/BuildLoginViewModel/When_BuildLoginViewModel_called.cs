@@ -10,6 +10,8 @@ using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.BuildLoginViewModel;
 using SFA.DAS.LoginService.Data;
+using SFA.DAS.LoginService.Data.Entities;
+using Client = IdentityServer4.Models.Client;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.Login.BuildLoginViewModel
 {
@@ -33,7 +35,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.BuildLoginViewModel
 
             _loginContext = new LoginContext(dbContextOptions);
 
-            _loginContext.Clients.Add(new Data.Entities.Client(){IdentityServerClientId = "mvc", ServiceName = "Acme Service"});
+            _loginContext.Clients.Add(new Data.Entities.Client(){IdentityServerClientId = "mvc", ServiceDetails  = new ServiceDetails{ServiceName = "Acme Service", SupportUrl = "https://acme.gov.uk/Support"}});
             _loginContext.SaveChanges();
             
             _handler = new BuildLoginViewModelHandler(identityServerInteractionService, Substitute.For<IAuthenticationSchemeProvider>(), inMemoryClientStore, _loginContext);
@@ -45,6 +47,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.BuildLoginViewModel
             var result = await _handler.Handle(new BuildLoginViewModelRequest() {returnUrl = "https://returnurl"}, CancellationToken.None);
             result.Should().BeOfType<LoginViewModel>();
             result.ServiceName.Should().Be("Acme Service");
+            result.ServiceSupportUrl.Should().Be("https://acme.gov.uk/Support");
             result.ReturnUrl.Should().Be("https://returnurl");
         }
     }

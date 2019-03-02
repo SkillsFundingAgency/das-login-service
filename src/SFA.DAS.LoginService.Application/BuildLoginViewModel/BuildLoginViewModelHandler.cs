@@ -52,10 +52,12 @@ namespace SFA.DAS.LoginService.Application.BuildLoginViewModel
             }
 
             var serviceName = "";
+            var serviceSupportUrl = "";
             var client = await _loginContext.Clients.SingleOrDefaultAsync(c => c.IdentityServerClientId == context.ClientId, cancellationToken: cancellationToken);
             if (client != null)
             {
-                serviceName = client.ServiceName;
+                serviceName = client.ServiceDetails.ServiceName;
+                serviceSupportUrl = client.ServiceDetails.SupportUrl;
             }
             
             return new LoginViewModel
@@ -64,7 +66,8 @@ namespace SFA.DAS.LoginService.Application.BuildLoginViewModel
                 EnableLocalLogin = allowLocal,
                 ReturnUrl = request.returnUrl,
                 Username = context?.LoginHint,
-                ServiceName = serviceName
+                ServiceName = serviceName,
+                ServiceSupportUrl = serviceSupportUrl
             };
         }
     }

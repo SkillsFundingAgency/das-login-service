@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Data
@@ -23,6 +24,14 @@ namespace SFA.DAS.LoginService.Data
                 .HasConversion(
                     v => v.ToString(),
                     v => new Uri(v));
+
+            modelBuilder.Entity<Client>()
+                .Property(c => c.ServiceDetails)
+                .HasConversion(
+                    v => JsonConvert.SerializeObject(v,
+                        new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}),
+                    v => JsonConvert.DeserializeObject<ServiceDetails>(v,
+                        new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
         }
 
         public DbSet<Invitation> Invitations { get; set; }

@@ -9,5 +9,6 @@ namespace SFA.DAS.LoginService.Application.BuildLoginViewModel
         public bool AllowRememberLogin { get; set; }
         public bool EnableLocalLogin { get; set; }
         public string ServiceName { get; set; }
+        public string ServiceSupportUrl { get; set; }
     }
 }

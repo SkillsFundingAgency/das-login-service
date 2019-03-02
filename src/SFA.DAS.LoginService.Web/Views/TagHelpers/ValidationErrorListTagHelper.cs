@@ -13,7 +13,7 @@ namespace SFA.DAS.LoginService.Web.Views.TagHelpers
         [ViewContext]
         public ViewContext ViewContext { get; set; }
         
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             output.TagName = null;
             foreach (var modelState in ViewContext.ModelState)

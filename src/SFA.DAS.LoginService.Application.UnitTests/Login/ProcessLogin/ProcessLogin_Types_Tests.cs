@@ -13,5 +13,11 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
         {
             typeof(ProcessLoginRequest).Should().Implement<IRequest<ProcessLoginResponse>>();
         }
+
+        [Test]
+        public void ProcessLoginHandler_should_implement_IRequestHandler()
+        {
+            typeof(ProcessLoginHandler).Should().Implement<IRequestHandler<ProcessLoginRequest, ProcessLoginResponse>>();
+        }
     }
 }

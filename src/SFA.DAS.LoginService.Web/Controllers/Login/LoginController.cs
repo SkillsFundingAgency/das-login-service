@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.LoginService.Application.BuildLoginViewModel;
+using SFA.DAS.LoginService.Application.ProcessLogin;
 
 namespace SFA.DAS.LoginService.Web.Controllers.Login
 {
@@ -31,8 +32,22 @@ namespace SFA.DAS.LoginService.Web.Controllers.Login
                 
                 return View("Login", viewModel);
             }
-            
-            return Ok();
+
+            var loginResult = await _mediator.Send(new ProcessLoginRequest
+            {
+                Username = loginViewModel.Username, 
+                Password = loginViewModel.Password,
+                RememberLogin = loginViewModel.RememberLogin, 
+                ReturnUrl = loginViewModel.ReturnUrl
+            });
+
+            if (loginResult.CredentialsValid)
+            {
+                return Redirect(loginViewModel.ReturnUrl);
+            }
+
+            ModelState.AddModelError(string.Empty, "Invalid credentials");
+            return View("Login", loginViewModel);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
 
             var client = await _mediator.Send(new GetClientByIdRequest() {ClientId = invitation.ClientId});
             
-            return View("SignUpComplete", new SignUpCompleteViewModel(){UserRedirectUri = invitation.UserRedirectUri, ServiceName = client.ServiceName});
+            return View("SignUpComplete", new SignUpCompleteViewModel(){UserRedirectUri = invitation.UserRedirectUri, ServiceName = client.ServiceDetails.ServiceName});
         }
     }
 }

@@ -8,10 +8,12 @@ namespace SFA.DAS.LoginService.Application.Services
     public class UserService : IUserService
     {
         private readonly UserManager<LoginUser> _userManager;
+        private readonly SignInManager<LoginUser> _signInManager;
 
-        public UserService(UserManager<LoginUser> userManager)
+        public UserService(UserManager<LoginUser> userManager, SignInManager<LoginUser> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public async Task<bool> UserExists(string email)
@@ -23,6 +25,16 @@ namespace SFA.DAS.LoginService.Application.Services
         {
             var result = await _userManager.CreateAsync(newUser, password);
             return new CreateUserResponse {Result = result, User = newUser};
+        }
+
+        public async Task<SignInResult> SignInUser(string username, string password, bool rememberLogin)
+        {
+            return await _signInManager.PasswordSignInAsync(username, password, rememberLogin, lockoutOnFailure: true);
+        }
+
+        public async Task<LoginUser> FindByUsername(string username)
+        {
+            return await _userManager.FindByNameAsync(username);
         }
     }
 }

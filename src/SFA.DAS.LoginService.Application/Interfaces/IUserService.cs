@@ -8,8 +8,10 @@ namespace SFA.DAS.LoginService.Application.Interfaces
     {
         Task<bool> UserExists(string email);
         Task<CreateUserResponse> CreateUser(LoginUser newUser, string password);
+        Task<SignInResult> SignInUser(string username, string password, bool rememberLogin);
+        Task<LoginUser> FindByUsername(string username);
     }
-
+    
     public class CreateUserResponse
     {
         public LoginUser User { get; set; }

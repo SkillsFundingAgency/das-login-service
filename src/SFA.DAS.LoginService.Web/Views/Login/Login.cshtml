@@ -1,0 +1,50 @@
+@model SFA.DAS.LoginService.Application.BuildLoginViewModel.LoginViewModel
+
+@{
+    ViewBag.Title = "Sign In";
+}
+
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            
+            <partial name="/Views/Partials/_validationErrorSummary.cshtml"/>
+
+            <h1>Sign In for @Model.ServiceName</h1>
+            
+            <form asp-route="PostLogin">
+                <input type="hidden" asp-for="ReturnUrl" />
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-label--m" asp-for="Username">
+                        Email / Username
+                    </label>
+                    <span id="password-error" asp-validation-for="Username" class="govuk-error-message"></span>
+                    <input class="govuk-input govuk-input--width-10" asp-for="Username" type="text">
+                </div>
+
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-label--m" asp-for="Password">
+                        Password
+                    </label>
+                    <input class="govuk-input govuk-input--width-10" asp-for="Password" type="password">
+                </div>
+
+                @if (Model.AllowRememberLogin)
+                {
+                    <div class="form-group login-remember">
+                        <label asp-for="RememberLogin">
+                            <input asp-for="RememberLogin">
+                            <strong>Remember My Login</strong>
+                        </label>
+                    </div>
+                }
+
+                <button type="submit" class="govuk-button">
+                    Submit
+                </button>
+            </form>
+            
+            <p>For support click here: <a href="@Model.ServiceSupportUrl">@Model.ServiceSupportUrl</a></p>
+        </div>
+    </div>
+</main>

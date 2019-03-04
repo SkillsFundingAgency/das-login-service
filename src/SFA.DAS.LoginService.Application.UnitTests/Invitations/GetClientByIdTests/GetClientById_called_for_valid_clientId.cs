@@ -26,9 +26,9 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.GetClientByIdTe
             var clientId = Guid.NewGuid();
             loginContext.Clients.AddRange(new List<Client>
             {
-                new Client(){Id = Guid.NewGuid(), ServiceName = "Service 1"},
-                new Client(){Id = clientId, ServiceName = "Service 2"},
-                new Client(){Id = Guid.NewGuid(), ServiceName = "Service 3"},
+                new Client(){Id = Guid.NewGuid(), ServiceDetails = new ServiceDetails{ServiceName = "Service 1", SupportUrl = "https://support/Url/1"}},
+                new Client(){Id = clientId, ServiceDetails = new ServiceDetails{ServiceName = "Service 2", SupportUrl = "https://support/Url/2"}},
+                new Client(){Id = Guid.NewGuid(), ServiceDetails = new ServiceDetails{ServiceName = "Service 3", SupportUrl = "https://support/Url/3"}},
             });
             await loginContext.SaveChangesAsync();
 
@@ -37,7 +37,8 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.GetClientByIdTe
             var clientResult = await handler.Handle(new GetClientByIdRequest() {ClientId = clientId}, CancellationToken.None);
 
             clientResult.Id.Should().Be(clientId);
-            clientResult.ServiceName.Should().Be("Service 2");
+            clientResult.ServiceDetails.ServiceName.Should().Be("Service 2");
+            clientResult.ServiceDetails.SupportUrl.Should().Be("https://support/Url/2");
         }
     }
 }

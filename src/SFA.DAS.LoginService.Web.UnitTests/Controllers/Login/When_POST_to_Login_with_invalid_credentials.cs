@@ -22,6 +22,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.Login
         {
             _mediator = Substitute.For<IMediator>();
             _mediator.Send(Arg.Any<ProcessLoginRequest>(), CancellationToken.None).Returns(new ProcessLoginResponse() {CredentialsValid = false});
+            _mediator.Send(Arg.Any<BuildLoginViewModelRequest>(), CancellationToken.None).Returns(new LoginViewModel());
             _controller = new LoginController(_mediator);
         }
         

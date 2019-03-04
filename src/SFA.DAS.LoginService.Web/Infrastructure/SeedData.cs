@@ -83,7 +83,8 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
                 loginContext.Clients.Add(new Client()
                 {
                     Id = Guid.Parse("2350df68-e325-4ccc-9027-e1051e48d4a7"),
-                    ServiceDetails = new ServiceDetails {ServiceName = "Acme Gov Service", SupportUrl = "https://acme.gov.uk/support"}
+                    ServiceDetails = new ServiceDetails {ServiceName = "Acme Gov Service", SupportUrl = "https://acme.gov.uk/support"},
+                    IdentityServerClientId = "mvc"
                 });
                 loginContext.SaveChanges();
             }

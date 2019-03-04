@@ -47,7 +47,12 @@ namespace SFA.DAS.LoginService.Web.Controllers.Login
             }
 
             ModelState.AddModelError(string.Empty, "Invalid credentials");
-            return View("Login", loginViewModel);
+
+            var vm = await _mediator.Send(new BuildLoginViewModelRequest() {returnUrl = loginViewModel.ReturnUrl});
+            vm.Password = loginViewModel.Password;
+            vm.Username = loginViewModel.Username;
+            
+            return View("Login", vm);
         }
     }
 }

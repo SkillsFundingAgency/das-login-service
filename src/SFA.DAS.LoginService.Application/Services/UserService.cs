@@ -36,5 +36,10 @@ namespace SFA.DAS.LoginService.Application.Services
         {
             return await _userManager.FindByNameAsync(username);
         }
+
+        public async Task SignOutUser()
+        {
+            await _signInManager.SignOutAsync();
+        }
     }
 }

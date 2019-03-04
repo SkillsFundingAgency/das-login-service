@@ -36,6 +36,11 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
         [HttpPost("/Invitations/CreatePassword/{id}")]
         public async Task<ActionResult> Post(CreatePasswordViewModel vm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("CreatePassword", vm);
+            }
+            
             var invitation = await _mediator.Send(new GetInvitationByIdRequest(vm.InvitationId));
             if (invitation == null)
             {

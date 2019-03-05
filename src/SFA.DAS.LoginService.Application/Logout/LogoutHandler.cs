@@ -43,12 +43,15 @@ namespace SFA.DAS.LoginService.Application.BuildLogoutViewModel
                 ClientName = client.ServiceDetails.ServiceName
             };
 
-            await _userService.SignOutUser();
+            if (_httpContextAccessor.HttpContext.User?.Identity.IsAuthenticated == true)
+            {
+                await _userService.SignOutUser();
 
-            var principal = _httpContextAccessor.HttpContext.User; 
+                var principal = _httpContextAccessor.HttpContext.User; 
             
-            await _eventService.RaiseAsync(new UserLogoutSuccessEvent(principal.GetSubjectId(), principal.GetDisplayName()));
-            
+                await _eventService.RaiseAsync(new UserLogoutSuccessEvent(principal.GetSubjectId(), principal.GetDisplayName()));
+            }
+           
             return response;
         }
     }

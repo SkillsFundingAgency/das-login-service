@@ -12,7 +12,7 @@
 
             <form asp-action="Post" novalidate>
                 <input type="hidden" asp-for="InvitationId"/>
-                <div class="govuk-form-group">
+                <div class="govuk-form-group" sfa-anyvalidationerror-class="govuk-form-group--error">
                     <h1 class="govuk-label-wrapper">
                         <label class="govuk-label govuk-label--xl" asp-for="Code">
                             Confirm code
@@ -23,7 +23,7 @@
                         This is the 8 character code in the email we sent you
                     </span>
                     <span asp-validation-for="Code" class="govuk-error-message"></span>
-                    <input class="govuk-input govuk-input--width-10" asp-for="Code" type="text">
+                    <input class="govuk-input govuk-input--width-10" asp-for="Code" type="text" sfa-anyvalidationerror-class="govuk-input--error">
                 </div>
 
                 <button type="submit" class="govuk-button">

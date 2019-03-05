@@ -23,12 +23,7 @@
         var confirmPasswordInput = document.querySelector("#ConfirmPassword")
           .value;
 
-        // document
-        //   .querySelectorAll(".govuk-error-message")
-        //   .forEach(function(message) {
-        //     message.style.display = "none";
-        //   });
-        // document.querySelector(".govuk-error-summary").style.display = "none";
+        removeErrors();
 
         if (
           passwordInput === confirmPasswordInput &&
@@ -69,15 +64,54 @@
             : element.classList.remove("passed");
         });
       }
+
+      function removeErrors() {
+        var errorSummary = document.querySelector(".govuk-error-summary");
+        var errors = document.querySelectorAll(".govuk-error-message");
+        var inputErrors = document.querySelectorAll(".govuk-input--error");
+        var formGroupErrors = document.querySelectorAll(
+          ".govuk-form-group--error"
+        );
+
+        if (inputErrors) {
+          inputErrors.forEach(function(error) {
+            error.classList.remove("govuk-input--error");
+          });
+        }
+
+        if (formGroupErrors) {
+          formGroupErrors.forEach(function(error) {
+            error.classList.remove("govuk-form-group--error");
+          });
+        }
+
+        if (errorSummary) {
+          errorSummary.parentNode.removeChild(errorSummary);
+        }
+
+        if (errors) {
+          errors.forEach(function(message) {
+            message.parentNode.removeChild(message);
+          });
+        }
+      }
     }
   };
 
   GOVUK.showHidePassword = {
+    // passwordInput: document.querySelector("[data-enhance='js-show-hide']"),
     init: function() {
+      // if (this.passwordInput) {
       document.addEventListener("click", this.togglePassword);
+      // }
     },
 
     togglePassword: function(event) {
+      // var passwordInput = document.querySelector(
+      //   "[data-enhance='js-show-hide']"
+      // );
+      // console.log(passwordInput);
+
       if (event.target.className.indexOf("js-show-hide") === -1) return false;
       event.preventDefault();
 
@@ -86,13 +120,19 @@
       var confirmPasswordInput = document.querySelector("#ConfirmPassword");
 
       if (passwordInput.type === "text") {
-        showHideLink.innerText = "Show passwords";
         passwordInput.type = "password";
-        confirmPasswordInput.type = "password";
+        if (confirmPasswordInput) confirmPasswordInput.type = "password";
+
+        showHideLink.innerText = confirmPasswordInput
+          ? "Show passwords"
+          : "Show password";
       } else {
-        showHideLink.innerText = "Hide passwords";
         passwordInput.type = "text";
-        confirmPasswordInput.type = "text";
+        if (confirmPasswordInput) confirmPasswordInput.type = "text";
+
+        showHideLink.innerText = confirmPasswordInput
+          ? "Hide passwords"
+          : "Hide password";
       }
     }
   };
@@ -101,5 +141,5 @@
 })(window);
 
 window.GOVUKFrontend.initAll();
-// window.GOVUK.passwordConditions.init();
+window.GOVUK.passwordConditions.init();
 window.GOVUK.showHidePassword.init();

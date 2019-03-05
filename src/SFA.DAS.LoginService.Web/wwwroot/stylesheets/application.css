@@ -20,3 +20,16 @@
   border-top-color: rgba(0, 0, 0, 0);
   background: rgba(0, 0, 0, 0);
 }
+
+.govuk-body--hint,
+.govuk-list--hint {
+  color: #6f777b;
+}
+
+.js-show-hide {
+  display: none;
+}
+
+.js-enabled .js-show-hide {
+  display: block;
+}

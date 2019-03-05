@@ -10,23 +10,29 @@
             
             <partial name="/Views/Partials/_validationErrorSummary.cshtml"/>
 
-            <h1>Sign In for @Model.ServiceName</h1>
+            <h1 class="govuk-heading-xl">Sign In for @Model.ServiceName</h1>
             
             <form asp-route="PostLogin">
                 <input type="hidden" asp-for="ReturnUrl" />
-                <div class="govuk-form-group">
+                
+                <div class="govuk-form-group" sfa-anyvalidationerror-class="govuk-form-group--error">
                     <label class="govuk-label govuk-label--m" asp-for="Username">
-                        Email / Username
+                        Email or username
                     </label>
-                    <span id="password-error" asp-validation-for="Username" class="govuk-error-message"></span>
-                    <input class="govuk-input govuk-input--width-10" asp-for="Username" type="text">
+                    <span id="username-error" asp-validation-for="Username" class="govuk-error-message"></span>
+                    <input class="govuk-input govuk-input--width-10" asp-for="Username" type="text" autocomplete="username" sfa-anyvalidationerror-class="govuk-input--error">
                 </div>
 
-                <div class="govuk-form-group">
+                <div class="govuk-form-group" sfa-anyvalidationerror-class="govuk-form-group--error">
                     <label class="govuk-label govuk-label--m" asp-for="Password">
                         Password
                     </label>
-                    <input class="govuk-input govuk-input--width-10" asp-for="Password" type="password">
+                    <span id="password-error" asp-validation-for="Password" class="govuk-error-message"></span>
+                    <input class="govuk-input govuk-input--width-10" asp-for="Password" type="password" autocomplete="current-password" sfa-anyvalidationerror-class="govuk-input--error">
+                </div>
+
+                <div class="govuk-form-group show-password-container">
+                  <a class="js-show-hide govuk-link" href="#">Show password</a>
                 </div>
 
                 @if (Model.AllowRememberLogin)
@@ -34,7 +40,7 @@
                     <div class="form-group login-remember">
                         <label asp-for="RememberLogin">
                             <input asp-for="RememberLogin">
-                            <strong>Remember My Login</strong>
+                            <strong>Remember my login</strong>
                         </label>
                     </div>
                 }
@@ -44,7 +50,7 @@
                 </button>
             </form>
             
-            <p>For support click here: <a href="@Model.ServiceSupportUrl">@Model.ServiceSupportUrl</a></p>
+            <p class="govuk-body"><a class="govuk-link" href="@Model.ServiceSupportUrl">Having problems with sign in?</a></p>
         </div>
     </div>
 </main>

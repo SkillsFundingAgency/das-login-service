@@ -58,14 +58,6 @@ namespace SFA.DAS.LoginService.Web
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
-            services.AddAuthentication()
-                .AddJwtBearer(jwt =>
-                {
-                    jwt.Authority = "http://localhost:5000";
-                    jwt.RequireHttpsMetadata = false;
-                    jwt.Audience = "api1";
-                });
-            
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
                 .AddConfigurationStore(options =>
@@ -80,6 +72,14 @@ namespace SFA.DAS.LoginService.Web
                     options.EnableTokenCleanup = true;
                 })
                 .AddAspNetIdentity<LoginUser>();
+            
+            services.AddAuthentication()
+                .AddJwtBearer(jwt =>
+                {
+                    jwt.Authority = "http://localhost:5000";
+                    jwt.RequireHttpsMetadata = false;
+                    jwt.Audience = "api1";
+                });
         }
 
         private void WireUpDependencies(IServiceCollection services)

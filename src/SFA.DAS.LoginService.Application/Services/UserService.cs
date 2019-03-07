@@ -41,5 +41,10 @@ namespace SFA.DAS.LoginService.Application.Services
         {
             await _signInManager.SignOutAsync();
         }
+
+        public async Task<LoginUser> FindByEmail(string email)
+        {
+            return await _userManager.FindByEmailAsync(email);
+        }
     }
 }

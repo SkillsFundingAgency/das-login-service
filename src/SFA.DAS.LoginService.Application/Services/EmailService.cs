@@ -16,7 +16,12 @@ namespace SFA.DAS.LoginService.Application.Services
         
         public async Task SendInvitationEmail(string email, string code, string signUpUrl)
         {
-            _logger.LogInformation($"Email sent to {email} with code {code} and signupUrl {signUpUrl}");
+            _logger.LogInformation($"SIGN UP Email sent to {email} with code {code} and signupUrl {signUpUrl}");
+        }
+
+        public async Task SendResetPassword(string email, string code, string resetPasswordUrl)
+        {
+            _logger.LogInformation($"FORGOT PASSWORD Email sent to {email} with code {code} and resetPasswordUrl {resetPasswordUrl}");
         }
     }
 }

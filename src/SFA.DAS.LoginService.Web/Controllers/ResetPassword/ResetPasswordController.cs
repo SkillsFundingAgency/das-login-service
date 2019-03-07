@@ -7,7 +7,8 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
     {
         public async Task<IActionResult> Get(string clientid)
         {
-            return View();
+            var vm = new ResetPasswordViewModel();
+            return View("ResetPassword", vm);
         }
     }
 }

@@ -23,7 +23,7 @@
                     <input class="govuk-input govuk-input--width-10" asp-for="Username" type="text" autocomplete="username" sfa-anyvalidationerror-class="govuk-input--error">
                 </div>
 
-                <div class="govuk-form-group" sfa-anyvalidationerror-class="govuk-form-group--error">
+                <div class="govuk-form-group govuk-!-margin-bottom-2" sfa-anyvalidationerror-class="govuk-form-group--error">
                     <label class="govuk-label govuk-label--m" asp-for="Password">
                         Password
                     </label>
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="govuk-form-group show-password-container">
-                  <a class="js-show-hide govuk-link" href="#">Show password</a>
+                  <a class="js-show-hide govuk-link" href="#">Forgotten password</a>
                 </div>
 
                 @if (Model.AllowRememberLogin)

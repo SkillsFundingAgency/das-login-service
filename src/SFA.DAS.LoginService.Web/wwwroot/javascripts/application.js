@@ -6,29 +6,34 @@
   GOVUK.passwordConditions = {
     init: function() {
       document.addEventListener("keyup", this.handlePassword);
+      document.addEventListener("change", this.handlePassword);
     },
 
     handlePassword: function(event) {
       if (
         event.target.id !== "Password" &&
         event.target.id !== "ConfirmPassword"
-      )
+      ) {
         return false;
+      }
 
+      var passwordInput = document.querySelector("#Password");
+      var confirmPasswordInput = document.querySelector("#ConfirmPassword");
+
+      // quit if either password and confirm password don't exist
+      if (!passwordInput || !confirmPasswordInput) return false;
+
+      removeErrors();
+
+      // Check for match on keyup of either #Password or #ConfirmPassword
       if (
         event.target.id === "Password" ||
         event.target.id === "ConfirmPassword"
       ) {
-        var passwordInput = document.querySelector("#Password").value;
-        var confirmPasswordInput = document.querySelector("#ConfirmPassword")
-          .value;
-
-        removeErrors();
-
         if (
-          passwordInput === confirmPasswordInput &&
-          passwordInput !== "" &&
-          confirmPasswordInput !== ""
+          passwordInput.value === confirmPasswordInput.value &&
+          passwordInput.value !== "" &&
+          confirmPasswordInput.value !== ""
         ) {
           document
             .querySelector("[data-condition='mustMatch']")
@@ -40,6 +45,7 @@
         }
       }
 
+      // Check other conditions only on keyup of #Password
       if (event.target.id === "Password") {
         var conditions = [
           {
@@ -99,40 +105,27 @@
   };
 
   GOVUK.showHidePassword = {
-    // passwordInput: document.querySelector("[data-enhance='js-show-hide']"),
+    passwordInput: document.querySelector("[data-enhance='js-show-hide']"),
+
     init: function() {
-      // if (this.passwordInput) {
-      document.addEventListener("click", this.togglePassword);
-      // }
+      if (!this.passwordInput) return false;
+      document.addEventListener("click", this.togglePassword.bind(this));
     },
 
     togglePassword: function(event) {
-      // var passwordInput = document.querySelector(
-      //   "[data-enhance='js-show-hide']"
-      // );
-      // console.log(passwordInput);
+      if (event.target.id !== "show-hide") return false;
 
-      if (event.target.className.indexOf("js-show-hide") === -1) return false;
-      event.preventDefault();
-
-      var showHideLink = document.querySelector(".js-show-hide");
-      var passwordInput = document.querySelector("#Password");
       var confirmPasswordInput = document.querySelector("#ConfirmPassword");
+      var showHideLink = document.querySelector(".govuk-label--show-hide");
 
-      if (passwordInput.type === "text") {
-        passwordInput.type = "password";
+      if (this.passwordInput.type === "text") {
+        this.passwordInput.type = "password";
         if (confirmPasswordInput) confirmPasswordInput.type = "password";
-
-        showHideLink.innerText = confirmPasswordInput
-          ? "Show passwords"
-          : "Show password";
+        showHideLink.innerText = "SHOW";
       } else {
-        passwordInput.type = "text";
+        this.passwordInput.type = "text";
         if (confirmPasswordInput) confirmPasswordInput.type = "text";
-
-        showHideLink.innerText = confirmPasswordInput
-          ? "Hide passwords"
-          : "Hide password";
+        showHideLink.innerText = "HIDE";
       }
     }
   };

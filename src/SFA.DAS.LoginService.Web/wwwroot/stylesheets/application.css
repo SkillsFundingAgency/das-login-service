@@ -2,16 +2,28 @@
   position: relative;
 }
 
-.govuk-list li.passed {
-  text-decoration: line-through;
+.govuk-list--ticks {
+  padding-left: 27px;
 }
 
-.govuk-list li.passed:after {
+.govuk-list--ticks li {
+  margin-bottom: 5px;
+}
+
+.govuk-list li.passed {
+  color: #006435;
+  font-weight: 700;
+  position: relative;
+  list-style-type: none;
+}
+
+.govuk-list li.passed:before {
   content: "";
-  margin-left: 5px;
   position: absolute;
-  width: 18px;
-  height: 7px;
+  top: 2px;
+  left: -25px;
+  width: 13px;
+  height: 5px;
   -webkit-transform: rotate(-45deg);
   -ms-transform: rotate(-45deg);
   transform: rotate(-45deg);
@@ -21,15 +33,54 @@
   background: rgba(0, 0, 0, 0);
 }
 
+@media (min-width: 40.0625em) {
+  .govuk-list li.passed:before {
+    top: 5px;
+  }
+}
+
 .govuk-body--hint,
 .govuk-list--hint {
   color: #6f777b;
 }
 
-.js-show-hide {
+
+.show-password-container {
+  position: relative;
+}
+
+.js-enabled .show-password-container {
+  display: inline-block;
+}
+
+.js-enabled .show-hide-password-input {
+  padding-right: 46px;
+}
+
+.show-password-control-container {
   display: none;
 }
 
-.js-enabled .js-show-hide {
+.js-enabled .show-password-control-container {
   display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: center;
+  width: 48px;
+  padding: 10px 2px 10px 0;
+}
+
+.show-hide-checkbox {
+  display: none;
+}
+
+.govuk-label--show-hide {
+  cursor: pointer;
+  letter-spacing: -0.2px;
+  display: inline;
+  margin: 0;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
 }

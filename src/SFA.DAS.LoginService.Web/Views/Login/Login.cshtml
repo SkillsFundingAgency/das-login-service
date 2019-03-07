@@ -1,7 +1,7 @@
 @model SFA.DAS.LoginService.Application.BuildLoginViewModel.LoginViewModel
 
 @{
-    ViewBag.Title = "Sign In";
+    ViewBag.Title = (!ViewData.ModelState.IsValid ? "Error: " : "") + "Sign in";
 }
 
 <main class="govuk-main-wrapper " id="main-content" role="main">
@@ -17,7 +17,7 @@
                 
                 <div class="govuk-form-group" sfa-anyvalidationerror-class="govuk-form-group--error">
                     <label class="govuk-label govuk-label--m" asp-for="Username">
-                        Email or username
+                        Email address
                     </label>
                     <span id="username-error" asp-validation-for="Username" class="govuk-error-message"></span>
                     <input class="govuk-input govuk-input--width-10" asp-for="Username" type="text" autocomplete="username" sfa-anyvalidationerror-class="govuk-input--error">

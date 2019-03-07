@@ -7,13 +7,14 @@
 <main class="govuk-main-wrapper " id="main-content" role="main">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h2>You are now signed out.</h2>
+
+            <h1 class="govuk-heading-xl">Signed out</h1>
             
             @if (Model.PostLogoutRedirectUri != null)
             {
-                <div>
-                    Click <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">here</a> to return to <span>@Model.ClientName</span>.
-                </div>
+                <p class="govuk-body">
+                    <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">Return to <span>@Model.ClientName</span></a>.
+                </p>
             }
         </div>
     </div>

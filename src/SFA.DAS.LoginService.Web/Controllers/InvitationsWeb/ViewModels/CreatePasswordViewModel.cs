@@ -6,9 +6,9 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels
     public class CreatePasswordViewModel
     {
         public Guid InvitationId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Password validation message here")]
         public string Password { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Confirm Password validation message here")]
         public string ConfirmPassword { get; set; }
     }
 }

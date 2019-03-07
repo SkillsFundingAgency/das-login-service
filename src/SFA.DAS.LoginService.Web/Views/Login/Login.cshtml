@@ -28,7 +28,13 @@
                         Password
                     </label>
                     <span id="password-error" asp-validation-for="Password" class="govuk-error-message"></span>
-                    <input class="govuk-input govuk-input--width-10" asp-for="Password" type="password" autocomplete="current-password" sfa-anyvalidationerror-class="govuk-input--error">
+                    <div class="show-password-container">
+                      <input sfa-anyvalidationerror-class="govuk-input--error" class="govuk-input govuk-input--width-10 show-hide-password-input" asp-for="Password" type="password" autocomplete="current-password" data-enhance="js-show-hide" />
+                      <div class="show-password-control-container">
+                        <input type="checkbox" class="show-hide-checkbox" name="show-hide" id="show-hide" />
+                        <label for="show-hide" class="govuk-label govuk-label--show-hide">SHOW</label>
+                      </div>
+                    </div>
                 </div>
 
                 <div class="govuk-form-group show-password-container">
@@ -37,7 +43,7 @@
 
                 @if (Model.AllowRememberLogin)
                 {
-                    <div class="form-group login-remember">
+                    <div class="govuk-form-group login-remember">
                         <label asp-for="RememberLogin">
                             <input asp-for="RememberLogin">
                             <strong>Remember my login</strong>
@@ -45,9 +51,11 @@
                     </div>
                 }
 
-                <button type="submit" class="govuk-button">
+                <div class="govuk-form-group">
+                  <button type="submit" class="govuk-button">
                     Submit
-                </button>
+                  </button>
+                </div>
             </form>
             
             <p class="govuk-body"><a class="govuk-link" href="@Model.ServiceSupportUrl">Having problems with sign in?</a></p>

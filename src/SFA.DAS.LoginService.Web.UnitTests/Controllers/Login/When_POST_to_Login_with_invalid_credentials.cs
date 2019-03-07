@@ -58,7 +58,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.Login
         public async Task Then_ModelState_Should_Contain_Error_Message()
         {
             await _controller.PostLogin(new LoginViewModel());
-            _controller.ModelState[""].Errors[0].ErrorMessage.Should().Be("Invalid credentials");
+            _controller.ModelState["Username"].Errors[0].ErrorMessage.Should().Be("Invalid credentials");
         }
         
     }

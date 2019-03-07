@@ -1,7 +1,7 @@
 @model SFA.DAS.LoginService.Application.BuildLoginViewModel.LoginViewModel
 
 @{
-    ViewBag.Title = "Sign In";
+    ViewBag.Title = (!ViewData.ModelState.IsValid ? "Error: " : "") + "Sign in";
 }
 
 <main class="govuk-main-wrapper " id="main-content" role="main">

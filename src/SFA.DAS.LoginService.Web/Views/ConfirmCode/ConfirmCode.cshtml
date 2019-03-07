@@ -1,7 +1,7 @@
 @model SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels.ConfirmCodeViewModel
 
 @{
-    ViewBag.Title = "Confirm code";
+    ViewBag.Title = (!ViewData.ModelState.IsValid ? "Error: " : "") + "Confirm code";
 }
 
 <main class="govuk-main-wrapper " id="main-content" role="main">

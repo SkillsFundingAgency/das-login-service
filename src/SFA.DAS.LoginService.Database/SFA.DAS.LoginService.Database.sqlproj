@@ -63,6 +63,7 @@
     <Content Include="Tables\Clients.sql" />
     <Content Include="Tables\IdentityTables.sql" />
     <Content Include="Tables\Invitations.sql" />
+    <Content Include="Tables\ResetPasswordRequests.sql" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Schemas\LoginService.sql" />

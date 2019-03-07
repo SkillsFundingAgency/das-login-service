@@ -48,6 +48,8 @@
                 <button type="submit" class="govuk-button">
                     Submit
                 </button>
+                
+                <a asp-action="Get" asp-controller="ResetPassword" asp-route-clientId="@Model.ClientId">Forgotten password?</a>
             </form>
             
             <p class="govuk-body"><a class="govuk-link" href="@Model.ServiceSupportUrl">Having problems with sign in?</a></p>

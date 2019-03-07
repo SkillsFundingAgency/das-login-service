@@ -62,12 +62,12 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
 
                 ModelState.AddModelError("Password", "Password does not meet minimum complexity requirements");
             
-                return View("CreatePassword", new CreatePasswordViewModel(){InvitationId = vm.InvitationId, Password = "", ConfirmPassword = ""});
+                return View("CreatePassword", new CreatePasswordViewModel(){InvitationId = vm.InvitationId, Password = vm.Password, ConfirmPassword = vm.ConfirmPassword});
             }
             
             ModelState.AddModelError("Password", "Passwords should match");
             
-            return View("CreatePassword", new CreatePasswordViewModel(){InvitationId = vm.InvitationId, Password = "", ConfirmPassword = ""});
+            return View("CreatePassword", new CreatePasswordViewModel(){InvitationId = vm.InvitationId, Password = vm.Password, ConfirmPassword = vm.ConfirmPassword});
         }
     }
 }

@@ -18,7 +18,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
     public class When_POST_CreatePassword_with_invalid_password
     {
         [Test]
-        public void Then_RedirectToActionResult_is_returned()
+        public void Then_ViewResult_is_returned()
         {
             var mediator = Substitute.For<IMediator>();
             mediator.Send(Arg.Any<CreatePasswordRequest>()).Returns(new CreatePasswordResponse() {PasswordValid = false});
@@ -30,6 +30,9 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
             
             result.Should().BeOfType<ViewResult>();
             ((ViewResult) result).ViewName.Should().Be("CreatePassword");
+            ((CreatePasswordViewModel) ((ViewResult) result).Model).Password.Should().Be("Pa55word");
+            ((CreatePasswordViewModel) ((ViewResult) result).Model).ConfirmPassword.Should().Be("Pa55word");
+            
             
             controller.ModelState.Count.Should().Be(1);
             controller.ModelState.ValidationState.Should().Be(ModelValidationState.Invalid);

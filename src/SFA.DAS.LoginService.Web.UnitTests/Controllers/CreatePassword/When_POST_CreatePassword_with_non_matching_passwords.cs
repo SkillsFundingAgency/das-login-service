@@ -58,6 +58,8 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
             var result = _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, Password = "Pa55word", ConfirmPassword = "P4ssword"}).Result;
 
             ((ViewResult) result).Model.Should().BeOfType<CreatePasswordViewModel>();
+            ((CreatePasswordViewModel) ((ViewResult) result).Model).Password.Should().Be("Pa55word");
+            ((CreatePasswordViewModel) ((ViewResult) result).Model).ConfirmPassword.Should().Be("P4ssword");
         }
     }
 }

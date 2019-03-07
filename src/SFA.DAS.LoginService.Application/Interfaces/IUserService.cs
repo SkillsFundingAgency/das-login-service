@@ -11,6 +11,7 @@ namespace SFA.DAS.LoginService.Application.Interfaces
         Task<SignInResult> SignInUser(string username, string password, bool rememberLogin);
         Task<LoginUser> FindByUsername(string username);
         Task SignOutUser();
+        Task<LoginUser> FindByEmail(string email);
     }
     
     public class CreateUserResponse

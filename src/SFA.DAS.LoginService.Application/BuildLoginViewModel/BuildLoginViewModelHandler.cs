@@ -53,11 +53,14 @@ namespace SFA.DAS.LoginService.Application.BuildLoginViewModel
 
             var serviceName = "";
             var serviceSupportUrl = "";
+            var clientId = Guid.Empty;
+            
             var client = await _loginContext.Clients.SingleOrDefaultAsync(c => c.IdentityServerClientId == context.ClientId, cancellationToken: cancellationToken);
             if (client != null)
             {
                 serviceName = client.ServiceDetails.ServiceName;
                 serviceSupportUrl = client.ServiceDetails.SupportUrl;
+                clientId = client.Id;
             }
             
             return new LoginViewModel
@@ -67,7 +70,8 @@ namespace SFA.DAS.LoginService.Application.BuildLoginViewModel
                 ReturnUrl = request.returnUrl,
                 Username = context?.LoginHint,
                 ServiceName = serviceName,
-                ServiceSupportUrl = serviceSupportUrl
+                ServiceSupportUrl = serviceSupportUrl,
+                ClientId = clientId
             };
         }
     }

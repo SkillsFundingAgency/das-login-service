@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SFA.DAS.LoginService.Application.BuildLoginViewModel
@@ -14,5 +15,6 @@ namespace SFA.DAS.LoginService.Application.BuildLoginViewModel
         public bool EnableLocalLogin { get; set; }
         public string ServiceName { get; set; }
         public string ServiceSupportUrl { get; set; }
+        public Guid ClientId { get; set; }
     }
 }

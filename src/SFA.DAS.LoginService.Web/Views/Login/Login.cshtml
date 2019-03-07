@@ -37,8 +37,8 @@
                     </div>
                 </div>
 
-                <div class="govuk-form-group show-password-container">
-                  <a class="js-show-hide govuk-link" href="#">Forgotten password</a>
+                <div class="govuk-form-group">
+                  <a class="govuk-link" asp-action="Get" asp-controller="ResetPassword" asp-route-clientId="@Model.ClientId">Forgotten password</a>
                 </div>
 
                 @if (Model.AllowRememberLogin)
@@ -56,6 +56,7 @@
                     Submit
                   </button>
                 </div>
+                
             </form>
             
             <p class="govuk-body"><a class="govuk-link" href="@Model.ServiceSupportUrl">Having problems with sign in?</a></p>

@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -20,6 +21,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.BuildLoginViewModel
     {
         private BuildLoginViewModelHandler _handler;
         private LoginContext _loginContext;
+        private Guid _clientId;
 
         [SetUp]
         public void SetUp()
@@ -35,7 +37,13 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.BuildLoginViewModel
 
             _loginContext = new LoginContext(dbContextOptions);
 
-            _loginContext.Clients.Add(new Data.Entities.Client(){IdentityServerClientId = "mvc", ServiceDetails  = new ServiceDetails{ServiceName = "Acme Service", SupportUrl = "https://acme.gov.uk/Support"}});
+            _clientId = Guid.NewGuid();
+            _loginContext.Clients.Add(new Data.Entities.Client()
+            {
+                IdentityServerClientId = "mvc", 
+                ServiceDetails  = new ServiceDetails{ServiceName = "Acme Service", SupportUrl = "https://acme.gov.uk/Support"},
+                Id = _clientId
+            });
             _loginContext.SaveChanges();
             
             _handler = new BuildLoginViewModelHandler(identityServerInteractionService, Substitute.For<IAuthenticationSchemeProvider>(), inMemoryClientStore, _loginContext);
@@ -49,6 +57,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.BuildLoginViewModel
             result.ServiceName.Should().Be("Acme Service");
             result.ServiceSupportUrl.Should().Be("https://acme.gov.uk/Support");
             result.ReturnUrl.Should().Be("https://returnurl");
+            result.ClientId.Should().Be(_clientId);
         }
     }
 }

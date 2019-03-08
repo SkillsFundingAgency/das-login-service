@@ -6,6 +6,7 @@ using NUnit.Framework;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.ResetPassword;
 using SFA.DAS.LoginService.Data;
+using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword
 {
@@ -27,10 +28,13 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword
             ClientId = Guid.NewGuid();
             EmailService = Substitute.For<IEmailService>();
             CodeGenerationService = Substitute.For<ICodeGenerationService>();
+            
             UserService = Substitute.For<IUserService>();
+            
             LoginConfig = Substitute.For<ILoginConfig>();
             LoginConfig.BaseUrl.Returns("https://baseurl");
-
+            LoginConfig.PasswordResetExpiryInHours = 1;
+            
             HashingService = Substitute.For<IHashingService>();
             
             var dbContextOptions = new DbContextOptionsBuilder<LoginContext>()

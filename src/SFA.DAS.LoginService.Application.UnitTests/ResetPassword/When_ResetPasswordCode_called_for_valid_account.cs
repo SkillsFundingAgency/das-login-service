@@ -14,6 +14,12 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword
     [TestFixture]
     public class When_ResetPasswordCode_called_for_valid_account : ResetPasswordCodeTestBase
     {
+        [SetUp]
+        public void Arrange()
+        {
+            UserService.FindByEmail(Arg.Any<string>()).Returns(new LoginUser());
+        }
+        
         private async Task Act()
         {
             await Handler.Handle(new ResetPasswordCodeRequest() {Email = "email@emailaddress.com", ClientId = ClientId},
@@ -45,7 +51,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword
 
             var resetPasswordRequest = LoginContext.ResetPasswordRequests.Single();
             
-            await EmailService.Received().SendResetPassword(Arg.Any<string>(), Arg.Any<string>(), $"https://baseurl/{ClientId}/{resetPasswordRequest.Id}" );
+            await EmailService.Received().SendResetPassword(Arg.Any<string>(), Arg.Any<string>(), $"https://baseurl/NewPassword/{ClientId}/{resetPasswordRequest.Id}" );
         }
 
         [Test]
@@ -62,7 +68,38 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword
             resetPasswordRequest.ClientId.Should().Be(ClientId);
             resetPasswordRequest.Code.Should().Be("HashedCode");
             resetPasswordRequest.ValidUntil.Should().Be(SystemTime.UtcNow().AddHours(1));
+            resetPasswordRequest.RequestedDate.Should().Be(SystemTime.UtcNow());
             resetPasswordRequest.IsComplete.Should().BeFalse();
+            resetPasswordRequest.Email.Should().Be("email@emailaddress.com");
+        }
+
+        [Test]
+        public async Task Then_the_user_account_is_locked_out()
+        {
+            await Act();
+
+            await UserService.Received().LockoutUser("email@emailaddress.com");
+        }
+
+        [Test]
+        public async Task Then_previous_valid_reset_requests_are_expired()
+        {
+            SystemTime.UtcNow = () => new DateTime(2018,1,1,11,11,11);
+
+            var validRequestIds = new[] {Guid.NewGuid(), Guid.NewGuid()};
+            
+            LoginContext.ResetPasswordRequests.Add(new ResetPasswordRequest() { Id= validRequestIds[0], Email = "email@emailaddress.com", ValidUntil = SystemTime.UtcNow().AddMinutes(5), IsComplete = false});
+            LoginContext.ResetPasswordRequests.Add(new ResetPasswordRequest() { Id= validRequestIds[1], Email = "email@emailaddress.com", ValidUntil = SystemTime.UtcNow().AddMinutes(1), IsComplete = false});
+            LoginContext.ResetPasswordRequests.Add(new ResetPasswordRequest() { Id= Guid.NewGuid(), Email = "email@emailaddress.com", ValidUntil = SystemTime.UtcNow().AddMinutes(10), IsComplete = true});
+            LoginContext.ResetPasswordRequests.Add(new ResetPasswordRequest() { Id= Guid.NewGuid(), Email = "email@emailaddress.com", ValidUntil = SystemTime.UtcNow().AddMinutes(-10), IsComplete = false});
+            await LoginContext.SaveChangesAsync();
+
+            await Act();
+
+            var passwordRequestsWithValidExpiry = LoginContext.ResetPasswordRequests.Where(r => r.Email == "email@emailaddress.com" && r.ValidUntil > SystemTime.UtcNow() && r.IsComplete == false);
+
+            passwordRequestsWithValidExpiry.Count().Should().Be(1);
+            passwordRequestsWithValidExpiry.Any(r => validRequestIds.Contains(r.Id)).Should().BeFalse();
         }
     }
 }

@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Data;
@@ -37,16 +39,26 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
             {
                 return Unit.Value;
             }
+
+            await ClearOutAnyPreviousStillValidRequests(request.Email);
+            
+            await _userService.LockoutUser(request.Email);
             
             var plainTextCode = _codeGenerationService.GenerateCode();
 
             var resetPasswordRequest = await SavePasswordRequest(request, cancellationToken, plainTextCode);
 
-            var baseUri = new Uri(_loginConfig.BaseUrl);
-            var resetUri = new Uri(baseUri, $"{request.ClientId}/{resetPasswordRequest.Id}");
+            var resetUri = new Uri(new Uri(_loginConfig.BaseUrl), $"NewPassword/{request.ClientId}/{resetPasswordRequest.Id}");
             
             await _emailService.SendResetPassword(request.Email, plainTextCode, resetUri.ToString());
             return Unit.Value;
+        }
+
+        private async Task ClearOutAnyPreviousStillValidRequests(string email)
+        {
+            var stillValidRequests = await _loginContext.ResetPasswordRequests.Where(r => r.ValidUntil > SystemTime.UtcNow() && r.IsComplete == false).ToListAsync();
+            stillValidRequests.ForEach(r => r.ValidUntil = SystemTime.UtcNow().AddDays(-1));
+            await _loginContext.SaveChangesAsync();
         }
 
         private async Task<ResetPasswordRequest> SavePasswordRequest(ResetPasswordCodeRequest request, CancellationToken cancellationToken,
@@ -57,7 +69,9 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
                 ClientId = request.ClientId,
                 Code = _hashingService.GetHash(plainTextCode),
                 IsComplete = false,
-                ValidUntil = SystemTime.UtcNow().AddHours(1)
+                ValidUntil = SystemTime.UtcNow().AddHours(_loginConfig.PasswordResetExpiryInHours),
+                Email = request.Email,
+                RequestedDate = SystemTime.UtcNow()
             };
             _loginContext.ResetPasswordRequests.Add(resetPasswordRequest);
             await _loginContext.SaveChangesAsync(cancellationToken);

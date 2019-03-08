@@ -24,5 +24,13 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ResetPassword
             result.Should().BeOfType<RedirectToActionResult>();
             ((RedirectToActionResult) result).ActionName.Should().Be("CodeSent");
         }
+
+        [Test]
+        public async Task Then_RouteValues_should_contain_email()
+        {
+            var result = await Controller.Post(ClientId, new ResetPasswordViewModel{Email = "forgot@password.com"});
+
+            ((RedirectToActionResult) result).RouteValues["email"].Should().Be("forgot@password.com");
+        }
     }
 }

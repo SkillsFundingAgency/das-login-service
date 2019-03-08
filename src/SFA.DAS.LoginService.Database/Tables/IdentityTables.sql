@@ -200,6 +200,7 @@ CREATE TABLE [IdentityServer].[AspNetUsers](
 	[SecurityStamp] [nvarchar](max) NULL,
 	[TwoFactorEnabled] [bit] NOT NULL,
 	[UserName] [nvarchar](256) NULL,
+	[IsEnabled] [bit] NULL,
  CONSTRAINT [PK_AspNetUsers] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

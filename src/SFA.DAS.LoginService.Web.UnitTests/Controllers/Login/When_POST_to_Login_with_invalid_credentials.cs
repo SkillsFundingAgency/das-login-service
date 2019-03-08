@@ -21,7 +21,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.Login
         public void SetUp()
         {
             _mediator = Substitute.For<IMediator>();
-            _mediator.Send(Arg.Any<ProcessLoginRequest>(), CancellationToken.None).Returns(new ProcessLoginResponse() {CredentialsValid = false});
+            _mediator.Send(Arg.Any<ProcessLoginRequest>(), CancellationToken.None).Returns(new ProcessLoginResponse() {CredentialsValid = false, Message = "Invalid credentials"});
             _mediator.Send(Arg.Any<BuildLoginViewModelRequest>(), CancellationToken.None).Returns(new LoginViewModel());
             _controller = new LoginController(_mediator);
         }

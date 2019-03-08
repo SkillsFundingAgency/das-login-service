@@ -51,7 +51,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
 
             var resetPasswordRequest = LoginContext.ResetPasswordRequests.Single();
             
-            await EmailService.Received().SendResetPassword(Arg.Any<string>(), Arg.Any<string>(), $"https://baseurl/NewPassword/{ClientId}/{resetPasswordRequest.Id}" );
+            await EmailService.Received().SendResetPassword(Arg.Any<string>(), Arg.Any<string>(), $"https://baseurl/NewPassword/ConfirmCode/{ClientId}/{resetPasswordRequest.Id}" );
         }
 
         [Test]

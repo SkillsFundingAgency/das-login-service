@@ -22,7 +22,10 @@
                     <span id="code-hint" class="govuk-hint">
                         This is the 8 character code in the email we sent you
                     </span>
-                    <span asp-validation-for="Code" class="govuk-error-message"></span>
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                      <span asp-validation-for="Code" class="govuk-error-message"></span>
+                    }
                     <input class="govuk-input govuk-input--width-10" asp-for="Code" type="text" sfa-anyvalidationerror-class="govuk-input--error">
                 </div>
 

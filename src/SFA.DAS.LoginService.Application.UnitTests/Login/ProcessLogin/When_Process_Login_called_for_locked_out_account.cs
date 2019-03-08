@@ -9,12 +9,12 @@ using SFA.DAS.LoginService.Application.ProcessLogin;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
 {
-    public class When_Process_Login_called_with_invalid_credentials : ProcessLoginTestBase
+    public class When_Process_Login_called_for_locked_out_account : ProcessLoginTestBase
     {
         [SetUp]
         public void Arrange()
         {
-            UserService.SignInUser(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(SignInResult.Failed);
+            UserService.SignInUser(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(SignInResult.LockedOut);
             InteractionService.GetAuthorizationContextAsync(Arg.Any<string>()).Returns(new AuthorizationRequest());
         }
         
@@ -33,7 +33,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
             var result = await Handler.Handle(new ProcessLoginRequest()
                 {Username = "user", Password = "password", ReturnUrl = "https://returnurl", RememberLogin = false}, CancellationToken.None);
 
-            result.Message.Should().Be("Invalid credentials");
+            result.Message.Should().Be("User account is locked out");
         }
     }
 }

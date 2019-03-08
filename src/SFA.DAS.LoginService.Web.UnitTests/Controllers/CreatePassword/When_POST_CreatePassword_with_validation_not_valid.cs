@@ -7,6 +7,7 @@ using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
+using SFA.DAS.LoginService.Web.Controllers.ResetPassword;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
 {
@@ -31,7 +32,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         [TestCase("", "password")]
         public async Task Then_View_is_returned_with_identical_ViewModel(string password, string confirmPassword)
         {
-            var createPasswordViewModel = new CreatePasswordViewModel() {Password = password, ConfirmPassword = confirmPassword};
+            var createPasswordViewModel = new CreatePasswordViewModel() {PasswordViewModel = new PasswordViewModel{ Password = password, ConfirmPassword = confirmPassword}};
             var result = await _controller.Post(createPasswordViewModel);
             result.Should().BeOfType<ViewResult>();
             ((ViewResult) result).ViewName.Should().Be("CreatePassword");

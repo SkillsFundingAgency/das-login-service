@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.LoginService.Application.CreatePassword;
 using SFA.DAS.LoginService.Application.GetInvitationById;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
+using SFA.DAS.LoginService.Web.Controllers.ResetPassword;
 
 namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
 {
@@ -30,7 +31,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
             {
                 return BadRequest("CodeConfirmed is false");
             }
-            return View("CreatePassword", new CreatePasswordViewModel(){InvitationId = id, Password = "", ConfirmPassword = ""});
+            return View("CreatePassword", new CreatePasswordViewModel(){InvitationId = id, PasswordViewModel = new PasswordViewModel(){ConfirmPassword = "", Password = ""}});
         }
 
         [HttpPost("/Invitations/CreatePassword/{id}")]
@@ -52,22 +53,39 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
                 return BadRequest("CodeConfirmed is false");
             }
             
-            if (vm.Password == vm.ConfirmPassword)
+            if (vm.PasswordViewModel.Password == vm.PasswordViewModel.ConfirmPassword)
             {
-                var response = await _mediator.Send(new CreatePasswordRequest {InvitationId = vm.InvitationId, Password = vm.Password});
+                var response = await _mediator.Send(new CreatePasswordRequest {InvitationId = vm.InvitationId, Password = vm.PasswordViewModel.Password});
                 if (response.PasswordValid)
                 {
                     return RedirectToAction("Get", "SignUpComplete", new {id = vm.InvitationId});
                 }
 
                 ModelState.AddModelError("Password", "Password does not meet minimum complexity requirements");
-            
-                return View("CreatePassword", new CreatePasswordViewModel(){InvitationId = vm.InvitationId, Password = vm.Password, ConfirmPassword = vm.ConfirmPassword});
+
+                return View("CreatePassword",
+                    new CreatePasswordViewModel()
+                    {
+                        InvitationId = vm.InvitationId, 
+                        PasswordViewModel = new PasswordViewModel
+                        {
+                            Password = vm.PasswordViewModel.Password, 
+                            ConfirmPassword = vm.PasswordViewModel.ConfirmPassword
+                        }
+                    });
             }
             
             ModelState.AddModelError("Password", "Passwords should match");
             
-            return View("CreatePassword", new CreatePasswordViewModel(){InvitationId = vm.InvitationId, Password = vm.Password, ConfirmPassword = vm.ConfirmPassword});
+            return View("CreatePassword", new CreatePasswordViewModel()
+            {
+                InvitationId = vm.InvitationId, 
+                PasswordViewModel = new PasswordViewModel
+                {
+                    Password = vm.PasswordViewModel.Password, 
+                    ConfirmPassword = vm.PasswordViewModel.ConfirmPassword
+                }
+            });
         }
     }
 }

@@ -1,13 +1,14 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
 {
     public class ResetPasswordViewModel
     {
-        public Guid ClientId { get; set; }
-        [Required(ErrorMessage = "Please enter an email address")]
-        [EmailAddress(ErrorMessage = "Please enter a valid email address")]
+        public Guid RequestId { get; set; }
         public string Email { get; set; }
+        
+        public PasswordViewModel PasswordViewModel { get; set; }
+        
+        public Guid ClientId { get; set; }
     }
 }

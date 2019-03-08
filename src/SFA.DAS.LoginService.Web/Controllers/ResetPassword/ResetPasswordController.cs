@@ -15,34 +15,17 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
             _mediator = mediator;
         }
 
-        [HttpGet("/ForgottenPassword/{clientId}")]
-        public async Task<IActionResult> Get(string clientId)
+        [HttpGet("/NewPassword/{clientId}/{requestId}")]
+        public async Task<IActionResult> Get(Guid clientId, Guid requestId)
         {
-            var vm = new ResetPasswordViewModel(){ClientId = Guid.Parse(clientId)};
-            return View("ResetPassword", vm);            
+            var checkRequestResponse = await _mediator.Send(new CheckPasswordResetRequest {RequestId = requestId});
+            return checkRequestResponse.IsValid 
+                ? View("ResetPassword", new ResetPasswordViewModel(){
+                    PasswordViewModel = new PasswordViewModel(){Password = "", ConfirmPassword = ""},
+                    Email = checkRequestResponse.Email, 
+                    RequestId = requestId, 
+                    ClientId = clientId}) 
+                : View("ExpiredLink", new ExpiredLinkViewModel(){ClientId = clientId});
         }
-
-        [HttpPost("/ForgottenPassword/{clientId}")]
-        public async Task<IActionResult> Post(Guid clientId, ResetPasswordViewModel resetPasswordViewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View("ResetPassword", resetPasswordViewModel);
-            }
-            
-            await _mediator.Send(new ResetPasswordCodeRequest {ClientId = clientId, Email = resetPasswordViewModel.Email});
-            return RedirectToAction("CodeSent", new {email=resetPasswordViewModel.Email});
-        }
-
-        [HttpGet("/CodeSent")]
-        public async Task<IActionResult> CodeSent(string email)
-        {
-            return View("CodeSent", new CodeSentViewModel(){Email = email});
-        }
-    }
-
-    public class CodeSentViewModel
-    {
-        public string Email { get; set; }
     }
 }

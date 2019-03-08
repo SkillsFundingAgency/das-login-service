@@ -1,0 +1,12 @@
+@model SFA.DAS.LoginService.Web.Controllers.ResetPassword.ExpiredLinkViewModel
+
+@{
+    ViewBag.Title = "Expired link";
+}
+
+<h2>Expired link</h2>
+
+
+<div class="govuk-form-group">
+    <a class="govuk-link" asp-action="Get" asp-controller="RequestPasswordReset" asp-route-clientId="@Model.ClientId">Request a new link</a>
+</div>

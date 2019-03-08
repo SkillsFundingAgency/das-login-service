@@ -39,8 +39,8 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
 
             ((ViewResult) result).Model.Should().BeOfType<CreatePasswordViewModel>();
             ((CreatePasswordViewModel) ((ViewResult) result).Model).InvitationId.Should().Be(invitationId);
-            ((CreatePasswordViewModel) ((ViewResult) result).Model).Password.Should().BeEmpty();
-            ((CreatePasswordViewModel) ((ViewResult) result).Model).ConfirmPassword.Should().BeEmpty();
+            ((CreatePasswordViewModel) ((ViewResult) result).Model).PasswordViewModel.Password.Should().BeEmpty();
+            ((CreatePasswordViewModel) ((ViewResult) result).Model).PasswordViewModel.ConfirmPassword.Should().BeEmpty();
         }
     }
 }

@@ -5,7 +5,7 @@ using NUnit.Framework;
 using SFA.DAS.LoginService.Application.ResetPassword;
 using SFA.DAS.LoginService.Data.Entities;
 
-namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword
+namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswordReset
 {
     public class WhenRequestPasswordResetCalledForNonexistantAccount : RequestPasswordResetTestBase
     {

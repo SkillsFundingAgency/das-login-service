@@ -4,7 +4,7 @@ using NUnit.Framework;
 using SFA.DAS.LoginService.Application.ResetPassword;
 using SFA.DAS.LoginService.Data;
 
-namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword
+namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.CheckPasswordReset
 {
     [TestFixture]
     public class CheckPasswordResetTestBase

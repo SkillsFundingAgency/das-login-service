@@ -46,7 +46,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.Login
                 return Redirect(loginViewModel.ReturnUrl);
             }
 
-            ModelState.AddModelError("Username", "Invalid credentials");
+            ModelState.AddModelError("Username", loginResult.Message);
 
             var vm = await _mediator.Send(new BuildLoginViewModelRequest() {returnUrl = loginViewModel.ReturnUrl});
             vm.Password = loginViewModel.Password;

@@ -7,15 +7,17 @@ namespace SFA.DAS.LoginService.Application.Interfaces
     public interface IUserService
     {
         Task<bool> UserExists(string email);
-        Task<CreateUserResponse> CreateUser(LoginUser newUser, string password);
+        Task<UserResponse> CreateUser(LoginUser newUser, string password);
         Task<SignInResult> SignInUser(string username, string password, bool rememberLogin);
         Task<LoginUser> FindByUsername(string username);
         Task SignOutUser();
         Task<LoginUser> FindByEmail(string email);
         Task LockoutUser(string email);
+        Task<UserResponse> ResetPassword(string email, string password, string identityToken);
+        Task<string> GeneratePasswordResetToken(LoginUser user);
     }
-    
-    public class CreateUserResponse
+
+    public class UserResponse
     {
         public LoginUser User { get; set; }
         public IdentityResult Result { get; set; }

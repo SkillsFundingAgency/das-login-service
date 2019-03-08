@@ -41,12 +41,14 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
             }
 
             await ClearOutAnyPreviousStillValidRequests(request.Email);
+
+            var identityToken = await _userService.GeneratePasswordResetToken(loginUser);
             
             await _userService.LockoutUser(request.Email);
             
             var plainTextCode = _codeGenerationService.GenerateCode();
 
-            var resetPasswordRequest = await SavePasswordRequest(request, cancellationToken, plainTextCode);
+            var resetPasswordRequest = await SavePasswordRequest(request, cancellationToken, plainTextCode, identityToken);
 
             var resetUri = new Uri(new Uri(_loginConfig.BaseUrl), $"NewPassword/{request.ClientId}/{resetPasswordRequest.Id}");
             
@@ -62,7 +64,7 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
         }
 
         private async Task<ResetPasswordRequest> SavePasswordRequest(RequestPasswordResetRequest request, CancellationToken cancellationToken,
-            string plainTextCode)
+            string plainTextCode, string identityToken)
         {
             var resetPasswordRequest = new ResetPasswordRequest()
             {
@@ -71,7 +73,8 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
                 IsComplete = false,
                 ValidUntil = SystemTime.UtcNow().AddHours(_loginConfig.PasswordResetExpiryInHours),
                 Email = request.Email,
-                RequestedDate = SystemTime.UtcNow()
+                RequestedDate = SystemTime.UtcNow(),
+                IdentityToken = identityToken
             };
             _loginContext.ResetPasswordRequests.Add(resetPasswordRequest);
             await _loginContext.SaveChangesAsync(cancellationToken);

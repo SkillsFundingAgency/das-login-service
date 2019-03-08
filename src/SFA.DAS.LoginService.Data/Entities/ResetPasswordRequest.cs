@@ -11,5 +11,6 @@ namespace SFA.DAS.LoginService.Data.Entities
         public bool IsComplete { get; set; }
         public string Email { get; set; }
         public DateTime RequestedDate { get; set; }
+        public string IdentityToken { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using SFA.DAS.LoginService.Application.ResetPassword;
 using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Data.Entities;
 
-namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword
+namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswordReset
 {
     [TestFixture]
     public class WhenRequestPasswordResetCalledForValidAccount : RequestPasswordResetTestBase
@@ -71,6 +71,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword
             resetPasswordRequest.RequestedDate.Should().Be(SystemTime.UtcNow());
             resetPasswordRequest.IsComplete.Should().BeFalse();
             resetPasswordRequest.Email.Should().Be("email@emailaddress.com");
+            resetPasswordRequest.IdentityToken.Should().Be("Token");
         }
 
         [Test]

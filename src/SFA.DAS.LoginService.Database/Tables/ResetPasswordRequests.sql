@@ -6,6 +6,7 @@ CREATE TABLE [LoginService].[ResetPasswordRequests](
 	[ClientId] [uniqueidentifier] NOT NULL,
 	[IsComplete] [bit] NOT NULL,
 	[DateRequested] [datetime2](7) NOT NULL,
+	[IdentityToken] [nvarchar](250) NOT NULL,
 ) ON [PRIMARY]
 GO
 

@@ -8,7 +8,7 @@ using SFA.DAS.LoginService.Application.ResetPassword;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
 
-namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword
+namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswordReset
 {
     [TestFixture]
     public class RequestPasswordResetTestBase
@@ -30,6 +30,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword
             CodeGenerationService = Substitute.For<ICodeGenerationService>();
             
             UserService = Substitute.For<IUserService>();
+            UserService.GeneratePasswordResetToken(Arg.Any<LoginUser>()).Returns("Token");
             
             LoginConfig = Substitute.For<ILoginConfig>();
             LoginConfig.BaseUrl.Returns("https://baseurl");

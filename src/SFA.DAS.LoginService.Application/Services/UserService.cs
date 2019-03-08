@@ -21,10 +21,10 @@ namespace SFA.DAS.LoginService.Application.Services
              return (await _userManager.FindByIdAsync(email)) != null;
         }
 
-        public async Task<CreateUserResponse> CreateUser(LoginUser newUser, string password)
+        public async Task<UserResponse> CreateUser(LoginUser newUser, string password)
         {
             var result = await _userManager.CreateAsync(newUser, password);
-            return new CreateUserResponse {Result = result, User = newUser};
+            return new UserResponse {Result = result, User = newUser};
         }
 
         public async Task<SignInResult> SignInUser(string username, string password, bool rememberLogin)
@@ -52,6 +52,22 @@ namespace SFA.DAS.LoginService.Application.Services
             var user = await FindByEmail(email);
             user.IsEnabled = false;
             await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<UserResponse> ResetPassword(string email, string password, string identityToken)
+        {
+            var user = await FindByEmail(email);
+            var identityResult = await _userManager.ResetPasswordAsync(user, identityToken, password);
+            user.IsEnabled = true;
+            await _userManager.UpdateAsync(user);
+            await _userManager.ResetAccessFailedCountAsync(user);
+            
+            return new UserResponse(){Result = identityResult, User = user};
+        }
+
+        public async Task<string> GeneratePasswordResetToken(LoginUser user)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
         }
     }
 }

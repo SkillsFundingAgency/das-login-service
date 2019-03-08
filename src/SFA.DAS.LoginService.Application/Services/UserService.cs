@@ -8,9 +8,9 @@ namespace SFA.DAS.LoginService.Application.Services
     public class UserService : IUserService
     {
         private readonly UserManager<LoginUser> _userManager;
-        private readonly SignInManager<LoginUser> _signInManager;
+        private readonly CustomSignInManager _signInManager;
 
-        public UserService(UserManager<LoginUser> userManager, SignInManager<LoginUser> signInManager)
+        public UserService(UserManager<LoginUser> userManager, CustomSignInManager signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -45,6 +45,13 @@ namespace SFA.DAS.LoginService.Application.Services
         public async Task<LoginUser> FindByEmail(string email)
         {
             return await _userManager.FindByEmailAsync(email);
+        }
+
+        public async Task LockoutUser(string email)
+        {
+            var user = await FindByEmail(email);
+            user.IsEnabled = false;
+            await _userManager.UpdateAsync(user);
         }
     }
 }

@@ -4,7 +4,11 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
 {
     public class ResetPasswordViewModel
     {
-        public Guid ClientId { get; set; }
+        public Guid RequestId { get; set; }
         public string Email { get; set; }
+        
+        public PasswordViewModel PasswordViewModel { get; set; }
+        
+        public Guid ClientId { get; set; }
     }
 }

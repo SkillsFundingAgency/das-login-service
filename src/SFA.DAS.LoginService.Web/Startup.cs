@@ -98,6 +98,7 @@ namespace SFA.DAS.LoginService.Web
             services.AddTransient<IHashingService, HashingService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<CustomSignInManager>();
             services.AddHttpClient<ICallbackService, CallbackService>();
 
             services.AddMediatR(typeof(CreateInvitationHandler).Assembly);

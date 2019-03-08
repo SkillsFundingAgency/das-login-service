@@ -11,7 +11,8 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
 {
     public class When_Process_Login_called_with_invalid_credentials : ProcessLoginTestBase
     {
-        private void Init()
+        [SetUp]
+        public void Arrange()
         {
             UserService.SignInUser(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(SignInResult.Failed);
             InteractionService.GetAuthorizationContextAsync(Arg.Any<string>()).Returns(new AuthorizationRequest());
@@ -20,8 +21,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
         [Test]
         public async Task Then_response_is_returned_with_validcredentials_false()
         {
-            Init();
-            
             var result = await Handler.Handle(new ProcessLoginRequest()
                 {Username = "user", Password = "password", ReturnUrl = "https://returnurl", RememberLogin = false}, CancellationToken.None);
 
@@ -31,8 +30,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
         [Test]
         public async Task Then_response_is_returned_with_correct_error_message()
         {
-            Init();
-            
             var result = await Handler.Handle(new ProcessLoginRequest()
                 {Username = "user", Password = "password", ReturnUrl = "https://returnurl", RememberLogin = false}, CancellationToken.None);
 

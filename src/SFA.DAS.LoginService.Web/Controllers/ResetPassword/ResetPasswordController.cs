@@ -15,18 +15,17 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
             _mediator = mediator;
         }
 
-        [HttpGet("/ForgottenPassword/{clientId}")]
-        public async Task<IActionResult> Get(string clientId)
+        [HttpGet("/NewPassword/{clientId}/{requestId}")]
+        public async Task<IActionResult> Get(Guid clientId, Guid requestId)
         {
-            var vm = new ResetPasswordViewModel(){ClientId = Guid.Parse(clientId)};
-            return View("ResetPassword", vm);
-        }
-
-        [HttpPost("/ForgottenPassword/{clientId}")]
-        public async Task<IActionResult> Post(Guid clientId, ResetPasswordViewModel resetPasswordViewModel)
-        {
-            await _mediator.Send(new ResetPasswordCodeRequest {ClientId = clientId, Email = resetPasswordViewModel.Email});
-            return Ok();
+            var checkRequestResponse = await _mediator.Send(new CheckPasswordResetRequest {RequestId = requestId});
+            return checkRequestResponse.IsValid 
+                ? View("ResetPassword", new ResetPasswordViewModel(){
+                    PasswordViewModel = new PasswordViewModel(){Password = "", ConfirmPassword = ""},
+                    Email = checkRequestResponse.Email, 
+                    RequestId = requestId, 
+                    ClientId = clientId}) 
+                : View("ExpiredLink", new ExpiredLinkViewModel(){ClientId = clientId});
         }
     }
 }

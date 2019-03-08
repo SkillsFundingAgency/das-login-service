@@ -14,8 +14,9 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
 {
     public class When_Process_Login_called_with_valid_credentials : ProcessLoginTestBase
     {
-        private void Init()
-        {   
+        private void Arrange()
+        {
+            UserService.FindByUsername("user").Returns(new LoginUser());
             UserService.SignInUser(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(SignInResult.Success);
             InteractionService.GetAuthorizationContextAsync(Arg.Any<string>()).Returns(new AuthorizationRequest());
         }
@@ -23,7 +24,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
         [Test]
         public async Task Then_response_is_returned_with_validcredentials_false()
         {
-            Init();
+            Arrange();
             var result = await Handler.Handle(new ProcessLoginRequest()
                 {Username = "user", Password = "password", ReturnUrl = "https://returnurl", RememberLogin = false}, CancellationToken.None);
 
@@ -33,7 +34,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
         [Test]
         public async Task Then_InteractionService_is_asked_for_the_authorization_context()
         {
-            Init();
+            Arrange();
             await Handler.Handle(new ProcessLoginRequest()
                 {Username = "user", Password = "password", ReturnUrl = "https://returnurl", RememberLogin = false}, CancellationToken.None);
 
@@ -45,7 +46,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
         [Test]
         public async Task Then_UserService_is_called_to_get_user_by_username()
         {
-            Init();
+            Arrange();
             await Handler.Handle(new ProcessLoginRequest()
                 {Username = "user", Password = "password", ReturnUrl = "https://returnurl", RememberLogin = false}, CancellationToken.None);
 
@@ -55,7 +56,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
         [Test]
         public async Task Then_a_UserLoginSuccessEvent_is_raised_on_the_event_service()
         {
-            Init();
+            Arrange();
             
             var userId = "userid";
             UserService.FindByUsername("user").Returns(new LoginUser() {Id = userId, UserName = "user"});

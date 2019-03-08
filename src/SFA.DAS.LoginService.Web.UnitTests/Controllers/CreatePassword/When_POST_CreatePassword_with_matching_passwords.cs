@@ -7,6 +7,7 @@ using SFA.DAS.LoginService.Application.GetInvitationById;
 using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
+using SFA.DAS.LoginService.Web.Controllers.ResetPassword;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
 {
@@ -22,7 +23,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
             var controller = new CreatePasswordController(mediator);
 
             var invitationId = Guid.NewGuid();
-            controller.Post(new CreatePasswordViewModel() {InvitationId = invitationId, Password = "Pa55word", ConfirmPassword = "Pa55word"}).Wait();
+            controller.Post(new CreatePasswordViewModel() {InvitationId = invitationId, PasswordViewModel  = new PasswordViewModel{ Password = "Pa55word", ConfirmPassword = "Pa55word"}}).Wait();
 
             mediator.Received().Send(Arg.Is<CreatePasswordRequest>(r => r.InvitationId == invitationId && r.Password == "Pa55word"));
         }

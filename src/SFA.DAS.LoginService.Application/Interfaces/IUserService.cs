@@ -12,6 +12,7 @@ namespace SFA.DAS.LoginService.Application.Interfaces
         Task<LoginUser> FindByUsername(string username);
         Task SignOutUser();
         Task<LoginUser> FindByEmail(string email);
+        Task LockoutUser(string email);
     }
     
     public class CreateUserResponse

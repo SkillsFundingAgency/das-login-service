@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.LoginService.Application.GetClientById;
 using SFA.DAS.LoginService.Application.ResetPassword;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
+using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
 {
@@ -17,34 +18,6 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
             _mediator = mediator;
         }
 
-        [HttpGet("/NewPassword/ConfirmCode/{clientId}/{requestId}")]
-        public async Task<IActionResult> ConfirmCode(Guid clientId, Guid requestId)
-        {
-            var checkRequestResponse = await _mediator.Send(new CheckPasswordResetRequest {RequestId = requestId});
-            return checkRequestResponse.IsValid
-                ? View("ConfirmCode", new ConfirmResetCodeViewModel() {RequestId = requestId, Code = "", ClientId = clientId})
-                : View("ExpiredLink", new ExpiredLinkViewModel() {ClientId = clientId});
-        }
-        
-        [HttpPost("/NewPassword/ConfirmCode/{clientId}/{requestId}")]
-        public async Task<IActionResult> ConfirmCode(ConfirmResetCodeViewModel vm)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View("ConfirmCode", vm);
-            }
-
-            var confirmResetCodeResponse = await _mediator.Send(new ConfirmResetCodeRequest(vm.RequestId, vm.Code));
-            if (confirmResetCodeResponse.IsValid)
-            {
-                return RedirectToAction("Get", "ResetPassword", new {clientId = vm.ClientId, requestId = vm.RequestId});
-            }
-
-            ModelState.AddModelError("Code", "Code not valid");
-
-            return View("ConfirmCode", vm);
-        }
-        
         [HttpGet("/NewPassword/{clientId}/{requestId}")]
         public async Task<IActionResult> Get(Guid clientId, Guid requestId)
         {
@@ -55,7 +28,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
                     Email = checkRequestResponse.Email, 
                     RequestId = requestId, 
                     ClientId = clientId}) 
-                : View("ExpiredLink", new ExpiredLinkViewModel(){ClientId = clientId});
+                : View("~/Views/ConfirmResetCode/ExpiredLink.cshtml", new ExpiredLinkViewModel(){ClientId = clientId});
         }
 
         [HttpPost("/NewPassword/{clientId}/{requestId}")]

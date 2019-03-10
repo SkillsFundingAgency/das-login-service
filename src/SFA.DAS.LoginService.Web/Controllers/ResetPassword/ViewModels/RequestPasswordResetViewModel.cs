@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
+namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels
 {
     public class RequestPasswordResetViewModel
     {

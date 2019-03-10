@@ -6,6 +6,7 @@ using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.ResetPassword;
 using SFA.DAS.LoginService.Web.Controllers.ResetPassword;
+using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.PasswordReset
 {
@@ -25,7 +26,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.PasswordReset
         {
             var result = await Controller.Get(Guid.NewGuid(), _requestId);
 
-            result.As<ViewResult>().ViewName.Should().Be("ExpiredLink");
+            result.As<ViewResult>().ViewName.Should().Be("~/Views/ConfirmResetCode/ExpiredLink.cshtml");
         }
         
         [Test]

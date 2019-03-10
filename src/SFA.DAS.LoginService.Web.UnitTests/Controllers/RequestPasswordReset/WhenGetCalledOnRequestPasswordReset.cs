@@ -3,6 +3,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Web.Controllers.ResetPassword;
+using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ResetPassword
 {
@@ -11,9 +12,9 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ResetPassword
         private IActionResult _result;
 
         [SetUp]
-        public async Task Act()
+        public void Act()
         {       
-            _result = await Controller.Get(ClientId.ToString());
+            _result = Controller.Get(ClientId.ToString());
         }       
         
         [Test]

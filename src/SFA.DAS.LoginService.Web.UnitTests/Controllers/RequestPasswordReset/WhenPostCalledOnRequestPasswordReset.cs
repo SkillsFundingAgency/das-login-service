@@ -5,6 +5,7 @@ using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.ResetPassword;
 using SFA.DAS.LoginService.Web.Controllers.ResetPassword;
+using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ResetPassword
 {

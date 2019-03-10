@@ -1,8 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using IdentityServer4.Models;
 
-namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
+namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels
 {
     public class ConfirmResetCodeViewModel
     {

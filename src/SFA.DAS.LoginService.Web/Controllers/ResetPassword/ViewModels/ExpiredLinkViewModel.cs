@@ -1,6 +1,6 @@
 using System;
 
-namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
+namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels
 {
     public class ExpiredLinkViewModel
     {

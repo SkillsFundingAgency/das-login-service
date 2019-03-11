@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
+using IdentityServer4.Configuration;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +16,7 @@ using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
+using SFA.DAS.LoginService.Web.Infrastructure;
 
 namespace SFA.DAS.LoginService.Web
 {
@@ -61,9 +64,7 @@ namespace SFA.DAS.LoginService.Web
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
-            services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
-                .AddConfigurationStore(options =>
+            var isBuilder = services.AddIdentityServer().AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = builder => builder.UseSqlServer(_loginConfig.SqlConnectionString);
                     options.DefaultSchema = "IdentityServer";
@@ -75,6 +76,16 @@ namespace SFA.DAS.LoginService.Web
                     options.EnableTokenCleanup = true;
                 })
                 .AddAspNetIdentity<LoginUser>();
+
+            if (_environment.IsDevelopment())
+            {
+                isBuilder.AddDeveloperSigningCredential();
+            }
+            else
+            {
+                isBuilder.AddCertificateFromStore(_loginConfig.CertificateThumbprint, _logger);
+            }
+                
             
             services.AddAuthentication()
                 .AddJwtBearer(jwt =>
@@ -84,6 +95,8 @@ namespace SFA.DAS.LoginService.Web
                     jwt.Audience = "api1";
                 });
         }
+        
+        
 
         private void WireUpDependencies(IServiceCollection services)
         {

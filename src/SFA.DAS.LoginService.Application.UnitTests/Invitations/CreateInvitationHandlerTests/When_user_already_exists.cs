@@ -4,6 +4,7 @@ using System.Threading;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using SFA.DAS.LoginService.Application.Services;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitationHandlerTests
 {
@@ -42,7 +43,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
 
             LoginContext.Invitations.Count().Should().Be(0);
             EmailService.DidNotReceiveWithAnyArgs()
-                .SendInvitationEmail("invited@email.com", Arg.Any<string>(), Arg.Any<string>());
+                .SendInvitationEmail(Arg.Any<InvitationEmailViewModel>());
         }
         
         [Test]

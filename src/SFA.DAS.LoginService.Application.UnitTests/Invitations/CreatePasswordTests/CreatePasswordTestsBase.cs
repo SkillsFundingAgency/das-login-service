@@ -33,7 +33,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreatePasswordT
             LoginContext.Invitations.Add(new Invitation()
             {
                 Id = InvitationId,
-                Code = "code".GenerateHash(),
                 Email = "email@provider.com",
                 SourceId = "ABC123"
             });

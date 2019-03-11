@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
+using SFA.DAS.LoginService.Data.JsonObjects;
 
 namespace SFA.DAS.LoginService.Web.Infrastructure
 {

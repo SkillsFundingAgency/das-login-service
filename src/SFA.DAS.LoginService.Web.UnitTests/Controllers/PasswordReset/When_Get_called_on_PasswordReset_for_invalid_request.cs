@@ -25,7 +25,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.PasswordReset
         {
             var result = await Controller.Get(Guid.NewGuid(), _requestId);
 
-            result.As<ViewResult>().ViewName.Should().Be("~/Views/ConfirmResetCode/ExpiredLink.cshtml");
+            result.As<ViewResult>().ViewName.Should().Be("ExpiredLink");
         }
         
         [Test]

@@ -16,19 +16,14 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
     public class CreateInvitationHandler : IRequestHandler<CreateInvitationRequest, CreateInvitationResponse>
     {
         private readonly LoginContext _loginContext;
-        private readonly ICodeGenerationService _codeGenerationService;
-        private readonly IHashingService _hashingService;
         private readonly IEmailService _emailService;
         private readonly ILoginConfig _loginConfig;
         private readonly IUserService _userService;
 
-        public CreateInvitationHandler(LoginContext loginContext, ICodeGenerationService codeGenerationService,
-            IHashingService hashingService, IEmailService emailService, ILoginConfig loginConfig,
+        public CreateInvitationHandler(LoginContext loginContext, IEmailService emailService, ILoginConfig loginConfig,
             IUserService userService)
         {
             _loginContext = loginContext;
-            _codeGenerationService = codeGenerationService;
-            _hashingService = hashingService;
             _emailService = emailService;
             _loginConfig = loginConfig;
             _userService = userService;
@@ -62,16 +57,12 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
                 _loginContext.Invitations.Remove(inviteExists);
             }
             
-            var plainTextCode = _codeGenerationService.GenerateCode();
-            var hashedCode = _hashingService.GetHash(plainTextCode);
-            
             var newInvitation = new Invitation()
             {
                 Email = request.Email,
                 GivenName = request.GivenName,
                 FamilyName = request.FamilyName,
                 SourceId = request.SourceId,
-                Code = hashedCode,
                 ValidUntil = SystemTime.UtcNow().AddHours(1),
                 CallbackUri = request.Callback,
                 UserRedirectUri = request.UserRedirect,
@@ -81,9 +72,16 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
             _loginContext.Invitations.Add(newInvitation);
             await _loginContext.SaveChangesAsync(cancellationToken);
 
-            var linkUrl = _loginConfig.BaseUrl + "Invitations/ConfirmCode/" + newInvitation.Id;
+            var linkUrl = _loginConfig.BaseUrl + "Invitations/CreatePassword/" + newInvitation.Id;
 
-            await _emailService.SendInvitationEmail(request.Email, plainTextCode, linkUrl);
+            await _emailService.SendInvitationEmail(new InvitationEmailViewModel()
+            {
+                Contact = newInvitation.GivenName, 
+                LoginLink = linkUrl, 
+                ServiceName = client.ServiceDetails.ServiceName, 
+                ServiceTeamName = client.ServiceDetails.ServiceTeam, 
+                EmailAddress = newInvitation.Email
+            });
 
             return new CreateInvitationResponse(){Invited = true, InvitationId = newInvitation.Id};
         }

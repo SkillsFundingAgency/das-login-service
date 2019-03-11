@@ -8,6 +8,7 @@ using NUnit.Framework;
 using SFA.DAS.LoginService.Application.GetClientById;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
+using SFA.DAS.LoginService.Data.JsonObjects;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.GetClientByIdTests
 {

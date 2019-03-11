@@ -6,6 +6,7 @@ using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
+using SFA.DAS.LoginService.Data.JsonObjects;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitationHandlerTests
 {
@@ -14,8 +15,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
     {
         protected CreateInvitationHandler CreateInvitationHandler;
         protected LoginContext LoginContext; 
-        protected ICodeGenerationService CodeGenerationService;
-        protected IHashingService HashingService;
         protected IEmailService EmailService;
         protected ILoginConfig LoginConfig;
         protected IUserService UserService;
@@ -26,8 +25,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
         {
             BuildLoginContext();
 
-            CodeGenerationService = Substitute.For<ICodeGenerationService>();
-            HashingService = Substitute.For<IHashingService>();
             EmailService = Substitute.For<IEmailService>();
             LoginConfig = Substitute.For<ILoginConfig>();
             UserService = Substitute.For<IUserService>();
@@ -43,7 +40,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
 
             LoginContext = new LoginContext(dbContextOptions);
             ClientId = Guid.NewGuid();
-            LoginContext.Clients.Add(new Client(){Id = ClientId, AllowInvitationSignUp = true});
+            LoginContext.Clients.Add(new Client() {Id = ClientId, AllowInvitationSignUp = true, ServiceDetails = new ServiceDetails() {ServiceName = "Acme Service", ServiceTeam = "Acme Service Team"}});
             LoginContext.SaveChanges();
         }
 
@@ -78,7 +75,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
 
         private CreateInvitationHandler BuildCreateInvitationHandler()
         {
-            return new CreateInvitationHandler(LoginContext, CodeGenerationService, HashingService, EmailService, LoginConfig, UserService);
+            return new CreateInvitationHandler(LoginContext, EmailService, LoginConfig, UserService);
         }
     }
 }

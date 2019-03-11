@@ -9,11 +9,9 @@ namespace SFA.DAS.LoginService.Data.Entities
         public string GivenName { get; set; }
         public string FamilyName { get; set; }
         public string SourceId { get; set; }
-        public string Code { get; set; }
         public DateTime ValidUntil { get; set; }
         public Uri CallbackUri { get; set; }
         public Uri UserRedirectUri { get; set; }
-        public bool CodeConfirmed { get; set; }
         public bool IsUserCreated { get; set; }
         public bool IsCalledBack { get; set; }
         public DateTime? CallbackDate { get; set; }

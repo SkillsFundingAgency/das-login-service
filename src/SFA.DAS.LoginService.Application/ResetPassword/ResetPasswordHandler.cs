@@ -30,6 +30,9 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
                 return new ResetPasswordResponse() {IsSuccessful = false};
             }
 
+            resetRequest.IsComplete = true;
+            await _loginContext.SaveChangesAsync(cancellationToken);
+            
             var client = await _loginContext.Clients.SingleOrDefaultAsync(c => c.Id == request.ClientId, cancellationToken);
             
             return new ResetPasswordResponse(){IsSuccessful = true, ClientId = request.ClientId, ReturnUrl = client.ServiceDetails.PostPasswordResetReturnUrl};

@@ -12,6 +12,7 @@ using NUnit.Framework;
 using SFA.DAS.LoginService.Application.BuildLoginViewModel;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
+using SFA.DAS.LoginService.Data.JsonObjects;
 using Client = IdentityServer4.Models.Client;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.Login.BuildLoginViewModel

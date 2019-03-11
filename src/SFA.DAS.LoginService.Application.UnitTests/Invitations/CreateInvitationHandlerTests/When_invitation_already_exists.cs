@@ -12,15 +12,13 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
         private void SetupExistingInvitation()
         {
             _existingInvitationId = Guid.NewGuid();
-            _existingInvitationCode = "ExistingCode";
             LoginContext.Invitations.Add(new Invitation()
-                {Email = "invited@email.com", Id = _existingInvitationId, Code = _existingInvitationCode});
+                {Email = "invited@email.com", Id = _existingInvitationId});
             LoginContext.Invitations.Add(new Invitation() {Email = "someother@email.com", Id = Guid.NewGuid()});
             LoginContext.SaveChanges();
         }
 
         private Guid _existingInvitationId;
-        private string _existingInvitationCode;
 
         [Test]
         public void Then_existing_record_is_deleted()
@@ -46,7 +44,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
             var newInvitation = LoginContext.Invitations.Single(i => i.Email == "invited@email.com");
 
             newInvitation.Id.Should().NotBe(_existingInvitationId);
-            newInvitation.Code.Should().NotBe(_existingInvitationCode);
         }
 
         [Test]

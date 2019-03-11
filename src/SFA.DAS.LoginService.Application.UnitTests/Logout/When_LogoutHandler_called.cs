@@ -17,6 +17,7 @@ using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.UnitTests.Helpers;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
+using SFA.DAS.LoginService.Data.JsonObjects;
 using LogoutRequest = SFA.DAS.LoginService.Application.BuildLogoutViewModel.LogoutRequest;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.Logout

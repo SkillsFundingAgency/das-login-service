@@ -35,20 +35,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.SignUpComplete
                 new Invitation()
                     {
                         UserRedirectUri = new Uri("https://localhost/redirect"), 
-                        CodeConfirmed = true, 
                         IsUserCreated = true,
-                        ClientId = ClientId
-                    });
-        }
-        
-        protected void SetUnconfirmedValidInvitationByIdRequest()
-        {
-            Mediator.Send(Arg.Any<GetInvitationByIdRequest>(), CancellationToken.None).Returns(
-                    new Invitation()
-                    {
-                        UserRedirectUri = new Uri("https://localhost/redirect"), 
-                        CodeConfirmed = false, 
-                        IsUserCreated = false, 
                         ClientId = ClientId
                     });
         }

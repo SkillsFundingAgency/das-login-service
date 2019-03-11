@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 using SFA.DAS.LoginService.Application.Services;
@@ -19,11 +20,13 @@ namespace SFA.DAS.LoginService.Web
     public class Startup
     {
         private readonly IHostingEnvironment _environment;
+        private readonly ILogger<Startup> _logger;
         private ILoginConfig _loginConfig;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment, ILogger<Startup> logger)
         {
             _environment = environment;
+            _logger = logger;
             Configuration = configuration;
         }
 

@@ -39,7 +39,7 @@
 {
   "MetadataAddress": "https://localhost:5001/.well-known/openid-configuration",
   "ClientId": "mvc",
-  "ApiClientSecret": "511536EF-F270-4058-80CA-1C89C192F69A",
+  "ApiClientSecret": "",
   "ApiUri": "https://localhost:5001/Invitations/2350df68-e325-4ccc-9027-e1051e48d4a7",   <- This GUID needs to be the Id of the record in LoginService.Clients table
   "RedirectUri": "https://localhost:6016/Users/SignIn",
   "CallbackUri": "https://localhost:6016/Account/Callback",

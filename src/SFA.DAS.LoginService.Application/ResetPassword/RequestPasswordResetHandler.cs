@@ -37,15 +37,15 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
             var loginUser = await _userService.FindByEmail(request.Email);
             if (loginUser == null)
             {
+                var client = await _loginContext.Clients.SingleOrDefaultAsync(c => c.Id == request.ClientId, cancellationToken);
+                await _emailService.SendResetNoAccountPassword(request.Email, client.ServiceDetails.PostPasswordResetReturnUrl);    
                 return Unit.Value;
             }
 
             await ClearOutAnyPreviousStillValidRequests(request.Email);
 
             var identityToken = await _userService.GeneratePasswordResetToken(loginUser);
-            
-            await _userService.LockoutUser(request.Email);
-            
+                       
             var plainTextCode = _codeGenerationService.GenerateCode();
 
             var resetPasswordRequest = await SavePasswordRequest(request, cancellationToken, plainTextCode, identityToken);

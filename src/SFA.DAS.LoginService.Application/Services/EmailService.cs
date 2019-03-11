@@ -23,5 +23,10 @@ namespace SFA.DAS.LoginService.Application.Services
         {
             _logger.LogInformation($"FORGOT PASSWORD Email sent to {email} with code {code} and resetPasswordUrl {resetPasswordUrl}");
         }
+
+        public async Task SendResetNoAccountPassword(string email, string returnUrl)
+        {
+            _logger.LogInformation($"FORGOT PASSWORD BUT NO ACCOUNT Email sent to {email} with returnUrl {returnUrl}");
+        }
     }
 }

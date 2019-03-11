@@ -6,5 +6,6 @@ namespace SFA.DAS.LoginService.Application.Interfaces
     {
         Task SendInvitationEmail(string email, string code, string signUpUrl);
         Task SendResetPassword(string email, string code, string resetPasswordUrl);
+        Task SendResetNoAccountPassword(string email, string returnUrl);
     }
 }

@@ -24,7 +24,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.ResetPassword
         protected ResetPasswordHandler Handler;
         
         [SetUp]
-        public async Task SetUp()
+        public void SetUp()
         {
             var dbContextOptions = new DbContextOptionsBuilder<LoginContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())

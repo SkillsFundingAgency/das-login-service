@@ -47,13 +47,6 @@ namespace SFA.DAS.LoginService.Application.Services
             return await _userManager.FindByEmailAsync(email);
         }
 
-        public async Task LockoutUser(string email)
-        {
-            var user = await FindByEmail(email);
-            user.IsEnabled = false;
-            await _userManager.UpdateAsync(user);
-        }
-
         public async Task<UserResponse> ResetPassword(string email, string password, string identityToken)
         {
             var user = await FindByEmail(email);

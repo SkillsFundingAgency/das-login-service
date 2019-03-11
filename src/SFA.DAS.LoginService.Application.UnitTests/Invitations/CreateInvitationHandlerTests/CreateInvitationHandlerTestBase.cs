@@ -43,7 +43,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
 
             LoginContext = new LoginContext(dbContextOptions);
             ClientId = Guid.NewGuid();
-            LoginContext.Clients.Add(new Client(){Id = ClientId});
+            LoginContext.Clients.Add(new Client(){Id = ClientId, AllowInvitationSignUp = true});
             LoginContext.SaveChanges();
         }
 

@@ -44,6 +44,11 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
             {
                 return new CreateInvitationResponse() {Message = "Client does not exist"};
             }
+
+            if (client.AllowInvitationSignUp == false)
+            {
+                return new CreateInvitationResponse() {Message = "Client is not authorised for Invitiation Signup"};
+            }
             
             var userExists = await _userService.UserExists(request.Email);
             if (userExists)

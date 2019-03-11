@@ -23,7 +23,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
         protected IHashingService HashingService;
 
         [SetUp]
-        public async Task SetUp()
+        public void SetUp()
         {
             ClientId = Guid.NewGuid();
             EmailService = Substitute.For<IEmailService>();

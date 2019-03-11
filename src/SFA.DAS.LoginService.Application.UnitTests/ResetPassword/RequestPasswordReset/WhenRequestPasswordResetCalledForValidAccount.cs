@@ -75,14 +75,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
         }
 
         [Test]
-        public async Task Then_the_user_account_is_locked_out()
-        {
-            await Act();
-
-            await UserService.Received().LockoutUser("email@emailaddress.com");
-        }
-
-        [Test]
         public async Task Then_previous_valid_reset_requests_are_expired()
         {
             SystemTime.UtcNow = () => new DateTime(2018,1,1,11,11,11);

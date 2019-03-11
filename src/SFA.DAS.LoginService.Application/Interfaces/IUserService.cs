@@ -12,7 +12,6 @@ namespace SFA.DAS.LoginService.Application.Interfaces
         Task<LoginUser> FindByUsername(string username);
         Task SignOutUser();
         Task<LoginUser> FindByEmail(string email);
-        Task LockoutUser(string email);
         Task<UserResponse> ResetPassword(string email, string password, string identityToken);
         Task<string> GeneratePasswordResetToken(LoginUser user);
     }

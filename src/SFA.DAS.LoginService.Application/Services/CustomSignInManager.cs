@@ -18,9 +18,9 @@ namespace SFA.DAS.LoginService.Application.Services
         {
             var user = UserManager.FindByEmailAsync(userName).Result;
 
-            if ((user.IsEnabled.HasValue && !user.IsEnabled.Value) || !user.IsEnabled.HasValue)
+            if (user.IsEnabled.HasValue && user.IsEnabled == false)
             {
-                return Task.FromResult<SignInResult>(SignInResult.LockedOut);
+                return Task.FromResult(SignInResult.LockedOut);
             }
             
             return base.PasswordSignInAsync(userName, password, isPersistent, lockoutOnFailure);

@@ -26,12 +26,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
             {
                 return BadRequest();
             }
-
-            if (!invitation.CodeConfirmed)
-            {
-                return RedirectToAction("Get", "ConfirmCode");
-            }
-
+            
             var client = await _mediator.Send(new GetClientByIdRequest() {ClientId = invitation.ClientId});
             
             return View("SignUpComplete", new SignUpCompleteViewModel(){UserRedirectUri = invitation.UserRedirectUri, ServiceName = client.ServiceDetails.ServiceName});

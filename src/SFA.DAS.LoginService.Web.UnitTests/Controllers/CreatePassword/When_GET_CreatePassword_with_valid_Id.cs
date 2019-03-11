@@ -19,7 +19,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         public void Then_correct_ViewResult_is_returned()
         {
             var mediator = Substitute.For<IMediator>();
-            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation() {CodeConfirmed = true});
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation() {ValidUntil = DateTime.Now.AddHours(1)});
 
             var controller = new CreatePasswordController(mediator);
             var result = controller.Get(Guid.NewGuid()).Result;
@@ -31,7 +31,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         public void Then_correct_CreatePasswordViewModel_is_passed_to_View()
         {
             var mediator = Substitute.For<IMediator>();
-            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation() {CodeConfirmed = true});
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation(){ValidUntil = DateTime.Now.AddHours(1)} );
             
             var controller = new CreatePasswordController(mediator);
             var invitationId = Guid.NewGuid();

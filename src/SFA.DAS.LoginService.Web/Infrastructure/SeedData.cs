@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
+using SFA.DAS.LoginService.Data.JsonObjects;
 
 namespace SFA.DAS.LoginService.Web.Infrastructure
 {
@@ -83,8 +84,10 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
                 loginContext.Clients.Add(new Client()
                 {
                     Id = Guid.Parse("2350df68-e325-4ccc-9027-e1051e48d4a7"),
-                    ServiceDetails = new ServiceDetails {ServiceName = "Acme Gov Service", SupportUrl = "https://acme.gov.uk/support"},
-                    IdentityServerClientId = "mvc"
+                    ServiceDetails = new ServiceDetails {ServiceName = "Acme Gov Service", SupportUrl = "https://acme.gov.uk/support", PostPasswordResetReturnUrl = "https://localhost:6016"},
+                    IdentityServerClientId = "mvc",
+                    AllowInvitationSignUp = true,
+                    AllowLocalSignUp = false
                 });
                 loginContext.SaveChanges();
             }

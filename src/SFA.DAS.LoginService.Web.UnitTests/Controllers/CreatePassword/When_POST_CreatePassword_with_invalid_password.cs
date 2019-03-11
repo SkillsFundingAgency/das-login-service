@@ -24,7 +24,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         {
             var mediator = Substitute.For<IMediator>();
             mediator.Send(Arg.Any<CreatePasswordRequest>()).Returns(new CreatePasswordResponse() {PasswordValid = false});
-            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation() {CodeConfirmed = true});
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation() );
             var controller = new CreatePasswordController(mediator);
 
             var invitationId = Guid.NewGuid();

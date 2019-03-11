@@ -11,14 +11,14 @@ using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
 
-namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
+namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
 {
     [TestFixture]
     public class When_invitation_resent
     {
         private Guid _invitationId;
         private IMediator _mediator;
-        private ConfirmCodeController _controller;
+        private CreatePasswordController _controller;
 
         [SetUp]
         public void SetUp()
@@ -27,7 +27,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
             _mediator = Substitute.For<IMediator>();
             _mediator.Send(Arg.Is<GetInvitationByIdRequest>(r => r.InvitationId == _invitationId), CancellationToken.None)
                 .Returns(new Invitation() {Id = _invitationId, Email = "email@address.com"});
-            _controller = new ConfirmCodeController(_mediator);
+            _controller = new CreatePasswordController(_mediator);
         }
         
         [Test]

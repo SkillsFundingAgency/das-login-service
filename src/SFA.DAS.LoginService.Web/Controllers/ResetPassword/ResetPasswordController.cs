@@ -28,7 +28,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
                     Email = checkRequestResponse.Email, 
                     RequestId = requestId, 
                     ClientId = clientId}) 
-                : View("~/Views/ConfirmResetCode/ExpiredLink.cshtml", new ExpiredLinkViewModel(){ClientId = clientId});
+                : View("ExpiredLink", new ExpiredLinkViewModel(){ClientId = clientId});
         }
 
         [HttpPost("/NewPassword/{clientId}/{requestId}")]

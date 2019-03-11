@@ -15,8 +15,6 @@ namespace SFA.DAS.LoginService.Application.GetInvitationById
             ValidUntil = invitation.ValidUntil;
             UserRedirectUri = invitation.UserRedirectUri;
             CallbackUri = invitation.CallbackUri;
-            Code = invitation.Code;
-            CodeConfirmed = invitation.CodeConfirmed;
             IsUserCreated = invitation.IsUserCreated;
             CallbackDate = invitation.CallbackDate;
             IsCalledBack = invitation.IsCalledBack;
@@ -30,10 +28,6 @@ namespace SFA.DAS.LoginService.Application.GetInvitationById
         public DateTime? CallbackDate { get; set; }
 
         public bool IsUserCreated { get; set; }
-
-        public bool CodeConfirmed { get; set; }
-
-        public string Code { get; set; }
 
         public Uri CallbackUri { get; set; }
 

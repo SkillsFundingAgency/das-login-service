@@ -10,7 +10,7 @@ using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 using SFA.DAS.LoginService.Application.Reinvite;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
 
-namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
+namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
 {
     [TestFixture]
     public class When_resend_of_invitation_requested
@@ -22,7 +22,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
             mediator.Send(Arg.Any<ReinviteRequest>(), CancellationToken.None).Returns(new CreateInvitationResponse()
                 {Invited = true, Message = ""});
             
-            var controller = new ConfirmCodeController(mediator);
+            var controller = new CreatePasswordController(mediator);
             var invitationId = Guid.NewGuid();
             
             await controller.Reinvite(invitationId);
@@ -38,14 +38,13 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
             mediator.Send(Arg.Any<ReinviteRequest>(), CancellationToken.None).Returns(new CreateInvitationResponse()
                 {Invited = true, Message = "", InvitationId = newInvitationId});
             
-            var controller = new ConfirmCodeController(mediator);
+            var controller = new CreatePasswordController(mediator);
             var invitationId = Guid.NewGuid();
             
             var result = await controller.Reinvite(invitationId);
 
             result.Should().BeOfType<RedirectToActionResult>();
             ((RedirectToActionResult) result).ActionName.Should().Be("Reinvited");
-            ((RedirectToActionResult) result).ControllerName.Should().Be("ConfirmCode");
             ((RedirectToActionResult) result).RouteValues["invitationId"].Should().Be(newInvitationId);
         }
         
@@ -55,7 +54,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ConfirmCode
             var mediator = Substitute.For<IMediator>();
             mediator.Send(Arg.Any<ReinviteRequest>(), CancellationToken.None).Returns(new CreateInvitationResponse()
                 {Invited = false, Message = "Error message"});
-            var controller = new ConfirmCodeController(mediator);
+            var controller = new CreatePasswordController(mediator);
             var invitationId = Guid.NewGuid();
             
             var result = await controller.Reinvite(invitationId);

@@ -36,40 +36,40 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
             insertedInvitation.ClientId.Should().Be(createInvitationRequest.ClientId.ToString());
         }
 
-        [Test]
-        public void Then_code_generation_service_is_asked_for_a_code()
-        {
-            var createInvitationRequest = BuildCreateInvitationRequest();
-            CreateInvitationHandler.Handle(createInvitationRequest, CancellationToken.None).Wait();
+//        [Test]
+//        public void Then_code_generation_service_is_asked_for_a_code()
+//        {
+//            var createInvitationRequest = BuildCreateInvitationRequest();
+//            CreateInvitationHandler.Handle(createInvitationRequest, CancellationToken.None).Wait();
+//
+//            CodeGenerationService.Received().GenerateCode();
+//        }
+//
+//        [Test]
+//        public void Then_hashing_service_is_asked_to_hash_the_code()
+//        {
+//            var createInvitationRequest = BuildCreateInvitationRequest();
+//            
+//            CodeGenerationService.GenerateCode().Returns("ABC123XY");
+//            
+//            CreateInvitationHandler.Handle(createInvitationRequest, CancellationToken.None).Wait();
+//
+//            HashingService.Received().GetHash("ABC123XY");
+//        }
 
-            CodeGenerationService.Received().GenerateCode();
-        }
-
-        [Test]
-        public void Then_hashing_service_is_asked_to_hash_the_code()
-        {
-            var createInvitationRequest = BuildCreateInvitationRequest();
-            
-            CodeGenerationService.GenerateCode().Returns("ABC123XY");
-            
-            CreateInvitationHandler.Handle(createInvitationRequest, CancellationToken.None).Wait();
-
-            HashingService.Received().GetHash("ABC123XY");
-        }
-
-        [Test]
-        public void Then_new_Invitation_is_inserted_with_hashed_code()
-        {
-            var createInvitationRequest = BuildCreateInvitationRequest();
-
-            HashingService.GetHash(Arg.Any<string>()).Returns("ThisIsTheHash=");
-            
-            CreateInvitationHandler.Handle(createInvitationRequest, CancellationToken.None).Wait();
-
-            var insertedInvitation = LoginContext.Invitations.Single();
-            
-            insertedInvitation.Code.Should().Be("ThisIsTheHash=");
-        }
+//        [Test]
+//        public void Then_new_Invitation_is_inserted_with_hashed_code()
+//        {
+//            var createInvitationRequest = BuildCreateInvitationRequest();
+//
+//            HashingService.GetHash(Arg.Any<string>()).Returns("ThisIsTheHash=");
+//            
+//            CreateInvitationHandler.Handle(createInvitationRequest, CancellationToken.None).Wait();
+//
+//            var insertedInvitation = LoginContext.Invitations.Single();
+//            
+//            insertedInvitation.Code.Should().Be("ThisIsTheHash=");
+//        }
 
         [Test]
         public void Then_new_Invitation_is_inserted_with_Valid_until_set_one_hour_ahead()
@@ -90,15 +90,18 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
         {
             var createInvitationRequest = BuildCreateInvitationRequest();
             
-            CodeGenerationService.GenerateCode().Returns("ABC123XY");
             LoginConfig.BaseUrl.Returns("https://goodurl/");
             
             CreateInvitationHandler.Handle(createInvitationRequest, CancellationToken.None).Wait();
             
             var insertedInvitation = LoginContext.Invitations.Single();
 
-            EmailService.Received().SendInvitationEmail(createInvitationRequest.Email, "ABC123XY",
-                "https://goodurl/Invitations/ConfirmCode/" + insertedInvitation.Id);
+            EmailService.Received().SendInvitationEmail(Arg.Is<InvitationEmailViewModel>(vm => 
+                vm.Contact == "InvitedGivenName" && 
+                vm.ServiceName == "Acme Service" &&
+                vm.ServiceTeamName == "Acme Service Team" &&
+                vm.LoginLink == "https://goodurl/Invitations/CreatePassword/" + insertedInvitation.Id &&
+                vm.EmailAddress == createInvitationRequest.Email));
         }
         
         [Test]

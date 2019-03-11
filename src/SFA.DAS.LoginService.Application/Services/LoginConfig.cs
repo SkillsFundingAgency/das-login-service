@@ -7,5 +7,7 @@ namespace SFA.DAS.LoginService.Application.Services
         public string BaseUrl { get; set; }
         public string SqlConnectionString { get; set; }
         public int PasswordResetExpiryInHours { get; set; }
+        public string CertificateThumbprint { get; set; }
+        public NotificationsApiConfiguration NotificationsApiConfiguration { get; set; }
     }
 }

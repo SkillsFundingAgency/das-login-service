@@ -4,6 +4,7 @@ using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.ResetPassword;
 using SFA.DAS.LoginService.Data.Entities;
+using SFA.DAS.LoginService.Data.JsonObjects;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswordReset
 {
@@ -22,7 +23,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
         {   
             await Handler.Handle(new RequestPasswordResetRequest() {Email = "nonexistantuser@emailaddress.com", ClientId = ClientId}, CancellationToken.None);
             
-            await EmailService.DidNotReceive().SendResetPassword("nonexistantuser@emailaddress.com", Arg.Any<string>(), Arg.Any<string>() );
+            await EmailService.DidNotReceive().SendResetPassword("nonexistantuser@emailaddress.com", Arg.Any<string>() );
         }
         
         [Test]

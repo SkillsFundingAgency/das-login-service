@@ -1,9 +1,12 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.LoginService.Application.CreatePassword;
 using SFA.DAS.LoginService.Application.GetInvitationById;
+using SFA.DAS.LoginService.Application.Reinvite;
+using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
 using SFA.DAS.LoginService.Web.Controllers.ResetPassword;
 using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
@@ -27,11 +30,13 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
             {
                 return BadRequest("Invitation does not exist");
             }
-            
-            if (!invitation.CodeConfirmed)
+
+            if (invitation.ValidUntil < SystemTime.UtcNow())
             {
-                return BadRequest("CodeConfirmed is false");
+                return View("InvitationExpired", new InvitationExpiredViewModel(){InvitationId = id});
             }
+            
+            
             return View("CreatePassword", new CreatePasswordViewModel(){InvitationId = id, PasswordViewModel = new PasswordViewModel(){ConfirmPassword = "", Password = ""}});
         }
 
@@ -47,11 +52,6 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
             if (invitation == null)
             {
                 return BadRequest("Invitation does not exist");
-            }
-            
-            if (!invitation.CodeConfirmed)
-            {
-                return BadRequest("CodeConfirmed is false");
             }
             
             if (vm.PasswordViewModel.Password == vm.PasswordViewModel.ConfirmPassword)
@@ -87,6 +87,25 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
                     ConfirmPassword = vm.PasswordViewModel.ConfirmPassword
                 }
             });
+        }
+        
+        [HttpPost("/Invitations/Reinvite/{invitationId}")]
+        public async Task<IActionResult> Reinvite(Guid invitationId)
+        {
+            var result = await _mediator.Send(new ReinviteRequest() { InvitationId = invitationId });
+            if (result.Invited == false)
+            {
+                return BadRequest();
+            }
+            return RedirectToAction("Reinvited", new { result.InvitationId });
+        }
+
+        [HttpGet("/Invitations/Reinvite/{invitationId}")]
+        public async Task<IActionResult> Reinvited(Guid invitationId)
+        {
+            var invitation = await _mediator.Send(new GetInvitationByIdRequest(invitationId), CancellationToken.None);
+
+            return View("Reinvited", new ReinvitedViewModel() { Email = invitation.Email });
         }
     }
 }

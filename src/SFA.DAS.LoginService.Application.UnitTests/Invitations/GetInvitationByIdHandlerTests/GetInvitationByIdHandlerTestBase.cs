@@ -43,7 +43,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.GetInvitationBy
                 FamilyName = "Picard",
                 GivenName = "Jean Luc",
                 SourceId = Guid.NewGuid().ToString(),
-                Code = "AcOdE",
                 CallbackUri = new Uri("https://callback"),
                 UserRedirectUri = new Uri("https://redirect"),
                 ValidUntil = SystemTime.UtcNow().AddHours(1)
@@ -62,7 +61,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.GetInvitationBy
                 FamilyName = "Picard",
                 GivenName = "Jean Luc",
                 SourceId = Guid.NewGuid().ToString(),
-                Code = "AcOdE",
                 CallbackUri = new Uri("https://callback"),
                 UserRedirectUri = new Uri("https://redirect"),
                 ValidUntil = SystemTime.UtcNow().AddHours(-1)

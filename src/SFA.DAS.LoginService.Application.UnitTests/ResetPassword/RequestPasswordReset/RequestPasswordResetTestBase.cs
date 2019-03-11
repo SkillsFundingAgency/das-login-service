@@ -14,20 +14,18 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
     public class RequestPasswordResetTestBase
     {
         protected IEmailService EmailService;
-        protected ICodeGenerationService CodeGenerationService;
         protected ILoginConfig LoginConfig;
         protected RequestPasswordResetHandler Handler;
         protected Guid ClientId;
         protected LoginContext LoginContext;
         protected IUserService UserService;
-        protected IHashingService HashingService;
 
         [SetUp]
         public void SetUp()
         {
             ClientId = Guid.NewGuid();
             EmailService = Substitute.For<IEmailService>();
-            CodeGenerationService = Substitute.For<ICodeGenerationService>();
+            
             
             UserService = Substitute.For<IUserService>();
             UserService.GeneratePasswordResetToken(Arg.Any<LoginUser>()).Returns("Token");
@@ -36,7 +34,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
             LoginConfig.BaseUrl.Returns("https://baseurl");
             LoginConfig.PasswordResetExpiryInHours = 1;
             
-            HashingService = Substitute.For<IHashingService>();
             
             var dbContextOptions = new DbContextOptionsBuilder<LoginContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -44,7 +41,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
 
             LoginContext = new LoginContext(dbContextOptions);
             
-            Handler = new RequestPasswordResetHandler(EmailService, CodeGenerationService, LoginConfig, LoginContext, UserService, HashingService);
+            Handler = new RequestPasswordResetHandler(EmailService, LoginConfig, LoginContext, UserService);
         }
         
     }

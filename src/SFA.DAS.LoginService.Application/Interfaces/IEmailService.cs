@@ -1,11 +1,12 @@
 using System.Threading.Tasks;
+using SFA.DAS.LoginService.Application.Services;
 
 namespace SFA.DAS.LoginService.Application.Interfaces
 {
     public interface IEmailService
     {
-        Task SendInvitationEmail(string email, string code, string signUpUrl);
-        Task SendResetPassword(string email, string code, string resetPasswordUrl);
+        Task SendInvitationEmail(InvitationEmailViewModel viewModel);
+        Task SendResetPassword(string email, string resetPasswordUrl);
         Task SendResetNoAccountPassword(string email, string returnUrl);
     }
 }

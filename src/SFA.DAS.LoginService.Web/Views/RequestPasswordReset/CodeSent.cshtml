@@ -4,4 +4,17 @@
     ViewBag.Title = "Forgotten password";
 }
 
-<h1>If we found an account for @Model.Email, we have sent an email with instructions to reset your password.</h1>
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Forgotten password</h1>
+
+            <p class="govuk-body">
+              If we found an account for @Model.Email, we have sent an email with instructions to reset your password.
+            </p>
+            <p class="govuk-body">
+              If you can't find the email in your inbox, check your junk email folder.
+            </p>
+        </div>
+    </div>
+</main>

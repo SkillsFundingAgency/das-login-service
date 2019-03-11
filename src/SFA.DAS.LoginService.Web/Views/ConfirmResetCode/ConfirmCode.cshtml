@@ -10,7 +10,7 @@
             
             <partial name="/Views/Partials/_validationErrorSummary.cshtml"/>
 
-            <form asp-action="ConfirmCode" novalidate>
+            <form asp-action="Get" novalidate>
                 <input type="hidden" asp-for="RequestId"/>
                 <input type="hidden" asp-for="ClientId"/>
                 <div class="govuk-form-group" sfa-anyvalidationerror-class="govuk-form-group--error">

@@ -17,7 +17,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
         }
         
         [HttpGet("/NewPassword/ConfirmCode/{clientId}/{requestId}")]
-        public async Task<IActionResult> ConfirmCode(Guid clientId, Guid requestId)
+        public async Task<IActionResult> Get(Guid clientId, Guid requestId)
         {
             var checkRequestResponse = await _mediator.Send(new CheckPasswordResetRequest {RequestId = requestId});
             return checkRequestResponse.IsValid
@@ -26,7 +26,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
         }
         
         [HttpPost("/NewPassword/ConfirmCode/{clientId}/{requestId}")]
-        public async Task<IActionResult> ConfirmCode(ConfirmResetCodeViewModel vm)
+        public async Task<IActionResult> Post(ConfirmResetCodeViewModel vm)
         {
             if (!ModelState.IsValid)
             {

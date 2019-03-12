@@ -1,8 +1,11 @@
+using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.ResetPassword;
+using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Data.JsonObjects;
 
@@ -14,7 +17,20 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
         public async Task Arrange()
         {
             UserService.FindByEmail(Arg.Any<string>()).Returns(default(LoginUser));
-            LoginContext.Clients.Add(new Client() {Id = ClientId, ServiceDetails = new ServiceDetails() {PostPasswordResetReturnUrl = "https://returnurl"}});
+            LoginContext.Clients.Add(new Client()
+            {
+                Id = ClientId, 
+                ServiceDetails = new ServiceDetails()
+                {
+                    PostPasswordResetReturnUrl = "https://returnurl", 
+                    EmailTemplates = new List<EmailTemplate>()
+                    {
+                        new EmailTemplate(){Name = "PasswordResetNoAccount", TemplateId = Guid.NewGuid()},
+                        new EmailTemplate(){Name = "PasswordReset", TemplateId = Guid.NewGuid()},
+                        new EmailTemplate(){Name = "SignUpInvitation", TemplateId = Guid.NewGuid()},
+                    }
+                }
+            });
             await LoginContext.SaveChangesAsync();
         }
         
@@ -23,7 +39,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
         {   
             await Handler.Handle(new RequestPasswordResetRequest() {Email = "nonexistantuser@emailaddress.com", ClientId = ClientId}, CancellationToken.None);
             
-            await EmailService.DidNotReceive().SendResetPassword("nonexistantuser@emailaddress.com", Arg.Any<string>() );
+            await EmailService.DidNotReceive().SendResetPassword(Arg.Any<PasswordResetEmailViewModel>());
         }
         
         [Test]
@@ -31,7 +47,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
         {
             await Handler.Handle(new RequestPasswordResetRequest() {Email = "nonexistantuser@emailaddress.com", ClientId = ClientId}, CancellationToken.None);
             
-            await EmailService.Received().SendResetNoAccountPassword("nonexistantuser@emailaddress.com", "https://returnurl");
+            await EmailService.Received().SendResetNoAccountPassword(Arg.Is<PasswordResetNoAccountEmailViewModel>(vm => vm.EmailAddress == "nonexistantuser@emailaddress.com"));
         }
     }
 }

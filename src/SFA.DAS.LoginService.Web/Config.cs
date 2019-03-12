@@ -22,8 +22,8 @@ namespace SFA.DAS.LoginService.Web
                 },
                 new Client
                 {
-                    ClientId = "mvc",
-                    ClientName = "MVC Client",
+                    ClientId = "apply",
+                    ClientName = "Apply Client",
 
                     AllowedGrantTypes = GrantTypes.Implicit,
                     
@@ -35,6 +35,21 @@ namespace SFA.DAS.LoginService.Web
 
                     AllowedScopes = { "openid" }
                 },
+                new Client
+                {
+                    ClientId = "assessor",
+                    ClientName = "Assessor Client",
+
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    
+                    RedirectUris = { "https://localhost:5015/signin-oidc" },
+                    
+                    PostLogoutRedirectUris = { "https://localhost:5015/signout-callback-oidc" }, 
+
+                    RequireConsent = false,
+
+                    AllowedScopes = { "openid" }
+                }
             }; 
         }
 

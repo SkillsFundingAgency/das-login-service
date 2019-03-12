@@ -110,9 +110,16 @@ namespace SFA.DAS.LoginService.Web
                     "SFA.DAS.LoginService", _environment).Result;
             
             services.AddTransient(sp => _loginConfig);
-            services.AddTransient<ICodeGenerationService, CodeGenerationService>();
-            services.AddTransient<IHashingService, HashingService>();
-            services.AddTransient<IEmailService, EmailService>();
+
+            if (_environment.IsDevelopment())
+            {
+                services.AddTransient<IEmailService, EmailService.DevEmailService>();
+            }
+            else
+            {
+                services.AddHttpClient<IEmailService, EmailService.EmailService>();    
+            }
+            
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<CustomSignInManager>();
             services.AddHttpClient<ICallbackService, CallbackService>();

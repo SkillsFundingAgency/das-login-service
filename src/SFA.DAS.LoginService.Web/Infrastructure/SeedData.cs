@@ -84,8 +84,16 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
                 loginContext.Clients.Add(new Client()
                 {
                     Id = Guid.Parse("2350df68-e325-4ccc-9027-e1051e48d4a7"),
-                    ServiceDetails = new ServiceDetails {ServiceName = "Acme Gov Service", SupportUrl = "https://acme.gov.uk/support", PostPasswordResetReturnUrl = "https://localhost:6016"},
-                    IdentityServerClientId = "mvc",
+                    ServiceDetails = new ServiceDetails {ServiceName = "Apply Service", SupportUrl = "https://acme.gov.uk/support", PostPasswordResetReturnUrl = "https://localhost:6016"},
+                    IdentityServerClientId = "apply",
+                    AllowInvitationSignUp = true,
+                    AllowLocalSignUp = false
+                });
+                loginContext.Clients.Add(new Client()
+                {
+                    Id = Guid.Parse("08372e20-becd-415c-9925-4d33ddf67faf"),
+                    ServiceDetails = new ServiceDetails {ServiceName = "Assessor Service", SupportUrl = "https://localhost:5015/support", PostPasswordResetReturnUrl = "https://localhost:5015"},
+                    IdentityServerClientId = "assessor",
                     AllowInvitationSignUp = true,
                     AllowLocalSignUp = false
                 });

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NUnit.Framework;
@@ -19,6 +20,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
         protected ILoginConfig LoginConfig;
         protected IUserService UserService;
         protected static Guid ClientId;
+        protected Guid InvitationTemplateId;
 
         [SetUp]
         public void SetUp()
@@ -40,7 +42,18 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
 
             LoginContext = new LoginContext(dbContextOptions);
             ClientId = Guid.NewGuid();
-            LoginContext.Clients.Add(new Client() {Id = ClientId, AllowInvitationSignUp = true, ServiceDetails = new ServiceDetails() {ServiceName = "Acme Service", ServiceTeam = "Acme Service Team"}});
+            InvitationTemplateId = Guid.Parse("a2fc2212-253e-47c1-b847-27c10f83f7f5");
+            LoginContext.Clients.Add(new Client()
+            {
+                Id = ClientId, 
+                AllowInvitationSignUp = true, 
+                ServiceDetails = new ServiceDetails()
+                {
+                    ServiceName = "Acme Service", 
+                    ServiceTeam = "Acme Service Team",
+                    EmailTemplates = new List<EmailTemplate>(){new EmailTemplate(){Name="SignUpInvitation", TemplateId = InvitationTemplateId}}
+                }
+            });
             LoginContext.SaveChanges();
         }
 

@@ -80,7 +80,8 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
                 LoginLink = linkUrl, 
                 ServiceName = client.ServiceDetails.ServiceName, 
                 ServiceTeamName = client.ServiceDetails.ServiceTeam, 
-                EmailAddress = newInvitation.Email
+                EmailAddress = newInvitation.Email,
+                TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "SignUpInvitation").TemplateId
             });
 
             return new CreateInvitationResponse(){Invited = true, InvitationId = newInvitation.Id};

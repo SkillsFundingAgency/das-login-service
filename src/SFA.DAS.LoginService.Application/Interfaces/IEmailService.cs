@@ -6,7 +6,7 @@ namespace SFA.DAS.LoginService.Application.Interfaces
     public interface IEmailService
     {
         Task SendInvitationEmail(InvitationEmailViewModel viewModel);
-        Task SendResetPassword(string email, string resetPasswordUrl);
-        Task SendResetNoAccountPassword(string email, string returnUrl);
+        Task SendResetPassword(PasswordResetEmailViewModel viewModel);
+        Task SendResetNoAccountPassword(PasswordResetNoAccountEmailViewModel viewModel);
     }
 }

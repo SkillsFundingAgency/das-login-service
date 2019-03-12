@@ -9,7 +9,6 @@
       <PackageReference Include="MediatR" Version="6.0.0" />
       <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.2.0" />
       <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-      <PackageReference Include="PasswordGenerator.NetStandard" Version="1.0.0" />
       <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
     </ItemGroup>
 

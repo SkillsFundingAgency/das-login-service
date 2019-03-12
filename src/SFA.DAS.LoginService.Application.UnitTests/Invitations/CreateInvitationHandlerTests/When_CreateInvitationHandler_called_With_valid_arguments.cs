@@ -5,6 +5,7 @@ using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.Services;
+using SFA.DAS.LoginService.Application.Services.EmailServiceViewModels;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitationHandlerTests
 {
@@ -64,7 +65,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
             EmailService.Received().SendInvitationEmail(Arg.Is<InvitationEmailViewModel>(vm => 
                 vm.Contact == "InvitedGivenName" && 
                 vm.ServiceName == "Acme Service" &&
-                vm.ServiceTeamName == "Acme Service Team" &&
+                vm.ServiceTeam == "Acme Service Team" &&
                 vm.LoginLink == "https://goodurl/Invitations/CreatePassword/" + insertedInvitation.Id &&
                 vm.EmailAddress == createInvitationRequest.Email &&
                 vm.TemplateId == InvitationTemplateId));

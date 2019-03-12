@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NUnit.Framework;
@@ -42,9 +43,16 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreatePasswordT
 
             UserService = Substitute.For<IUserService>();
             NewLoginUserId = Guid.NewGuid();
-            
-            
+
+
             Handler = new CreatePasswordHandler(UserService, LoginContext, CallbackService);
+        }
+
+        [TearDown]
+        public async Task Teardown()
+        {
+            LoginContext.UserLogs.RemoveRange(LoginContext.UserLogs);
+            await LoginContext.SaveChangesAsync();
         }
     }
 }

@@ -9,7 +9,9 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.LoginService.Application.Interfaces;
+using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Data;
+using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Application.BuildLogoutViewModel
 {
@@ -51,7 +53,7 @@ namespace SFA.DAS.LoginService.Application.BuildLogoutViewModel
             
                 await _eventService.RaiseAsync(new UserLogoutSuccessEvent(principal.GetSubjectId(), principal.GetDisplayName()));
             }
-           
+            
             return response;
         }
     }

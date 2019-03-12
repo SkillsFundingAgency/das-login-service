@@ -1,11 +1,13 @@
 using System;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Application.Services.EmailServiceViewModels;
+using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitationHandlerTests
 {
@@ -89,6 +91,30 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
             var invitationCreated = LoginContext.Invitations.Single();
             
             response.InvitationId.Should().Be(invitationCreated.Id);
+        }
+
+        [Test]
+        public async Task Then_LogEntry_created_to_log_invitation()
+        {
+            SystemTime.UtcNow = () => new DateTime(2019, 1, 1, 1, 1, 1);
+            var logId = Guid.NewGuid();
+            GuidGenerator.NewGuid = () => logId;
+
+            var createInvitationRequest = BuildCreateInvitationRequest();
+            await CreateInvitationHandler.Handle(createInvitationRequest, CancellationToken.None);
+
+            var logEntry = LoginContext.UserLogs.Single();
+
+            var expectedLogEntry = new UserLog
+            {
+                Id = logId,
+                DateTime = SystemTime.UtcNow(),
+                Email = "invited@email.com",
+                Action = "Invite",
+                Result = "Invited"
+            };
+
+            logEntry.Should().BeEquivalentTo(expectedLogEntry);
         }
     }
 }

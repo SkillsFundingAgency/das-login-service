@@ -5,6 +5,7 @@ using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.Services;
+using SFA.DAS.LoginService.Application.Services.EmailServiceViewModels;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitationHandlerTests
 {

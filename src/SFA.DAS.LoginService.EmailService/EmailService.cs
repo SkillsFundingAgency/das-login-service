@@ -10,6 +10,7 @@ using SFA.DAS.Http;
 using SFA.DAS.Http.TokenGenerators;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Services;
+using SFA.DAS.LoginService.Application.Services.EmailServiceViewModels;
 using SFA.DAS.Notifications.Api.Client;
 using SFA.DAS.Notifications.Api.Client.Configuration;
 using SFA.DAS.Notifications.Api.Types;
@@ -32,7 +33,9 @@ namespace SFA.DAS.LoginService.EmailService
             var notificationsApiClientConfiguration = new NotificationsApiClientConfiguration()
             {
                 ApiBaseUrl = _config.NotificationsApiClientConfiguration.ApiBaseUrl,
+                #pragma warning disable 618
                 ClientToken = _config.NotificationsApiClientConfiguration.ClientToken,
+                #pragma warning restore 618
                 ClientId = _config.NotificationsApiClientConfiguration.ClientId,
                 ClientSecret = _config.NotificationsApiClientConfiguration.ClientSecret,
                 IdentifierUri = _config.NotificationsApiClientConfiguration.IdentifierUri,

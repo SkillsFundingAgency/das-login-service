@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using NUnit.Framework;
 using SFA.DAS.LoginService.Application.ResetPassword;
 using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Data.Entities;
+using SFA.DAS.LoginService.Data.JsonObjects;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswordReset
 {
@@ -15,9 +17,24 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
     public class WhenRequestPasswordResetCalledForValidAccount : RequestPasswordResetTestBase
     {
         [SetUp]
-        public void Arrange()
+        public async Task Arrange()
         {
             UserService.FindByEmail(Arg.Any<string>()).Returns(new LoginUser());
+            LoginContext.Clients.Add(new Client()
+            {
+                Id = ClientId, 
+                ServiceDetails = new ServiceDetails()
+                {
+                    PostPasswordResetReturnUrl = "https://returnurl", 
+                    EmailTemplates = new List<EmailTemplate>()
+                    {
+                        new EmailTemplate(){Name = "PasswordResetNoAccount", TemplateId = Guid.NewGuid()},
+                        new EmailTemplate(){Name = "PasswordReset", TemplateId = Guid.NewGuid()},
+                        new EmailTemplate(){Name = "SignUpInvitation", TemplateId = Guid.NewGuid()},
+                    }
+                }
+            });
+            await LoginContext.SaveChangesAsync();
         }
         
         private async Task Act()
@@ -31,7 +48,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
         {
             await Act();
 
-            await EmailService.Received().SendResetPassword("email@emailaddress.com", Arg.Any<string>() );
+            await EmailService.Received().SendResetPassword(Arg.Is<PasswordResetEmailViewModel>(vm => vm.EmailAddress == "email@emailaddress.com"));
         }
         
         [Test]
@@ -40,8 +57,8 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
             await Act();
 
             var resetPasswordRequest = LoginContext.ResetPasswordRequests.Single();
-            
-            await EmailService.Received().SendResetPassword(Arg.Any<string>(), $"https://baseurl/NewPassword/{ClientId}/{resetPasswordRequest.Id}" );
+
+            await EmailService.Received().SendResetPassword(Arg.Is<PasswordResetEmailViewModel>(vm => vm.LoginLink == $"https://baseurl/NewPassword/{ClientId}/{resetPasswordRequest.Id}"));
         }
 
         [Test]

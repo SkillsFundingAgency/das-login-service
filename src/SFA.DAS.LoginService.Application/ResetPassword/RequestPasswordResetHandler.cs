@@ -29,11 +29,20 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
 
         public async Task<Unit> Handle(RequestPasswordResetRequest request, CancellationToken cancellationToken)
         {
+            var client = await _loginContext.Clients.SingleOrDefaultAsync(c => c.Id == request.ClientId, cancellationToken);
+            
             var loginUser = await _userService.FindByEmail(request.Email);
             if (loginUser == null)
             {
-                var client = await _loginContext.Clients.SingleOrDefaultAsync(c => c.Id == request.ClientId, cancellationToken);
-                await _emailService.SendResetNoAccountPassword(request.Email, client.ServiceDetails.PostPasswordResetReturnUrl);    
+                await _emailService.SendResetNoAccountPassword(new PasswordResetNoAccountEmailViewModel()
+                {
+                    EmailAddress = request.Email,
+                    LoginLink = client.ServiceDetails.PostPasswordResetReturnUrl,
+                    Subject = "Password request received",
+                    TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "PasswordResetNoAccount").TemplateId,
+                    ServiceName = client.ServiceDetails.ServiceName,
+                    ServiceTeamName = client.ServiceDetails.ServiceTeam
+                });    
                 return Unit.Value;
             }
 
@@ -45,7 +54,16 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
 
             var resetUri = new Uri(new Uri(_loginConfig.BaseUrl), $"NewPassword/{request.ClientId}/{resetPasswordRequest.Id}");
             
-            await _emailService.SendResetPassword(request.Email, resetUri.ToString());
+            await _emailService.SendResetPassword(new PasswordResetEmailViewModel()
+            {
+                Contact = loginUser.UserName,
+                EmailAddress = request.Email,
+                LoginLink = resetUri.ToString(), 
+                ServiceName = client.ServiceDetails.ServiceName, 
+                ServiceTeamName = client.ServiceDetails.ServiceTeam, 
+                Subject = "Password reset", 
+                TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "PasswordReset").TemplateId 
+            });
             return Unit.Value;
         }
 

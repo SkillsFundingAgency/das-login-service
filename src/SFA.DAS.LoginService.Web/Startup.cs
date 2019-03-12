@@ -48,9 +48,21 @@ namespace SFA.DAS.LoginService.Web
             WireUpDependencies(services);
             
             services.AddDbContext<LoginContext>(options => options.UseSqlServer(_loginConfig.SqlConnectionString));
-            
             services.AddDbContext<LoginUserContext>(options => options.UseSqlServer(_loginConfig.SqlConnectionString));
 
+            AddIdentityServer(services);
+
+            services.AddAuthentication()
+                .AddJwtBearer(jwt =>
+                {
+                    jwt.Authority = "http://localhost:5000";
+                    jwt.RequireHttpsMetadata = false;
+                    jwt.Audience = "api1";
+                });
+        }
+
+        private void AddIdentityServer(IServiceCollection services)
+        {
             services.AddIdentity<LoginUser, IdentityRole>(
                     options =>
                     {
@@ -63,7 +75,7 @@ namespace SFA.DAS.LoginService.Web
                 .AddDefaultTokenProviders();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
+
             var isBuilder = services.AddIdentityServer().AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = builder => builder.UseSqlServer(_loginConfig.SqlConnectionString);
@@ -85,18 +97,8 @@ namespace SFA.DAS.LoginService.Web
             {
                 isBuilder.AddCertificateFromStore(_loginConfig.CertificateThumbprint, _logger);
             }
-                
-            
-            services.AddAuthentication()
-                .AddJwtBearer(jwt =>
-                {
-                    jwt.Authority = "http://localhost:5000";
-                    jwt.RequireHttpsMetadata = false;
-                    jwt.Audience = "api1";
-                });
         }
-        
-        
+
 
         private void WireUpDependencies(IServiceCollection services)
         {

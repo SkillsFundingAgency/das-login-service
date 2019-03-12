@@ -35,6 +35,16 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
             var loginUser = await _userService.FindByEmail(request.Email);
             if (loginUser == null)
             {
+                _loginContext.UserLogs.Add(new UserLog()
+                {
+                    Id = GuidGenerator.NewGuid(), 
+                    Action = "Request reset password link", 
+                    Email = request.Email,  
+                    DateTime = SystemTime.UtcNow(),
+                    Result = "Sent no account email"
+                });
+                await _loginContext.SaveChangesAsync(cancellationToken);
+                
                 await _emailService.SendResetNoAccountPassword(new PasswordResetNoAccountEmailViewModel()
                 {
                     EmailAddress = request.Email,
@@ -65,6 +75,17 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
                 Subject = "Password reset", 
                 TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "PasswordReset").TemplateId 
             });
+            
+            _loginContext.UserLogs.Add(new UserLog()
+            {
+                Id = GuidGenerator.NewGuid(), 
+                Action = "Request reset password link", 
+                Email = request.Email,  
+                DateTime = SystemTime.UtcNow(),
+                Result = "Sent reset password email"
+            });
+            await _loginContext.SaveChangesAsync(cancellationToken);
+            
             return Unit.Value;
         }
 

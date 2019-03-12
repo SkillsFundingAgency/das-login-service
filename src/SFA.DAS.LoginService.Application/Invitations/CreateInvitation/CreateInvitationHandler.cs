@@ -71,7 +71,6 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
             };
             
             _loginContext.Invitations.Add(newInvitation);
-            await _loginContext.SaveChangesAsync(cancellationToken);
 
             var linkUrl = _loginConfig.BaseUrl + "Invitations/CreatePassword/" + newInvitation.Id;
 
@@ -86,6 +85,16 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
                 TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "SignUpInvitation").TemplateId
             });
 
+            _loginContext.UserLogs.Add(new UserLog()
+            {
+                Id = GuidGenerator.NewGuid(), 
+                Action = "Invite", 
+                Email = newInvitation.Email, 
+                Result = "Invited", 
+                DateTime = SystemTime.UtcNow()
+            });
+            
+            await _loginContext.SaveChangesAsync(cancellationToken);
             return new CreateInvitationResponse(){Invited = true, InvitationId = newInvitation.Id};
         }
 

@@ -35,9 +35,18 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
             {
                 return View("InvitationExpired", new InvitationExpiredViewModel(){InvitationId = id});
             }
-            
-            
-            return View("CreatePassword", new CreatePasswordViewModel(){InvitationId = id, PasswordViewModel = new PasswordViewModel(){ConfirmPassword = "", Password = ""}});
+
+
+            return View("CreatePassword", new CreatePasswordViewModel()
+            {
+                InvitationId = id, 
+                PasswordViewModel = new PasswordViewModel()
+                {
+                    ConfirmPassword = "", 
+                    Password = "", 
+                    Username = invitation.Email
+                }
+            });
         }
 
         [HttpPost("/Invitations/CreatePassword/{id}")]

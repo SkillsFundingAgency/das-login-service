@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using IdentityServer4.Configuration;
 using MediatR;
@@ -11,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Polly;
+using Polly.Extensions.Http;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 using SFA.DAS.LoginService.Application.Services;
@@ -48,9 +52,21 @@ namespace SFA.DAS.LoginService.Web
             WireUpDependencies(services);
             
             services.AddDbContext<LoginContext>(options => options.UseSqlServer(_loginConfig.SqlConnectionString));
-            
             services.AddDbContext<LoginUserContext>(options => options.UseSqlServer(_loginConfig.SqlConnectionString));
 
+            AddIdentityServer(services);
+
+            services.AddAuthentication()
+                .AddJwtBearer(jwt =>
+                {
+                    jwt.Authority = "http://localhost:5000";
+                    jwt.RequireHttpsMetadata = false;
+                    jwt.Audience = "api1";
+                });
+        }
+
+        private void AddIdentityServer(IServiceCollection services)
+        {
             services.AddIdentity<LoginUser, IdentityRole>(
                     options =>
                     {
@@ -63,7 +79,7 @@ namespace SFA.DAS.LoginService.Web
                 .AddDefaultTokenProviders();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
+
             var isBuilder = services.AddIdentityServer().AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = builder => builder.UseSqlServer(_loginConfig.SqlConnectionString);
@@ -85,18 +101,8 @@ namespace SFA.DAS.LoginService.Web
             {
                 isBuilder.AddCertificateFromStore(_loginConfig.CertificateThumbprint, _logger);
             }
-                
-            
-            services.AddAuthentication()
-                .AddJwtBearer(jwt =>
-                {
-                    jwt.Authority = "http://localhost:5000";
-                    jwt.RequireHttpsMetadata = false;
-                    jwt.Audience = "api1";
-                });
         }
-        
-        
+
 
         private void WireUpDependencies(IServiceCollection services)
         {
@@ -122,9 +128,22 @@ namespace SFA.DAS.LoginService.Web
             
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<CustomSignInManager>();
-            services.AddHttpClient<ICallbackService, CallbackService>();
+            services.AddHttpClient<ICallbackService, CallbackService>()
+                .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                .AddPolicyHandler(GetRetryPolicy());
 
             services.AddMediatR(typeof(CreateInvitationHandler).Assembly);
+        }
+
+        private IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            var jitterer = new Random();
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .OrResult(msg => msg.StatusCode == HttpStatusCode.NotFound)
+                .WaitAndRetryAsync(5, 
+                    retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)) 
+                                    + TimeSpan.FromMilliseconds(jitterer.Next(0, 100)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

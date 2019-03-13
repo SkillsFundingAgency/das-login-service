@@ -22,6 +22,15 @@ namespace SFA.DAS.LoginService.Application.Services
 
         public async Task Callback(Invitation invitation, string loginUserId)
         {
+            var userLog = new UserLog()
+            {
+                Id = GuidGenerator.NewGuid(), 
+                Action = "Client callback", 
+                Email = invitation.Email,  
+                DateTime = SystemTime.UtcNow()
+            };
+            _loginContext.UserLogs.Add(userLog);
+            
             HttpResponseMessage response;
             try
             {
@@ -34,17 +43,46 @@ namespace SFA.DAS.LoginService.Application.Services
                             sourceId = invitation.SourceId
                         }), Encoding.UTF8, "application/json"));
             }
-            catch (HttpRequestException)
+            catch (HttpRequestException ex)
             {
+                userLog.Result = "Callback error";
+                userLog.ExtraData = JsonConvert.SerializeObject(new
+                {
+                    CallbackUri = invitation.CallbackUri, 
+                    SourceId = invitation.SourceId, 
+                    UserId = loginUserId,  
+                    Content = ex.Message
+                });
+                await _loginContext.SaveChangesAsync();
                 return;
             }
+
+            
             
             if (response.IsSuccessStatusCode)
             {
                 invitation.IsCalledBack = true;
                 invitation.CallbackDate = SystemTime.UtcNow();
-                await _loginContext.SaveChangesAsync();
+
+                userLog.Result = "Callback OK";
+                userLog.ExtraData = JsonConvert.SerializeObject(new {CallbackUri = invitation.CallbackUri, SourceId = invitation.SourceId, UserId = loginUserId});
             }
+            else
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                
+                userLog.Result = "Callback error";
+                userLog.ExtraData = JsonConvert.SerializeObject(new
+                {
+                    CallbackUri = invitation.CallbackUri, 
+                    SourceId = invitation.SourceId, 
+                    UserId = loginUserId, 
+                    ResponseStatusCode = response.StatusCode, 
+                    Content = content
+                });
+            }
+            await _loginContext.SaveChangesAsync();
+            
         }
     }
 }

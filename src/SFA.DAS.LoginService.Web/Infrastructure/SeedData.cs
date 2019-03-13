@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Interfaces;
@@ -77,14 +78,37 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
             {
                 Console.WriteLine("ApiResources already populated");
             }
-
+            
             if (!loginContext.Clients.Any())
             {
                 Console.WriteLine("LoginService.Clients being populated");
                 loginContext.Clients.Add(new Client()
                 {
                     Id = Guid.Parse("2350df68-e325-4ccc-9027-e1051e48d4a7"),
-                    ServiceDetails = new ServiceDetails {ServiceName = "Apply Service", SupportUrl = "https://acme.gov.uk/support", PostPasswordResetReturnUrl = "https://localhost:6016"},
+                    ServiceDetails = new ServiceDetails
+                    {
+                        ServiceName = "Apply Service", 
+                        SupportUrl = "https://acme.gov.uk/support", 
+                        PostPasswordResetReturnUrl = "https://localhost:6016",
+                        EmailTemplates = new List<EmailTemplate>()
+                        {
+                            new EmailTemplate()
+                            {
+                                Name = "SignUpInvitation",
+                                TemplateId = Guid.Parse("a2fc2212-253e-47c1-b847-27c10f83f7f5")
+                            },
+                            new EmailTemplate()
+                            {
+                                Name = "PasswordReset",
+                                TemplateId = Guid.Parse("ecbff8b8-3ad4-48b8-a42c-7d3f602dbbd3")
+                            },
+                            new EmailTemplate()
+                            {
+                                Name = "PasswordResetNoAccount",
+                                TemplateId = Guid.Parse("04326941-2067-4956-8dc2-4ccd60c84af5")
+                            },
+                        }
+                    },
                     IdentityServerClientId = "apply",
                     AllowInvitationSignUp = true,
                     AllowLocalSignUp = false
@@ -92,7 +116,28 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
                 loginContext.Clients.Add(new Client()
                 {
                     Id = Guid.Parse("08372e20-becd-415c-9925-4d33ddf67faf"),
-                    ServiceDetails = new ServiceDetails {ServiceName = "Assessor Service", SupportUrl = "https://localhost:5015/support", PostPasswordResetReturnUrl = "https://localhost:5015"},
+                    ServiceDetails = new ServiceDetails {
+                        ServiceName = "Assessor Service", 
+                        SupportUrl = "https://localhost:5015/support", 
+                        PostPasswordResetReturnUrl = "https://localhost:5015",
+                        EmailTemplates = new List<EmailTemplate>()
+                        {
+                            new EmailTemplate()
+                            {
+                                Name = "SignUpInvitation",
+                                TemplateId = Guid.Parse("a2fc2212-253e-47c1-b847-27c10f83f7f5")
+                            },
+                            new EmailTemplate()
+                            {
+                                Name = "PasswordReset",
+                                TemplateId = Guid.Parse("ecbff8b8-3ad4-48b8-a42c-7d3f602dbbd3")
+                            },
+                            new EmailTemplate()
+                            {
+                                Name = "PasswordResetNoAccount",
+                                TemplateId = Guid.Parse("04326941-2067-4956-8dc2-4ccd60c84af5")
+                            },
+                        }},
                     IdentityServerClientId = "assessor",
                     AllowInvitationSignUp = true,
                     AllowLocalSignUp = false

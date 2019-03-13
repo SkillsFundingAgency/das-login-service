@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Services;
+using SFA.DAS.LoginService.Application.Services.EmailServiceViewModels;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
 
@@ -70,20 +71,30 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
             };
             
             _loginContext.Invitations.Add(newInvitation);
-            await _loginContext.SaveChangesAsync(cancellationToken);
 
             var linkUrl = _loginConfig.BaseUrl + "Invitations/CreatePassword/" + newInvitation.Id;
 
             await _emailService.SendInvitationEmail(new InvitationEmailViewModel()
             {
+                Subject = "Sign up",
                 Contact = newInvitation.GivenName, 
                 LoginLink = linkUrl, 
                 ServiceName = client.ServiceDetails.ServiceName, 
-                ServiceTeamName = client.ServiceDetails.ServiceTeam, 
+                ServiceTeam = client.ServiceDetails.ServiceTeam, 
                 EmailAddress = newInvitation.Email,
                 TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "SignUpInvitation").TemplateId
             });
 
+            _loginContext.UserLogs.Add(new UserLog()
+            {
+                Id = GuidGenerator.NewGuid(), 
+                Action = "Invite", 
+                Email = newInvitation.Email, 
+                Result = "Invited", 
+                DateTime = SystemTime.UtcNow()
+            });
+            
+            await _loginContext.SaveChangesAsync(cancellationToken);
             return new CreateInvitationResponse(){Invited = true, InvitationId = newInvitation.Id};
         }
 

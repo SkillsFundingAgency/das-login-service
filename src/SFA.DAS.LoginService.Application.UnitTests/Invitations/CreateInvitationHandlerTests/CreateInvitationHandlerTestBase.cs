@@ -61,10 +61,10 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
         public void TearDown()
         {
             LoginContext.Invitations.RemoveRange(LoginContext.Invitations);
+            LoginContext.UserLogs.RemoveRange(LoginContext.UserLogs);
             LoginContext.SaveChanges();
         }
-        
-        
+
         protected static CreateInvitationRequest BuildCreateInvitationRequest()
         {
             var createInvitationRequest = new CreateInvitationRequest()

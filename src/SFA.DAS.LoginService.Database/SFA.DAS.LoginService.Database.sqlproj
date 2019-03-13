@@ -60,7 +60,6 @@
     <Folder Include="Schemas\" />
     <Folder Include="Tables\" />
     <Folder Include="Tables\IdentityServer" />
-    <Folder Include="Tables\LoginService" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schemas\IdentityServer.sql" />
@@ -96,5 +95,6 @@
     <Build Include="Tables\LoginService\LoginService.Clients.sql" />
     <Build Include="Tables\LoginService\LoginService.Invitations.sql" />
     <Build Include="Tables\LoginService\LoginService.ResetPasswordRequests.sql" />
+    <Build Include="Tables\LoginService\LoginService.UserLogs.sql" />
   </ItemGroup>
 </Project>

@@ -23,7 +23,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.ResetPassword
             LoginContext.ResetPasswordRequests.Add(new ResetPasswordRequest {Id = RequestId, Email = "email@address.com", ClientId = ClientId, IdentityToken = "T0k3n", IsComplete = false, ValidUntil = SystemTime.UtcNow().AddHours(1)});
             LoginContext.Clients.Add(new Client() {Id = ClientId, ServiceDetails = new ServiceDetails() {PostPasswordResetReturnUrl = "http://returnurl"}});
             await LoginContext.SaveChangesAsync(); 
-            UserService.ResetPassword("email@address.com", "Pa55word", "T0k3n").Returns(new UserResponse(){Result = IdentityResult.Success});
+            UserService.ResetPassword("email@address.com", "Pa55word", "T0k3n").Returns(new UserResponse(){Result = IdentityResult.Success, User = new LoginUser(){Email = "email@email.com"}});
         }
 
         [Test]

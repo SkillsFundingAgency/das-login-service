@@ -120,7 +120,7 @@
                         "value": "[parameters('customHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[if(greater(length(parameters('customHostname')), 0), reference(resourceId(parameters('appServicePlanResourceGroup'), 'Microsoft.Web/certificates', parameters('keyVaultCertificateName')), '2016-03-01').Thumbprint, '')]"
+                        "value": "[if(greater(length(parameters('customHostname')), 0), reference(resourceId(parameters('sharedResourceGroup'), 'Microsoft.Web/certificates', parameters('keyVaultCertificateName')), '2016-03-01').Thumbprint, '')]"
                     }
                 }
             }

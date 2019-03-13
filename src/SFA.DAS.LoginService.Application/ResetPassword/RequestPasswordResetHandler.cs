@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Services;
+using SFA.DAS.LoginService.Application.Services.EmailServiceViewModels;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
 
@@ -34,6 +35,16 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
             var loginUser = await _userService.FindByEmail(request.Email);
             if (loginUser == null)
             {
+                _loginContext.UserLogs.Add(new UserLog()
+                {
+                    Id = GuidGenerator.NewGuid(), 
+                    Action = "Request reset password link", 
+                    Email = request.Email,  
+                    DateTime = SystemTime.UtcNow(),
+                    Result = "Sent no account email"
+                });
+                await _loginContext.SaveChangesAsync(cancellationToken);
+                
                 await _emailService.SendResetNoAccountPassword(new PasswordResetNoAccountEmailViewModel()
                 {
                     EmailAddress = request.Email,
@@ -41,7 +52,7 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
                     Subject = "Password request received",
                     TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "PasswordResetNoAccount").TemplateId,
                     ServiceName = client.ServiceDetails.ServiceName,
-                    ServiceTeamName = client.ServiceDetails.ServiceTeam
+                    ServiceTeam = client.ServiceDetails.ServiceTeam
                 });    
                 return Unit.Value;
             }
@@ -60,10 +71,21 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
                 EmailAddress = request.Email,
                 LoginLink = resetUri.ToString(), 
                 ServiceName = client.ServiceDetails.ServiceName, 
-                ServiceTeamName = client.ServiceDetails.ServiceTeam, 
+                ServiceTeam = client.ServiceDetails.ServiceTeam, 
                 Subject = "Password reset", 
                 TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "PasswordReset").TemplateId 
             });
+            
+            _loginContext.UserLogs.Add(new UserLog()
+            {
+                Id = GuidGenerator.NewGuid(), 
+                Action = "Request reset password link", 
+                Email = request.Email,  
+                DateTime = SystemTime.UtcNow(),
+                Result = "Sent reset password email"
+            });
+            await _loginContext.SaveChangesAsync(cancellationToken);
+            
             return Unit.Value;
         }
 

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Data;
+using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Application.ResetPassword
 {
@@ -27,9 +28,28 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
 
             if (userResponse.Result != IdentityResult.Success)
             {
+                _loginContext.UserLogs.Add(new UserLog()
+                {
+                    Id = GuidGenerator.NewGuid(), 
+                    Action = "New password", 
+                    Email = userResponse.User.Email,  
+                    DateTime = SystemTime.UtcNow(),
+                    Result = "Password invalid"
+                });
+                await _loginContext.SaveChangesAsync(cancellationToken);
+                
                 return new ResetPasswordResponse() {IsSuccessful = false};
             }
 
+            _loginContext.UserLogs.Add(new UserLog()
+            {
+                Id = GuidGenerator.NewGuid(), 
+                Action = "New password", 
+                Email = userResponse.User.Email,  
+                DateTime = SystemTime.UtcNow(),
+                Result = "Password changed"
+            });
+            
             resetRequest.IsComplete = true;
             await _loginContext.SaveChangesAsync(cancellationToken);
             

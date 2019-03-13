@@ -37,7 +37,6 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.PasswordReset
 
             result.As<ViewResult>().Model.Should().BeOfType<ResetPasswordViewModel>();
             result.As<ViewResult>().Model.As<ResetPasswordViewModel>().RequestId.Should().Be(_requestId);
-            result.As<ViewResult>().Model.As<ResetPasswordViewModel>().Email.Should().Be("email@emailaddress.com");
             result.As<ViewResult>().Model.As<ResetPasswordViewModel>().PasswordViewModel.Password.Should().BeEmpty();
             result.As<ViewResult>().Model.As<ResetPasswordViewModel>().PasswordViewModel.ConfirmPassword.Should().BeEmpty();
             result.As<ViewResult>().Model.As<ResetPasswordViewModel>().ClientId.Should().Be(clientId);

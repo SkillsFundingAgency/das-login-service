@@ -31,7 +31,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         public void Then_correct_CreatePasswordViewModel_is_passed_to_View()
         {
             var mediator = Substitute.For<IMediator>();
-            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation(){ValidUntil = DateTime.Now.AddHours(1)} );
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation() {ValidUntil = DateTime.Now.AddHours(1), Email = "email@email.com"});
             
             var controller = new CreatePasswordController(mediator);
             var invitationId = Guid.NewGuid();
@@ -41,6 +41,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
             ((CreatePasswordViewModel) ((ViewResult) result).Model).InvitationId.Should().Be(invitationId);
             ((CreatePasswordViewModel) ((ViewResult) result).Model).PasswordViewModel.Password.Should().BeEmpty();
             ((CreatePasswordViewModel) ((ViewResult) result).Model).PasswordViewModel.ConfirmPassword.Should().BeEmpty();
+            ((CreatePasswordViewModel) ((ViewResult) result).Model).PasswordViewModel.Username.Should().Be("email@email.com");
         }
     }
 }

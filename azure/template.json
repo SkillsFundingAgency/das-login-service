@@ -99,7 +99,7 @@
                     "appServiceAppSettings": {
                         "value": [
                             {
-                                "name": "Environment",
+                                "name": "EnvironmentName",
                                 "value": "[parameters('environmentName')]"
                             },
                             {

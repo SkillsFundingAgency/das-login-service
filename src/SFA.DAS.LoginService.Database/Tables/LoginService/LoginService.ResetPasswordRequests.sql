@@ -1,4 +1,5 @@
-CREATE TABLE [LoginService].[ResetPasswordRequests](
+CREATE TABLE [LoginService].[ResetPasswordRequests]
+(
 	[Id] [uniqueidentifier] NOT NULL,
 	[Email] [nvarchar](250) NOT NULL,
 	[Code] [nvarchar](250) NOT NULL,
@@ -8,6 +9,3 @@ CREATE TABLE [LoginService].[ResetPasswordRequests](
 	[RequestedDate] [datetime2](7) NOT NULL,
 	[IdentityToken] [nvarchar](250) NOT NULL,
 ) ON [PRIMARY]
-GO
-
-

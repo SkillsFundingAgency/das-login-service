@@ -1,1 +1,1 @@
-CREATE SCHEMA IdentityServer
+CREATE SCHEMA [IdentityServer]

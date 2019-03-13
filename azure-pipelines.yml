@@ -42,7 +42,7 @@ steps:
   displayName: Test
   inputs:
     command: test
-    projects: 'src/**/*.Web.UnitTests.csproj'
+    projects: 'src/**/*.UnitTests.csproj'
     arguments: '--configuration $(buildConfiguration) --no-build'
 
 - task: DotNetCoreCLI@2

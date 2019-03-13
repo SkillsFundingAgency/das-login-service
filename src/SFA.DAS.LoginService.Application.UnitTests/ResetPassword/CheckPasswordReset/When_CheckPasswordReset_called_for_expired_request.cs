@@ -14,8 +14,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.CheckPassword
         [Test]
         public async Task Then_result_IsValid_should_be_false()
         {
-            SystemTime.UtcNow = () => new DateTime(2018,1,1,1,1,0);
-            
             var requestId = Guid.NewGuid();
 
             LoginContext.ResetPasswordRequests.Add(new ResetPasswordRequest() {Id = requestId, ValidUntil = SystemTime.UtcNow().AddHours(-1), IsComplete = false, Email = "email@emailaddress.com"});

@@ -11,7 +11,8 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
 {
     public class When_ProcessLogin_called_with_invalid_returnUrl : ProcessLoginTestBase
     {
-        private void Init()
+        [SetUp]
+        public void Arrange()
         {   
             UserService.SignInUser(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(SignInResult.Success);
             InteractionService.GetAuthorizationContextAsync(Arg.Any<string>()).Returns(default(AuthorizationRequest));
@@ -20,7 +21,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
         [Test]
         public async Task Then_Response_CredentialsValid_should_be_false()
         {
-            Init();
             var result = await Handler.Handle(new ProcessLoginRequest()
                 {Username = "user", Password = "password", ReturnUrl = "https://returnurl", RememberLogin = false}, CancellationToken.None);
 

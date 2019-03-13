@@ -1,11 +1,9 @@
+using System;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IdentityModel;
-using IdentityServer4.Events;
-using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +14,6 @@ using SFA.DAS.LoginService.Application.BuildLogoutViewModel;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.UnitTests.Helpers;
 using SFA.DAS.LoginService.Data;
-using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Data.JsonObjects;
 using LogoutRequest = SFA.DAS.LoginService.Application.BuildLogoutViewModel.LogoutRequest;
 
@@ -36,7 +33,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Logout
         public async Task SetUp()
         {
             var dbContextOptions = new DbContextOptionsBuilder<LoginContext>()
-                .UseInMemoryDatabase(databaseName: this.GetType().Name)
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
             _loginContext = new LoginContext(dbContextOptions);
@@ -49,8 +46,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Logout
             _userService = Substitute.For<IUserService>();
 
             var principal = new TestPrincipal(new Claim(JwtClaimTypes.Subject, "user123"));
-
-            
             
             _eventService = Substitute.For<IEventService>();
 
@@ -60,34 +55,12 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Logout
             _handler = new LogoutHandler(_interactionService, _loginContext, _userService, _eventService, _httpContextAccessor);
         }
         
-        [TearDown]
-        public async Task TearDown()
-        {
-            _loginContext.Clients.RemoveRange(_loginContext.Clients);
-            await _loginContext.SaveChangesAsync();
-        }
-        
         [Test]
         public async Task Then_interaction_service_is_asked_for_LogoutContext()
         {
             await _handler.Handle(new LogoutRequest() {LogoutId = "logoutid"}, CancellationToken.None);
             await _interactionService.Received().GetLogoutContextAsync("logoutid");
         }
-
-//        [Test]
-//        public async Task Then_user_service_signout_is_called()
-//        {
-//            _httpContextAccessor.HttpContext.User.IsAuthenticated().Returns(true);
-//            await _handler.Handle(new LogoutRequest() {LogoutId = "logoutid"}, CancellationToken.None);
-//            await _userService.Received().SignOutUser();
-//        }
-//
-//        [Test]
-//        public async Task Then_UserLogoutSuccessEvent_is_raised_on_Eventservice()
-//        {
-//            await _handler.Handle(new LogoutRequest() {LogoutId = "logoutid"}, CancellationToken.None);
-//            await _eventService.Received().RaiseAsync(Arg.Is<UserLogoutSuccessEvent>(e => e.SubjectId == "user123" && e.DisplayName == "User"));
-//        }
         
         [Test]
         public async Task Then_response_contains_correct_values()

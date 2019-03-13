@@ -10,17 +10,14 @@ using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
 {
-    [TestFixture]
-    public class When_GET_CreatePassword_with_non_existant_Invitation
+    public class When_GET_CreatePassword_with_non_existant_Invitation : CreatePasswordTestsBase
     {
         [Test]
         public void Then_BadRequest_Is_Returned()
         {
-            var mediator = Substitute.For<IMediator>();
-            mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(default(Invitation));
+            Mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(default(Invitation));
             
-            var controller = new CreatePasswordController(mediator);
-            var result = controller.Get(Guid.NewGuid()).Result;
+            var result = Controller.Get(Guid.NewGuid()).Result;
             result.Should().BeOfType<BadRequestObjectResult>();
         }
     }

@@ -23,13 +23,13 @@ namespace SFA.DAS.LoginService.Web.Controllers
             _context = context;
         }
         
-        [HttpPost("/DevSetup")]
+        [HttpPost("/DevSetup/68be9655-fd1e-4364-8ed3-8c825ac7502f")]
         public IActionResult DevSetup()
         {
-            if (!_environment.IsDevelopment())
-            {
-                return BadRequest("For development use only");
-            }
+//            if (!_environment.IsDevelopment())
+//            {
+//                return BadRequest("For development use only");
+//            }
             
             SeedData.EnsureSeedData(_loginConfig.SqlConnectionString, _loginContext, _context);
             

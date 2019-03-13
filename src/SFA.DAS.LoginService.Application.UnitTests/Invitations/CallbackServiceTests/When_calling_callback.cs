@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using NSubstitute;
 using NUnit.Framework;
 using RichardSzalay.MockHttp;
 using SFA.DAS.LoginService.Application.Services;
@@ -31,14 +30,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CallbackService
             _loginContext = new LoginContext(dbContextOptions);
             _mockHttp = new MockHttpMessageHandler();
         }
-
-        [TearDown]
-        public async Task TearDown()
-        {
-            _loginContext.UserLogs.RemoveRange(_loginContext.UserLogs);
-            await _loginContext.SaveChangesAsync();
-        }
-        
         [Test]
         public void Then_correct_json_is_posted_to_callback_uri()
         {

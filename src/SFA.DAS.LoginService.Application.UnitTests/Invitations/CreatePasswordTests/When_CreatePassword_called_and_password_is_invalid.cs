@@ -12,10 +12,15 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreatePasswordT
 {
     public class When_CreatePassword_called_and_password_is_invalid : CreatePasswordTestsBase
     {
+        [SetUp]
+        public void Arrange()
+        {
+            UserService.CreateUser(Arg.Any<LoginUser>(), Arg.Any<string>()).Returns(new UserResponse(){User = new LoginUser(){Id = NewLoginUserId.ToString()}, Result = IdentityResult.Failed()});
+        }
+        
         [Test]
         public void Then_CreatePasswordResponse_PasswordValid_is_false()
         {
-            UserService.CreateUser(Arg.Any<LoginUser>(), Arg.Any<string>()).Returns(new UserResponse(){User = new LoginUser(){Id = NewLoginUserId.ToString()}, Result = IdentityResult.Failed()});
             var response = Handler.Handle(new CreatePasswordRequest {InvitationId = InvitationId, Password = "password"}, CancellationToken.None).Result;
             response.PasswordValid.Should().BeFalse();
         }
@@ -23,7 +28,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreatePasswordT
         [Test]
         public void Then_Invitation_is_not_updated_as_complete()
         {
-            UserService.CreateUser(Arg.Any<LoginUser>(), Arg.Any<string>()).Returns(new UserResponse(){User = new LoginUser(){Id = NewLoginUserId.ToString()}, Result = IdentityResult.Failed()});
             Handler.Handle(new CreatePasswordRequest {InvitationId = InvitationId, Password = "password"}, CancellationToken.None).Wait();
 
             LoginContext.Invitations.Single(i => i.Id == InvitationId).IsUserCreated.Should().BeFalse();
@@ -32,7 +36,6 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreatePasswordT
         [Test]
         public void Then_callback_service_is_not_called()
         {           
-            UserService.CreateUser(Arg.Any<LoginUser>(), Arg.Any<string>()).Returns(new UserResponse(){User = new LoginUser(){Id = NewLoginUserId.ToString()}, Result = IdentityResult.Failed()});
             Handler.Handle(new CreatePasswordRequest {InvitationId = InvitationId, Password = "Password"}, CancellationToken.None).Wait();
 
             CallbackService.DidNotReceiveWithAnyArgs().Callback(Arg.Any<Invitation>(), Arg.Any<string>());

@@ -1,1 +1,1 @@
-CREATE SCHEMA LoginService
+CREATE SCHEMA [LoginService]

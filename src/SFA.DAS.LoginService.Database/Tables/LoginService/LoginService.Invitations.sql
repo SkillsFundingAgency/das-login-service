@@ -1,4 +1,5 @@
-CREATE TABLE [LoginService].[Invitations](
+CREATE TABLE [LoginService].[Invitations]
+(
 	[Id] [uniqueidentifier] NOT NULL,
 	[Email] [nvarchar](250) NOT NULL,
 	[GivenName] [nvarchar](250) NOT NULL,
@@ -12,6 +13,3 @@ CREATE TABLE [LoginService].[Invitations](
 	[CallbackDate] [datetime2](7) NULL,
 	[ClientId] [uniqueidentifier] NOT NULL,
 ) ON [PRIMARY]
-GO
-
-

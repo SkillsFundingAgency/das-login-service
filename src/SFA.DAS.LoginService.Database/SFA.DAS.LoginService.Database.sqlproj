@@ -57,15 +57,44 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Schemas\" />
+    <Folder Include="Tables\" />
+    <Folder Include="Tables\IdentityServer" />
+    <Folder Include="Tables\LoginService" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Schemas\IdentityServer.sql" />
-    <Content Include="Tables\Clients.sql" />
-    <Content Include="Tables\IdentityTables.sql" />
-    <Content Include="Tables\Invitations.sql" />
-    <Content Include="Tables\ResetPasswordRequests.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Schemas\LoginService.sql" />
+    <Build Include="Schemas\IdentityServer.sql" />
+    <Build Include="Schemas\LoginService.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ApiClaims.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ApiProperties.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ApiResources.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ApiScopeClaims.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ApiScopes.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ApiSecrets.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.AspNetRoleClaims.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.AspNetRoles.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.AspNetUserClaims.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.AspNetUserLogins.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.AspNetUserRoles.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.AspNetUsers.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.AspNetUserTokens.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ClientClaims.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ClientCorsOrigins.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ClientGrantTypes.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ClientIdPRestrictions.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ClientPostLogoutRedirectUris.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ClientProperties.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ClientRedirectUris.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.Clients.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ClientScopes.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.ClientSecrets.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.DeviceCodes.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.IdentityClaims.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.IdentityProperties.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.IdentityResources.sql" />
+    <Build Include="Tables\IdentityServer\IdentityServer.PersistedGrants.sql" />
+    <Build Include="Tables\LoginService\LoginService.Clients.sql" />
+    <Build Include="Tables\LoginService\LoginService.Invitations.sql" />
+    <Build Include="Tables\LoginService\LoginService.ResetPasswordRequests.sql" />
   </ItemGroup>
 </Project>

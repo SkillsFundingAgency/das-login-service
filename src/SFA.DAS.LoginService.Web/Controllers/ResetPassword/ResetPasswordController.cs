@@ -24,8 +24,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
             var checkRequestResponse = await _mediator.Send(new CheckPasswordResetRequest {RequestId = requestId});
             return checkRequestResponse.IsValid 
                 ? View("ResetPassword", new ResetPasswordViewModel(){
-                    PasswordViewModel = new PasswordViewModel(){Password = "", ConfirmPassword = ""},
-                    Email = checkRequestResponse.Email, 
+                    PasswordViewModel = new PasswordViewModel(){Password = "", ConfirmPassword = "", Username = checkRequestResponse.Email},
                     RequestId = requestId, 
                     ClientId = clientId}) 
                 : View("ExpiredLink", new ExpiredLinkViewModel(){ClientId = clientId});
@@ -45,7 +44,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
                 return View("ResetPassword",
                     new ResetPasswordViewModel()
                     {
-                        ClientId = clientId, Email = viewModel.Email, RequestId = requestId,
+                        ClientId = clientId, RequestId = requestId,
                         PasswordViewModel = new PasswordViewModel() {ConfirmPassword = viewModel.PasswordViewModel.ConfirmPassword, Password = viewModel.PasswordViewModel.Password}
                     });
             }
@@ -58,7 +57,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
                 return View("ResetPassword",
                     new ResetPasswordViewModel()
                     {
-                        ClientId = clientId, Email = viewModel.Email, RequestId = requestId,
+                        ClientId = clientId, RequestId = requestId,
                         PasswordViewModel = new PasswordViewModel() {ConfirmPassword = viewModel.PasswordViewModel.ConfirmPassword, Password = viewModel.PasswordViewModel.Password}
                     });
             }

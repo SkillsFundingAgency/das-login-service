@@ -4,6 +4,6 @@ CREATE TABLE [LoginService].[UserLogs](
 	[Email] [nvarchar](250) NOT NULL,
 	[Action] [nvarchar](250) NOT NULL,
 	[Result] [nvarchar](250) NOT NULL,
-	[ExtraData] [nvarchar](MAX) NOT NULL
+	[ExtraData] [nvarchar](MAX) NULL
 ) ON [PRIMARY]
 GO

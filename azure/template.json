@@ -47,6 +47,9 @@
         },
         "keyVaultCertificateName": {
            "type": "string"
+        },
+        "loggingRedisConnectionString": {
+           "type": "string"
         }
     },
     "variables": {
@@ -113,6 +116,15 @@
                             {
                                 "name": "ASPNETCORE_ENVIRONMENT",
                                 "value": "[toUpper(parameters('environmentName'))]"
+                            }
+                        ]
+                    },
+                    "appServiceConnectionStrings": {
+                        "value": [
+                            {
+                                "name": "Redis",
+                                "connectionString": "[parameters('loggingRedisConnectionString')]",
+                                "type": "Custom"
                             }
                         ]
                     },

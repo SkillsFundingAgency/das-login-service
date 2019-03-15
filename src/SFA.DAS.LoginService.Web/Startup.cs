@@ -74,6 +74,8 @@ namespace SFA.DAS.LoginService.Web
                         options.Password.RequireNonAlphanumeric = false;
                         options.Password.RequireLowercase = false;
                         options.Password.RequireUppercase = false;
+                        options.Lockout.MaxFailedAccessAttempts = _loginConfig.MaxFailedAccessAttempts;
+                        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(14);
                     })
                 .AddEntityFrameworkStores<LoginUserContext>()
                 .AddDefaultTokenProviders();

@@ -9,5 +9,6 @@ namespace SFA.DAS.LoginService.Application.Interfaces
         int PasswordResetExpiryInHours { get; set; }
         string CertificateThumbprint { get; set; }
         NotificationsApiConfiguration NotificationsApiClientConfiguration { get; set; }
+        int MaxFailedAccessAttempts { get; set; }
     }
 }

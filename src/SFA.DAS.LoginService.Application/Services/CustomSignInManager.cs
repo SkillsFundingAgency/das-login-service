@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -18,11 +19,11 @@ namespace SFA.DAS.LoginService.Application.Services
         {
             var user = UserManager.FindByEmailAsync(userName).Result;
 
-            if (user.IsEnabled.HasValue && user.IsEnabled == false)
+            if (user?.IsEnabled != null && user.IsEnabled == false)
             {
                 return Task.FromResult(SignInResult.LockedOut);
             }
-            
+
             return base.PasswordSignInAsync(userName, password, isPersistent, lockoutOnFailure);
         }
     }

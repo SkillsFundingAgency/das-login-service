@@ -8,9 +8,9 @@ namespace SFA.DAS.LoginService.Application.Services
     public class UserService : IUserService
     {
         private readonly UserManager<LoginUser> _userManager;
-        private readonly CustomSignInManager _signInManager;
+        private readonly SignInManager<LoginUser> _signInManager;
 
-        public UserService(UserManager<LoginUser> userManager, CustomSignInManager signInManager)
+        public UserService(UserManager<LoginUser> userManager, SignInManager<LoginUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -51,7 +51,6 @@ namespace SFA.DAS.LoginService.Application.Services
         {
             var user = await FindByEmail(email);
             var identityResult = await _userManager.ResetPasswordAsync(user, identityToken, password);
-            user.IsEnabled = true;
             await _userManager.UpdateAsync(user);
             await _userManager.ResetAccessFailedCountAsync(user);
             

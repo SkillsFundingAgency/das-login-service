@@ -4,6 +4,5 @@ namespace SFA.DAS.LoginService.Data.Entities
 {
     public class LoginUser : IdentityUser
     {
-        public bool? IsEnabled { get; set; }
     }
 }

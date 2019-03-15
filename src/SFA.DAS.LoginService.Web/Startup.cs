@@ -127,7 +127,7 @@ namespace SFA.DAS.LoginService.Web
             }
             
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<CustomSignInManager>();
+            services.AddTransient<SignInManager<LoginUser>>();
             services.AddHttpClient<ICallbackService, CallbackService>()
                 .SetHandlerLifetime(TimeSpan.FromMinutes(5))
                 .AddPolicyHandler(GetRetryPolicy());

@@ -4,6 +4,8 @@
 
 [comment]: # (![Build Status](https://sfa-gov-uk.visualstudio.com/_apis/public/build/definitions/c39e0c0b-7aff-4606-b160-3566f3bbce23/1496/badge)
 
+An [OpenID Connect](https://openid.net/connect/) implementation built using Identity Server 4 on aspnet core 2.2
+
 ### Developer Setup
 
 #### Requirements
@@ -46,3 +48,90 @@
   "SignOutRedirectUri": "https://localhost:6016/Users/SignedOut"
 }
   ```
+  
+##  Login Service
+
+### Invitations
+
+To invite users, your client app needs to POST the following JSON to the `ApiUrl` specified above.  
+
+```json
+{
+  "sourceId": "[the id of your local user]",
+  "given_name" : "[Given name of user]",
+  "family_name" : "[Family name of user]",
+  "email": "[User's email address]",
+  "userRedirect" : "[URL that the user should be redirected to on successful sign up]",
+  "callback" : "[URL that the Login Service should call on the Client Service with the User's Id]"
+}
+```
+
+The POST should have a Bearer authentication token, signed as per the discovery document spec found here: [https://yourloginserviceurl/.well-known/openid-configuration](https://yourloginserviceurl/.well-known/openid-configuration).  It's currently RS256. 
+
+(This example is using [IdentityModel](https://www.nuget.org/packages/identitymodel/) in C#):
+
+```c#
+var client = new HttpClient();
+var disco = client.GetDiscoveryDocumentAsync("https://at-aslogin.apprenticeships.education.gov.uk").Result;
+if (disco.IsError)
+{
+    _logger.LogError("Error obtaining discovery document", disco.Error);
+}
+
+var tokenResponse = client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+{
+    Address = disco.TokenEndpoint,
+    ClientId = "client",
+    ClientSecret = config.DfeSignIn.ApiClientSecret,
+    Scope = "api1"
+}).Result;
+
+if (tokenResponse.IsError)
+{
+    _logger.LogError("Error obtaining token", tokenResponse.Error);
+}
+
+using (var httpClient = new HttpClient())
+{
+    httpClient.SetBearerToken(tokenResponse.AccessToken);
+
+    var inviteJson = JsonConvert.SerializeObject(new
+    {
+        sourceId = userId.ToString(),
+        given_name = givenName,
+        family_name = familyName,
+        email = email,
+        userRedirect = config.DfeSignIn.RedirectUri,
+        callback = config.DfeSignIn.CallbackUri
+    });
+    
+    var response = httpClient.PostAsync(config.DfeSignIn.ApiUri,
+        new StringContent(inviteJson, Encoding.UTF8, "application/json")
+    ).Result;
+    
+    var content = await response.Content.ReadAsStringAsync();
+    
+    _logger.LogInformation("Returned from Invitation Service. Status Code: {0}. Message: {0}",
+        (int) response.StatusCode, content);
+    
+    if (!response.IsSuccessStatusCode)
+    {
+        _logger.LogError("Error from Invitation Service. Status Code: {0}. Message: {0}",
+            (int) response.StatusCode, content);
+        return new InviteUserResponse() {IsSuccess = false};
+    }
+    
+   return new InviteUserResponse();
+}
+```
+
+#### Callback
+
+Once the user has successfully signed up, the Login Service will use the `callback` url as specified in the Api call to send the following JSON back to the client application:
+
+```json
+{
+  "sub": "[The id of the user in Login Service that you'll get in the sub claim on sign in]",
+  "sourceid": "[Your local user id]"
+}
+```

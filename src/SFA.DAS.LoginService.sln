@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.LoginService.Web.In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.LoginService.EmailService", "SFA.DAS.LoginService.EmailService\SFA.DAS.LoginService.EmailService.csproj", "{C5A203A5-DC02-4092-A086-80FB67F706B5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{BF1F0A40-8B07-48F1-B64F-0B7B3ABB2AF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.LoginService.Samples.MvcInvitationClient", "SFA.DAS.LoginService.Samples.MvcInvitationClient\SFA.DAS.LoginService.Samples.MvcInvitationClient.csproj", "{C920D43E-929B-4E77-8A58-9B8207B0C159}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,11 +63,18 @@ Global
 		{C5A203A5-DC02-4092-A086-80FB67F706B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5A203A5-DC02-4092-A086-80FB67F706B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5A203A5-DC02-4092-A086-80FB67F706B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C920D43E-929B-4E77-8A58-9B8207B0C159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C920D43E-929B-4E77-8A58-9B8207B0C159}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C920D43E-929B-4E77-8A58-9B8207B0C159}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C920D43E-929B-4E77-8A58-9B8207B0C159}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4860D79B-81B1-453D-9B14-B73378C0F212}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C920D43E-929B-4E77-8A58-9B8207B0C159} = {BF1F0A40-8B07-48F1-B64F-0B7B3ABB2AF8}
 	EndGlobalSection
 EndGlobal

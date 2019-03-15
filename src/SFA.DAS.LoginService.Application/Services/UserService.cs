@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using SFA.DAS.LoginService.Application.Interfaces;
@@ -52,7 +53,7 @@ namespace SFA.DAS.LoginService.Application.Services
             var user = await FindByEmail(email);
             var identityResult = await _userManager.ResetPasswordAsync(user, identityToken, password);
             await _userManager.UpdateAsync(user);
-            await _userManager.ResetAccessFailedCountAsync(user);
+            await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
             
             return new UserResponse(){Result = identityResult, User = user};
         }

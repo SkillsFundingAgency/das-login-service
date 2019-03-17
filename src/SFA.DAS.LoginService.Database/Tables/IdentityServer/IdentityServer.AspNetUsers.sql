@@ -14,6 +14,8 @@
 	[SecurityStamp] [nvarchar](max) NULL,
 	[TwoFactorEnabled] [bit] NOT NULL,
 	[UserName] [nvarchar](256) NULL,
+	[GivenName] [nvarchar](256) NULL,
+	[FamilyName] [nvarchar](256) NULL,
 	CONSTRAINT [PK_AspNetUsers] PRIMARY KEY CLUSTERED 
 	(
 		[Id] ASC

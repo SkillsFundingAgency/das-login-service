@@ -20,7 +20,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
         [SetUp]
         public async Task Arrange()
         {
-            UserService.FindByEmail(Arg.Any<string>()).Returns(new LoginUser());
+            UserService.FindByEmail(Arg.Any<string>()).Returns(new LoginUser(){GivenName = "GivenName1"});
             LoginContext.Clients.Add(new Client()
             {
                 Id = ClientId, 
@@ -60,6 +60,16 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
             var resetPasswordRequest = LoginContext.ResetPasswordRequests.Single();
 
             await EmailService.Received().SendResetPassword(Arg.Is<PasswordResetEmailViewModel>(vm => vm.LoginLink == $"https://baseurl/NewPassword/{ClientId}/{resetPasswordRequest.Id}"));
+        }
+        
+        [Test]
+        public async Task Then_a_reset_password_email_is_sent_with_the_correct_givenName()
+        {
+            await Act();
+
+            var resetPasswordRequest = LoginContext.ResetPasswordRequests.Single();
+
+            await EmailService.Received().SendResetPassword(Arg.Is<PasswordResetEmailViewModel>(vm => vm.Contact == $"GivenName1"));
         }
 
         [Test]

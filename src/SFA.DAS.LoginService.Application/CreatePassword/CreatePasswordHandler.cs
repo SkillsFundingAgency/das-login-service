@@ -26,7 +26,14 @@ namespace SFA.DAS.LoginService.Application.CreatePassword
         public async Task<CreatePasswordResponse> Handle(CreatePasswordRequest request, CancellationToken cancellationToken)
         {
             var invitation = await _loginContext.Invitations.SingleOrDefaultAsync(i => i.Id == request.InvitationId, cancellationToken: cancellationToken);
-            var newUserResponse = await _userService.CreateUser(new LoginUser(){UserName = invitation.Email, Email = invitation.Email}, request.Password);
+            var newUserResponse = await _userService.CreateUser(
+                new LoginUser()
+                {
+                    UserName = invitation.Email, 
+                    Email = invitation.Email,
+                    GivenName = invitation.GivenName,
+                    FamilyName = invitation.FamilyName
+                }, request.Password);
 
             if (newUserResponse.Result != IdentityResult.Success)
             {

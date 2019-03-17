@@ -27,7 +27,11 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreatePasswordT
         {
             Handler.Handle(new CreatePasswordRequest {InvitationId = InvitationId, Password = "Password"}, CancellationToken.None).Wait();
 
-            UserService.Received().CreateUser(Arg.Is<LoginUser>(u => u.UserName == "email@provider.com" && u.Email == "email@provider.com"), "Password");
+            UserService.Received().CreateUser(Arg.Is<LoginUser>(u => 
+                u.UserName == "email@provider.com" 
+                && u.Email == "email@provider.com" 
+                && u.GivenName == "GN1" 
+                && u.FamilyName == "FN1"), "Password");
         }
         
         [Test]

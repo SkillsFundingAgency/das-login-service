@@ -67,7 +67,7 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
             
             await _emailService.SendResetPassword(new PasswordResetEmailViewModel()
             {
-                Contact = loginUser.UserName,
+                Contact = loginUser.GivenName,
                 EmailAddress = request.Email,
                 LoginLink = resetUri.ToString(), 
                 ServiceName = client.ServiceDetails.ServiceName, 

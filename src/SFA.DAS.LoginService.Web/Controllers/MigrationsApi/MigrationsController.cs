@@ -46,8 +46,6 @@ namespace SFA.DAS.LoginService.Web.Controllers.MigrationsApi
                 _logger.LogError($"User {user.Email} could not be created: {result}");
             }
 
-            await _mediator.Send(new RequestPasswordResetRequest(){ClientId = clientId, Email = user.Email});
-
             return Ok(new {newUserId = newUser.Id});
         }
     }

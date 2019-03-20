@@ -18,11 +18,11 @@ using Client = IdentityServer4.Models.Client;
 namespace SFA.DAS.LoginService.Application.UnitTests.Login.BuildLoginViewModel
 {
     [TestFixture]
-    public class When_BuildLoginViewModel_called
+    public class BuildLoginViewModelTestBase
     {
-        private BuildLoginViewModelHandler _handler;
-        private LoginContext _loginContext;
-        private Guid _clientId;
+        protected BuildLoginViewModelHandler Handler;
+        protected LoginContext LoginContext;
+        protected Guid ClientId;
 
         [SetUp]
         public void SetUp()
@@ -33,32 +33,89 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.BuildLoginViewModel
                 .Returns(new AuthorizationRequest(){ClientId = "mvc"});
             
             var dbContextOptions = new DbContextOptionsBuilder<LoginContext>()
-                .UseInMemoryDatabase(databaseName: "BuildLoginViewModelHandler_tests")
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
-            _loginContext = new LoginContext(dbContextOptions);
+            LoginContext = new LoginContext(dbContextOptions);
 
-            _clientId = Guid.NewGuid();
-            _loginContext.Clients.Add(new Data.Entities.Client()
+            ClientId = Guid.NewGuid();
+            
+            Handler = new BuildLoginViewModelHandler(identityServerInteractionService, Substitute.For<IAuthenticationSchemeProvider>(), inMemoryClientStore, LoginContext);
+        }
+    }
+
+    public class When_BuildLoginViewModel_called_for_client_with_allowLocalSignIn_false_and_CreateAccountLinkSupplied : BuildLoginViewModelTestBase
+    {
+        [SetUp]
+        public async Task Arrange()
+        {
+            LoginContext.Clients.Add(new Data.Entities.Client()
+            {
+                IdentityServerClientId = "mvc", 
+                ServiceDetails  = new ServiceDetails{ServiceName = "Acme Service", SupportUrl = "https://acme.gov.uk/Support", CreateAccountUrl = "https://acme.gov.uk/CreateAccount"},
+                Id = ClientId,
+                AllowLocalSignUp = false
+            });
+            await LoginContext.SaveChangesAsync();
+        }
+
+        [Test]
+        public async Task Then_LoginViewModel_contains_correct_CreateAccount_details()
+        {
+            var result = await Handler.Handle(new BuildLoginViewModelRequest{returnUrl = "https://returnurl"}, CancellationToken.None);
+            result.CreateAccount.LocalSignUp.Should().BeFalse();
+            result.CreateAccount.CreateAccountUrl.Should().Be("https://acme.gov.uk/CreateAccount");
+        }
+    }
+    
+    public class When_BuildLoginViewModel_called_for_client_with_allowLocalSignIn_true : BuildLoginViewModelTestBase
+    {
+        [SetUp]
+        public async Task Arrange()
+        {
+            LoginContext.Clients.Add(new Data.Entities.Client()
             {
                 IdentityServerClientId = "mvc", 
                 ServiceDetails  = new ServiceDetails{ServiceName = "Acme Service", SupportUrl = "https://acme.gov.uk/Support"},
-                Id = _clientId
+                Id = ClientId,
+                AllowLocalSignUp = true
             });
-            _loginContext.SaveChanges();
-            
-            _handler = new BuildLoginViewModelHandler(identityServerInteractionService, Substitute.For<IAuthenticationSchemeProvider>(), inMemoryClientStore, _loginContext);
+            await LoginContext.SaveChangesAsync();
+        }
+
+        [Test]
+        public async Task Then_LoginViewModel_contains_correct_CreateAccount_details()
+        {
+            var result = await Handler.Handle(new BuildLoginViewModelRequest{returnUrl = "https://returnurl"}, CancellationToken.None);
+            result.CreateAccount.LocalSignUp.Should().BeTrue();
+        }
+    }
+    
+    
+    public class When_BuildLoginViewModel_called : BuildLoginViewModelTestBase
+    {
+        [SetUp]
+        public async Task Arrange()
+        {
+            LoginContext.Clients.Add(new Data.Entities.Client()
+            {
+                IdentityServerClientId = "mvc", 
+                ServiceDetails  = new ServiceDetails{ServiceName = "Acme Service", SupportUrl = "https://acme.gov.uk/Support"},
+                Id = ClientId
+            });
+            await LoginContext.SaveChangesAsync();
         }
         
         [Test]
         public async Task Then_LoginViewModel_is_returned()
         {
-            var result = await _handler.Handle(new BuildLoginViewModelRequest() {returnUrl = "https://returnurl"}, CancellationToken.None);
+            var result = await Handler.Handle(new BuildLoginViewModelRequest() {returnUrl = "https://returnurl"}, CancellationToken.None);
             result.Should().BeOfType<LoginViewModel>();
             result.ServiceName.Should().Be("Acme Service");
             result.ServiceSupportUrl.Should().Be("https://acme.gov.uk/Support");
             result.ReturnUrl.Should().Be("https://returnurl");
-            result.ClientId.Should().Be(_clientId);
+            result.ClientId.Should().Be(ClientId);
+            result.CreateAccount.LocalSignUp.Should().BeFalse();
         }
     }
 }

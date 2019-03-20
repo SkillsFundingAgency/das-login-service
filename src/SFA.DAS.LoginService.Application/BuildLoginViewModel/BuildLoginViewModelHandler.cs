@@ -69,6 +69,11 @@ namespace SFA.DAS.LoginService.Application.BuildLoginViewModel
             {
                 loginViewModel.CreateAccount.LocalSignUp = true;
             }
+
+            if (!string.IsNullOrWhiteSpace(client.ServiceDetails.CreateAccountUrl))
+            {
+                loginViewModel.CreateAccount.CreateAccountUrl = client.ServiceDetails.CreateAccountUrl;
+            }
             
             return loginViewModel;
         }

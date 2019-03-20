@@ -272,3 +272,6 @@ src/Tools/PhantomJS/tools/phantomjs/ChangeLog
 # Minified css and js
 javascripts/application.min.js
 stylesheets/application.min.css
+
+# Development app settings
+*.Development.json

@@ -70,13 +70,13 @@ namespace SFA.DAS.LoginService.Web
             services.AddIdentity<LoginUser, IdentityRole>(
                     options =>
                     {
-                        options.Password.RequiredLength = 8;
                         options.Password.RequireNonAlphanumeric = false;
                         options.Password.RequireLowercase = false;
                         options.Password.RequireUppercase = false;
                         options.Lockout.MaxFailedAccessAttempts = _loginConfig.MaxFailedAccessAttempts;
                         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(14);
                     })
+                .AddPasswordValidator<CustomPasswordValidator<LoginUser>>()
                 .AddEntityFrameworkStores<LoginUserContext>()
                 .AddDefaultTokenProviders();
 

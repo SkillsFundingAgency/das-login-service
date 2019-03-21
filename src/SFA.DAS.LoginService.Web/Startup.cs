@@ -119,14 +119,14 @@ namespace SFA.DAS.LoginService.Web
             
             services.AddTransient(sp => _loginConfig);
 
-            if (_environment.IsDevelopment())
-            {
-                services.AddTransient<IEmailService, EmailService.DevEmailService>();
-            }
-            else
-            {
+//            if (_environment.IsDevelopment())
+//            {
+//                services.AddTransient<IEmailService, EmailService.DevEmailService>();
+//            }
+//            else
+//            {
                 services.AddHttpClient<IEmailService, EmailService.EmailService>();    
-            }
+            //}
             
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<SignInManager<LoginUser>>();

@@ -16,6 +16,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.ResetPassword
         protected Guid ClientId;
         protected IUserService UserService;
         protected ResetPasswordHandler Handler;
+        protected IEmailService EmailService;
         
         [SetUp]
         public void SetUp()
@@ -26,12 +27,14 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.ResetPassword
 
             LoginContext = new LoginContext(dbContextOptions);
 
+           
             RequestId = Guid.NewGuid();
             ClientId = Guid.NewGuid();
            
             
             UserService = Substitute.For<IUserService>();
-            Handler = new ResetPasswordHandler(UserService, LoginContext);
+            EmailService = Substitute.For<IEmailService>();
+            Handler = new ResetPasswordHandler(UserService, LoginContext, EmailService);
         }
     }
 }

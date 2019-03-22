@@ -50,29 +50,32 @@ namespace SFA.DAS.LoginService.Application.BuildLoginViewModel
                     allowLocal = identityServiceClient.EnableLocalLogin;
                 }
             }
+           
+            var client = await _loginContext.Clients.SingleAsync(c => c.IdentityServerClientId == context.ClientId, cancellationToken: cancellationToken);
 
-            var serviceName = "";
-            var serviceSupportUrl = "";
-            var clientId = Guid.Empty;
-            
-            var client = await _loginContext.Clients.SingleOrDefaultAsync(c => c.IdentityServerClientId == context.ClientId, cancellationToken: cancellationToken);
-            if (client != null)
-            {
-                serviceName = client.ServiceDetails.ServiceName;
-                serviceSupportUrl = client.ServiceDetails.SupportUrl;
-                clientId = client.Id;
-            }
-            
-            return new LoginViewModel
+            var loginViewModel = new LoginViewModel
             {
                 AllowRememberLogin = false,
                 EnableLocalLogin = allowLocal,
                 ReturnUrl = request.returnUrl,
                 Username = context?.LoginHint,
-                ServiceName = serviceName,
-                ServiceSupportUrl = serviceSupportUrl,
-                ClientId = clientId
+                ServiceName = client.ServiceDetails.ServiceName,
+                ServiceSupportUrl = client.ServiceDetails.SupportUrl,
+                ClientId = client.Id,
+                CreateAccount = new CreateAccount()
             };
+
+            if (client.AllowLocalSignUp)
+            {
+                loginViewModel.CreateAccount.LocalSignUp = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(client.ServiceDetails.CreateAccountUrl))
+            {
+                loginViewModel.CreateAccount.CreateAccountUrl = client.ServiceDetails.CreateAccountUrl;
+            }
+            
+            return loginViewModel;
         }
     }
 }

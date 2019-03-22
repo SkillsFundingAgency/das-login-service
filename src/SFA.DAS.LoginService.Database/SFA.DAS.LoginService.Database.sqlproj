@@ -96,5 +96,6 @@
     <Build Include="Tables\LoginService\LoginService.Invitations.sql" />
     <Build Include="Tables\LoginService\LoginService.ResetPasswordRequests.sql" />
     <Build Include="Tables\LoginService\LoginService.UserLogs.sql" />
+    <Build Include="Tables\LoginService\LoginService.InvalidPasswords.sql" />
   </ItemGroup>
 </Project>

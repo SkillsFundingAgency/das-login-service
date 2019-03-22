@@ -56,6 +56,8 @@ namespace SFA.DAS.LoginService.Web
 
             AddIdentityServer(services);
 
+            services.AddAntiforgery(options => options.Cookie = new CookieBuilder() { Name = ".Login.AntiForgery", HttpOnly = true });
+            
             services.AddAuthentication()
                 .AddJwtBearer(jwt =>
                 {
@@ -80,6 +82,12 @@ namespace SFA.DAS.LoginService.Web
                 .AddEntityFrameworkStores<LoginUserContext>()
                 .AddDefaultTokenProviders();
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = ".Login.Identity.Application"; 
+                options.Cookie.HttpOnly = true;
+            });
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             var isBuilder = services.AddIdentityServer().AddConfigurationStore(options =>

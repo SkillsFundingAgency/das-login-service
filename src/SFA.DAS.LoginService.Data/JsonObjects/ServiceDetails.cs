@@ -10,5 +10,6 @@ namespace SFA.DAS.LoginService.Data.JsonObjects
         public string PostPasswordResetReturnUrl { get; set; }
 
         public List<EmailTemplate> EmailTemplates { get; set; }
+        public string CreateAccountUrl { get; set; }
     }
 }

@@ -54,11 +54,26 @@
                 }
 
                 <div class="govuk-form-group">
-                  <button type="submit" class="govuk-button">
-                    Sign in
-                  </button>
+                    <button type="submit" class="govuk-button">
+                        Sign in
+                    </button>
+                    @if (Model.CreateAccount.ShowCreateAccountLink)
+                    {
+                        <div>
+                            @if (Model.CreateAccount.LocalSignUp)
+                            {
+                                <a class="govuk-link" asp-action="Get" asp-controller="CreateAccount">Create an account</a>
+                            }
+                            else
+                            {
+                                <a class="govuk-link" href="@Model.CreateAccount.CreateAccountUrl">Create an account</a>   
+                            }
+                        </div>
+                    }
                 </div>
 
+                
+                
                 <div class="govuk-form-group">
                   <h2 class="govuk-heading-m">Problems signing in</h2>
                   <p class="govuk-body">

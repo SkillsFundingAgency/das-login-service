@@ -16,5 +16,13 @@ namespace SFA.DAS.LoginService.Application.BuildLoginViewModel
     public string ServiceName { get; set; }
     public string ServiceSupportUrl { get; set; }
     public Guid ClientId { get; set; }
+    public CreateAccount CreateAccount { get; set; }
+  }
+
+  public class CreateAccount
+  {
+    public bool LocalSignUp { get; set; }
+    public string CreateAccountUrl { get; set; }
+    public bool ShowCreateAccountLink => LocalSignUp || !string.IsNullOrWhiteSpace(CreateAccountUrl);
   }
 }

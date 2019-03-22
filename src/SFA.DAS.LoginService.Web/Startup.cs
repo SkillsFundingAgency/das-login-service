@@ -56,6 +56,8 @@ namespace SFA.DAS.LoginService.Web
 
             AddIdentityServer(services);
 
+            services.AddAntiforgery(options => options.Cookie = new CookieBuilder() { Name = ".Login.AntiForgery", HttpOnly = true });
+            
             services.AddAuthentication()
                 .AddJwtBearer(jwt =>
                 {
@@ -70,14 +72,22 @@ namespace SFA.DAS.LoginService.Web
             services.AddIdentity<LoginUser, IdentityRole>(
                     options =>
                     {
-                        options.Password.RequiredLength = 8;
                         options.Password.RequireNonAlphanumeric = false;
                         options.Password.RequireLowercase = false;
                         options.Password.RequireUppercase = false;
+                        options.Lockout.MaxFailedAccessAttempts = _loginConfig.MaxFailedAccessAttempts;
+                        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(14);
                     })
+                .AddPasswordValidator<CustomPasswordValidator<LoginUser>>()
                 .AddEntityFrameworkStores<LoginUserContext>()
                 .AddDefaultTokenProviders();
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = ".Login.Identity.Application"; 
+                options.Cookie.HttpOnly = true;
+            });
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             var isBuilder = services.AddIdentityServer().AddConfigurationStore(options =>
@@ -127,7 +137,7 @@ namespace SFA.DAS.LoginService.Web
             }
             
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<CustomSignInManager>();
+            services.AddTransient<SignInManager<LoginUser>>();
             services.AddHttpClient<ICallbackService, CallbackService>()
                 .SetHandlerLifetime(TimeSpan.FromMinutes(5))
                 .AddPolicyHandler(GetRetryPolicy());

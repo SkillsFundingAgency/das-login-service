@@ -35,7 +35,9 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreatePasswordT
             {
                 Id = InvitationId,
                 Email = "email@provider.com",
-                SourceId = "ABC123"
+                SourceId = "ABC123", 
+                GivenName = "GN1", 
+                FamilyName = "FN1"
             });
             LoginContext.SaveChanges();
 

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 
 namespace SFA.DAS.LoginService.Web
@@ -49,6 +51,21 @@ namespace SFA.DAS.LoginService.Web
                     RequireConsent = false,
 
                     AllowedScopes = { "openid" }
+                },
+                new Client
+                {
+                    ClientId = "test",
+                    ClientName = "Test Client",
+
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    
+                    RedirectUris = { "https://localhost:5051/signin-oidc" },
+                    
+                    PostLogoutRedirectUris = { "https://localhost:5051/signout-callback-oidc" }, 
+
+                    RequireConsent = false,
+
+                    AllowedScopes = { "openid",  IdentityServerConstants.StandardScopes.Profile }
                 }
             }; 
         }

@@ -29,6 +29,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
 
             EmailService = Substitute.For<IEmailService>();
             LoginConfig = Substitute.For<ILoginConfig>();
+            LoginConfig.BaseUrl.Returns("https://baseurl");
             UserService = Substitute.For<IUserService>();
             
             CreateInvitationHandler = BuildCreateInvitationHandler();

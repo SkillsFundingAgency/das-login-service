@@ -72,7 +72,8 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
             
             _loginContext.Invitations.Add(newInvitation);
 
-            var linkUrl = _loginConfig.BaseUrl + "Invitations/CreatePassword/" + newInvitation.Id;
+            var linkUri = new Uri(_loginConfig.BaseUrl);
+            var linkUrl = new Uri(linkUri, "Invitations/CreatePassword/" + newInvitation.Id).ToString();
 
             await _emailService.SendInvitationEmail(new InvitationEmailViewModel()
             {

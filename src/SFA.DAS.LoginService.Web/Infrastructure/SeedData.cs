@@ -88,6 +88,7 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
                     ServiceDetails = new ServiceDetails
                     {
                         ServiceName = "Apply Service", 
+                        ServiceTeam = "Apply Service Team",
                         SupportUrl = "https://acme.gov.uk/support", 
                         PostPasswordResetReturnUrl = "https://localhost:6016",
                         EmailTemplates = new List<EmailTemplate>()
@@ -118,6 +119,7 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
                     Id = Guid.Parse("08372e20-becd-415c-9925-4d33ddf67faf"),
                     ServiceDetails = new ServiceDetails {
                         ServiceName = "Assessor Service", 
+                        ServiceTeam = "Assessor Service Team",
                         SupportUrl = "https://localhost:5015/support", 
                         PostPasswordResetReturnUrl = "https://localhost:5015",
                         EmailTemplates = new List<EmailTemplate>()

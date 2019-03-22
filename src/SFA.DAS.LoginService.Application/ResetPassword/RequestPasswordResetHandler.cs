@@ -65,9 +65,9 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
 
             var resetUri = new Uri(new Uri(_loginConfig.BaseUrl), $"NewPassword/{request.ClientId}/{resetPasswordRequest.Id}");
             
-            await _emailService.SendResetPassword(new PasswordResetEmailViewModel()
+            await _emailService.SendResetPassword(new ResetPasswordEmailViewModel()
             {
-                Contact = loginUser.UserName,
+                Contact = loginUser.GivenName,
                 EmailAddress = request.Email,
                 LoginLink = resetUri.ToString(), 
                 ServiceName = client.ServiceDetails.ServiceName, 

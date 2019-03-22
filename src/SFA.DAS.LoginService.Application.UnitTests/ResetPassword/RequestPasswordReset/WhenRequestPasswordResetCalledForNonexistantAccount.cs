@@ -40,7 +40,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
         {   
             await Handler.Handle(new RequestPasswordResetRequest() {Email = "nonexistantuser@emailaddress.com", ClientId = ClientId}, CancellationToken.None);
             
-            await EmailService.DidNotReceive().SendResetPassword(Arg.Any<PasswordResetEmailViewModel>());
+            await EmailService.DidNotReceive().SendResetPassword(Arg.Any<ResetPasswordEmailViewModel>());
         }
         
         [Test]

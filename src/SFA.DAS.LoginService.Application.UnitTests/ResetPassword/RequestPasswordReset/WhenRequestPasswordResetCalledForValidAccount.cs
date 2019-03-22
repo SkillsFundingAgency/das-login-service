@@ -49,7 +49,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
         {
             await Act();
 
-            await EmailService.Received().SendResetPassword(Arg.Is<PasswordResetEmailViewModel>(vm => vm.EmailAddress == "email@emailaddress.com"));
+            await EmailService.Received().SendResetPassword(Arg.Is<ResetPasswordEmailViewModel>(vm => vm.EmailAddress == "email@emailaddress.com"));
         }
         
         [Test]
@@ -59,7 +59,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
 
             var resetPasswordRequest = LoginContext.ResetPasswordRequests.Single();
 
-            await EmailService.Received().SendResetPassword(Arg.Is<PasswordResetEmailViewModel>(vm => vm.LoginLink == $"https://baseurl/NewPassword/{ClientId}/{resetPasswordRequest.Id}"));
+            await EmailService.Received().SendResetPassword(Arg.Is<ResetPasswordEmailViewModel>(vm => vm.LoginLink == $"https://baseurl/NewPassword/{ClientId}/{resetPasswordRequest.Id}"));
         }
         
         [Test]
@@ -69,7 +69,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
 
             var resetPasswordRequest = LoginContext.ResetPasswordRequests.Single();
 
-            await EmailService.Received().SendResetPassword(Arg.Is<PasswordResetEmailViewModel>(vm => vm.Contact == $"GivenName1"));
+            await EmailService.Received().SendResetPassword(Arg.Is<ResetPasswordEmailViewModel>(vm => vm.Contact == $"GivenName1"));
         }
 
         [Test]

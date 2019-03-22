@@ -72,7 +72,7 @@ namespace SFA.DAS.LoginService.EmailService
             });
         }
 
-        public async Task SendResetPassword(PasswordResetEmailViewModel vm)
+        public async Task SendResetPassword(ResetPasswordEmailViewModel vm)
         {
             
             var tokens = GetTokens(vm);
@@ -106,7 +106,24 @@ namespace SFA.DAS.LoginService.EmailService
                 Subject = vm.Subject
             });
         }
-        
+
+        public async Task SendPasswordReset(PasswordResetEmailViewModel vm)
+        {
+            var tokens = GetTokens(vm);
+            
+            _logger.LogInformation($"PASSWORD RESET Email sent to {vm.EmailAddress} with returnUrl {vm.LoginLink}");
+            
+            await _notificationApi.SendEmail(new Email()
+            {
+                RecipientsAddress = vm.EmailAddress, 
+                TemplateId = vm.TemplateId.ToString(), 
+                Tokens = tokens,
+                SystemId = "ApplyService",
+                ReplyToAddress = "digital.apprenticeship.service@notifications.service.gov.uk",
+                Subject = vm.Subject
+            });
+        }
+
         private Dictionary<string, string> GetTokens(EmailViewModel vm)
         {
             return vm.GetType()

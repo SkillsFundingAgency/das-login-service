@@ -20,6 +20,7 @@
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.LoginService.Application\SFA.DAS.LoginService.Application.csproj" />
         <ProjectReference Include="..\SFA.DAS.LoginService.Data\SFA.DAS.LoginService.Data.csproj" />
+        <ProjectReference Include="..\SFA.DAS.LoginService.EmailService\SFA.DAS.LoginService.EmailService.csproj" />
     </ItemGroup>
     
 </Project>

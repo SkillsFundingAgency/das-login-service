@@ -57,16 +57,17 @@
                     <button type="submit" class="govuk-button">
                         Sign in
                     </button>
+                    
                     @if (Model.CreateAccount.ShowCreateAccountLink)
                     {
-                        <div>
+                        <div class="das-inline-button-link">
                             @if (Model.CreateAccount.LocalSignUp)
                             {
-                                <a class="govuk-link" asp-action="Get" asp-controller="CreateAccount">Create an account</a>
+                                <span class="govuk-body">or <a class="govuk-link" asp-action="Get" asp-controller="CreateAccount">create an account</a></span>
                             }
                             else
                             {
-                                <a class="govuk-link" href="@Model.CreateAccount.CreateAccountUrl">Create an account</a>   
+                                <span class="govuk-body">or <a class="govuk-link" href="@Model.CreateAccount.CreateAccountUrl">create an account</a></span>
                             }
                         </div>
                     }

@@ -1,6 +1,5 @@
-using SFA.DAS.LoginService.Application.Interfaces;
 
-namespace SFA.DAS.LoginService.Application.Services
+namespace SFA.DAS.LoginService.Application.Services.Configuration
 {
     public class LoginConfig : ILoginConfig
     {

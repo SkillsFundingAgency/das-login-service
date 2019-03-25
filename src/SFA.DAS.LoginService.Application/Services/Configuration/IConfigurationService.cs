@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 
-namespace SFA.DAS.LoginService.Application.Interfaces
+namespace SFA.DAS.LoginService.Application.Services.Configuration
 {
     public interface IConfigurationService
     {

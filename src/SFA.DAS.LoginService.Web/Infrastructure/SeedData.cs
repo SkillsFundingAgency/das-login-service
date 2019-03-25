@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Interfaces;
@@ -13,6 +14,7 @@ using SFA.DAS.LoginService.Data.JsonObjects;
 
 namespace SFA.DAS.LoginService.Web.Infrastructure
 {
+    [ExcludeFromCodeCoverage]
     public class SeedData
     {
         public static void EnsureSeedData(string connectionString, LoginContext loginContext, ConfigurationDbContext context)

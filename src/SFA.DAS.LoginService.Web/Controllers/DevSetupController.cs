@@ -3,6 +3,7 @@ using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.LoginService.Application.Interfaces;
+using SFA.DAS.LoginService.Application.Services.Configuration;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Web.Infrastructure;
 

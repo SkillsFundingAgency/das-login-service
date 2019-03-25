@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
 
 namespace SFA.DAS.LoginService.Web
 {
+    [ExcludeFromCodeCoverage]
     public static class Config
     {
         public static IEnumerable<Client> GetClients()

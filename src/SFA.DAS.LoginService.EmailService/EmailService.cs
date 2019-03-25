@@ -59,7 +59,6 @@ namespace SFA.DAS.LoginService.EmailService
         
         public async Task SendInvitationEmail(InvitationEmailViewModel vm)
         {
-            _logger.LogInformation($"SIGN UP Email sent to {vm.EmailAddress} with signupUrl {vm.LoginLink}");
             var tokens = GetTokens(vm);
             
             await _notificationApi.SendEmail(new Email()
@@ -75,44 +74,22 @@ namespace SFA.DAS.LoginService.EmailService
 
         public async Task SendResetPassword(ResetPasswordEmailViewModel vm)
         {
-            
-            var tokens = GetTokens(vm);
-            
-            _logger.LogInformation($"FORGOT PASSWORD Email sent to {vm.EmailAddress} with resetPasswordUrl {vm.LoginLink}");
-            
-            await _notificationApi.SendEmail(new Email()
-            {
-                RecipientsAddress = vm.EmailAddress, 
-                TemplateId = vm.TemplateId.ToString(), 
-                Tokens = tokens,
-                SystemId = "ApplyService",
-                ReplyToAddress = "digital.apprenticeship.service@notifications.service.gov.uk",
-                Subject = vm.Subject
-            });
+            await SendEmail(vm);
         }
 
         public async Task SendResetNoAccountPassword(PasswordResetNoAccountEmailViewModel vm)
         {           
-            var tokens = GetTokens(vm);
-            
-            _logger.LogInformation($"FORGOT PASSWORD BUT NO ACCOUNT Email sent to {vm.EmailAddress} with returnUrl {vm.LoginLink}");
-            
-            await _notificationApi.SendEmail(new Email()
-            {
-                RecipientsAddress = vm.EmailAddress, 
-                TemplateId = vm.TemplateId.ToString(), 
-                Tokens = tokens,
-                SystemId = "ApplyService",
-                ReplyToAddress = "digital.apprenticeship.service@notifications.service.gov.uk",
-                Subject = vm.Subject
-            });
+            await SendEmail(vm);
         }
 
         public async Task SendPasswordReset(PasswordResetEmailViewModel vm)
         {
+            await SendEmail(vm);
+        }
+
+        private async Task SendEmail(EmailViewModel vm)
+        {
             var tokens = GetTokens(vm);
-            
-            _logger.LogInformation($"PASSWORD RESET Email sent to {vm.EmailAddress} with returnUrl {vm.LoginLink}");
             
             await _notificationApi.SendEmail(new Email()
             {
@@ -124,7 +101,7 @@ namespace SFA.DAS.LoginService.EmailService
                 Subject = vm.Subject
             });
         }
-
+        
         private Dictionary<string, string> GetTokens(EmailViewModel vm)
         {
             return vm.GetType()

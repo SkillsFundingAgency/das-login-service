@@ -98,4 +98,7 @@
     <Build Include="Tables\LoginService\LoginService.UserLogs.sql" />
     <Build Include="Tables\LoginService\LoginService.InvalidPasswords.sql" />
   </ItemGroup>
+    <ItemGroup>
+      <PostDeploy Include="Script.PostDeployment.sql" />
+    </ItemGroup>
 </Project>

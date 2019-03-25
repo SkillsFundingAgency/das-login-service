@@ -10,13 +10,14 @@
             
             <partial name="/Views/Partials/_validationErrorSummary.cshtml"/>
 
-            <h1 class="govuk-heading-xl">Sign in to @Model.ServiceName</h1>
+            <h1 class="govuk-heading-xl">@Model.ServiceName</h1>
             
             <form asp-route="PostLogin">
+                <h2 class="govuk-heading-m">Sign in</h2>
                 <input type="hidden" asp-for="ReturnUrl" />
                 
                 <div class="govuk-form-group" sfa-anyvalidationerror-class="govuk-form-group--error">
-                    <label class="govuk-label govuk-label--m" asp-for="Username">
+                    <label class="govuk-label" asp-for="Username">
                         Email address
                     </label>
                     @if (!ViewData.ModelState.IsValid)
@@ -27,7 +28,7 @@
                 </div>
 
                 <div class="govuk-form-group" sfa-anyvalidationerror-class="govuk-form-group--error">
-                    <label class="govuk-label govuk-label--m" asp-for="Password">
+                    <label class="govuk-label" asp-for="Password">
                         Password
                     </label>
                     @if (!ViewData.ModelState.IsValid)
@@ -40,6 +41,9 @@
                         <input type="checkbox" class="show-hide-checkbox" name="show-hide" id="show-hide" />
                         <label for="show-hide" class="govuk-label govuk-label--show-hide"><span class="govuk-label__show-hide-text">show</span><span class="govuk-visually-hidden"> password</span></label>
                       </div>
+                    </div>
+                    <div class="govuk-form-group">
+                        <a class="govuk-link" asp-action="Get" asp-controller="RequestPasswordReset" asp-route-clientId="@Model.ClientId">I have forgotten my password</a>
                     </div>
                 </div>
 
@@ -60,27 +64,20 @@
                     @if (Model.CreateAccount.ShowCreateAccountLink)
                     {
                         <div>
+                            <p class="govuk-body">
                             @if (Model.CreateAccount.LocalSignUp)
                             {
-                                <a class="govuk-link" asp-action="Get" asp-controller="CreateAccount">Create an account</a>
+                                <a class="govuk-link" asp-action="Get" asp-controller="CreateAccount">Create account</a>
                             }
                             else
                             {
-                                <a class="govuk-link" href="@Model.CreateAccount.CreateAccountUrl">Create an account</a>   
+                                <a class="govuk-link" href="@Model.CreateAccount.CreateAccountUrl">Create account</a>   
                             }
+                            </p>
                         </div>
                     }
                 </div>
 
-                
-                
-                <div class="govuk-form-group">
-                  <h2 class="govuk-heading-m">Problems signing in</h2>
-                  <p class="govuk-body">
-                    <a class="govuk-link" asp-action="Get" asp-controller="RequestPasswordReset" asp-route-clientId="@Model.ClientId">I have forgotten my password</a>
-                  </p>
-                </div>
-                
             </form>
             
             <!-- <p class="govuk-body"><a class="govuk-link" href="@Model.ServiceSupportUrl">Having problems with sign in?</a></p> -->

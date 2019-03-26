@@ -4,7 +4,9 @@
     var DASFrontend = global.DASFrontend || {};
 
     DASFrontend.passwordConditions = {
-        passwordInput: document.querySelector("[data-password-conditions='password']"),
+        passwordInput: document.querySelector(
+            "[data-password-conditions='password']"
+        ),
         confirmPasswordInput: document.querySelector(
             "[data-password-conditions='confirm-password']"
         ),
@@ -49,7 +51,7 @@
                     regex: /.*[0-9].*/
                 }
             ];
-            conditions.forEach(condition => {
+            conditions.forEach(function(condition) {
                 var element = document.querySelector(
                     "[data-condition='" + condition.name + "']"
                 );

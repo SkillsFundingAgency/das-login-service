@@ -30,23 +30,34 @@ namespace SFA.DAS.LoginService.Web.Controllers.MigrationsApi
         public async Task<IActionResult> Migrate([FromBody] MigrateUser user)
         {
             var clientId = _loginContext.Clients.Single(c => c.IdentityServerClientId == user.ClientId).Id;
-            
-            var newUser = new LoginUser()
-            {
-                Email = user.Email, 
-                UserName = user.Email, 
-                FamilyName = user.FamilyName, 
-                GivenName = user.GivenName
-            };
-            
-            var result = await _userManager.CreateAsync(newUser, Guid.NewGuid().ToString());
 
-            if (!result.Succeeded)
+            var existingUser = await _userManager.FindByEmailAsync(user.Email);
+
+            if (existingUser == null)
             {
-                _logger.LogError($"User {user.Email} could not be created: {result}");
+                var newUser = new LoginUser()
+                {
+                    Email = user.Email, 
+                    UserName = user.Email, 
+                    FamilyName = user.FamilyName, 
+                    GivenName = user.GivenName
+                };
+            
+                var result = await _userManager.CreateAsync(newUser, Guid.NewGuid().ToString());
+
+                if (!result.Succeeded)
+                {
+                    _logger.LogError($"User {user.Email} could not be created: {result}");
+                }
+
+                return Ok(new {newUserId = newUser.Id});    
             }
-
-            return Ok(new {newUserId = newUser.Id});
+            else
+            {
+                return Ok(new {newUserId = existingUser.Id});
+            }
+            
+            
         }
     }
 

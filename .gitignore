@@ -270,8 +270,8 @@ src/Tools/PhantomJS/tools/phantomjs/ChangeLog
 .vscode/
 
 # Minified css and js
-javascripts/application.min.js
-stylesheets/application.min.css
+*.min.js
+*.min.css
 
 # Development app settings
 *.Development.json

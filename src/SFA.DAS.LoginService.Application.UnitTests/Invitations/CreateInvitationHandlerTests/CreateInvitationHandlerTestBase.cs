@@ -52,7 +52,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
                 {
                     ServiceName = "Acme Service", 
                     ServiceTeam = "Acme Service Team",
-                    EmailTemplates = new List<EmailTemplate>(){new EmailTemplate(){Name="SignUpInvitation", TemplateId = InvitationTemplateId}}
+                    EmailTemplates = new List<EmailTemplate>(){new EmailTemplate(){Name="SignUpInvitation", TemplateId = InvitationTemplateId},new EmailTemplate(){Name="LoginSignupError", TemplateId = InvitationTemplateId}}
                 }
             });
             LoginContext.SaveChanges();

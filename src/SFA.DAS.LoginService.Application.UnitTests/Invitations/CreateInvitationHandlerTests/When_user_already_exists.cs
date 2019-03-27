@@ -6,6 +6,7 @@ using NUnit.Framework;
 using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Application.Services.EmailServiceViewModels;
+using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitationHandlerTests
 {
@@ -16,7 +17,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
         [SetUp]
         public void Arrange()
         {
-            UserService.UserExists("invited@email.com").Returns(true);
+            UserService.FindByEmail("invited@email.com").Returns(new LoginUser());
             _createInvitationRequest = BuildCreateInvitationRequest();
         }
         
@@ -25,7 +26,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
         {
             CreateInvitationHandler.Handle(_createInvitationRequest, CancellationToken.None).Wait();
 
-            UserService.Received().UserExists("invited@email.com");
+            UserService.Received().FindByEmail("invited@email.com");
         }
 
         [Test]

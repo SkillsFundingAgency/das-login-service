@@ -46,10 +46,20 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
                 return new CreateInvitationResponse() {Message = "Client is not authorised for Invitiation Signup"};
             }
             
-            var userExists = await _userService.UserExists(request.Email);
-            if (userExists)
+            var existingUser = await _userService.FindByEmail(request.Email);
+            if (existingUser != null)
             {
-                return new CreateInvitationResponse() {Message = "User already exists"};
+                await _emailService.SendUserExistsEmail(new UserExistsEmailViewModel
+                {
+                    Subject = "Sign up",
+                    Contact = request.GivenName, 
+                    LoginLink = client.ServiceDetails.PostPasswordResetReturnUrl, 
+                    ServiceName = client.ServiceDetails.ServiceName, 
+                    ServiceTeam = client.ServiceDetails.ServiceTeam, 
+                    EmailAddress = request.Email,
+                    TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "LoginSignupError").TemplateId
+                });
+                return new CreateInvitationResponse {Message = "User already exists", ExistingUserId = existingUser.Id};
             }
 
             var inviteExists = _loginContext.Invitations.SingleOrDefault(i => i.Email == request.Email);
@@ -58,7 +68,7 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
                 _loginContext.Invitations.Remove(inviteExists);
             }
             
-            var newInvitation = new Invitation()
+            var newInvitation = new Invitation
             {
                 Email = request.Email,
                 GivenName = request.GivenName,

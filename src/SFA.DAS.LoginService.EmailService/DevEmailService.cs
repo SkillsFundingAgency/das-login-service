@@ -30,9 +30,14 @@ namespace SFA.DAS.LoginService.EmailService
             await Task.Run(() => _logger.LogInformation($"FORGOT PASSWORD BUT NO ACCOUNT Email sent to {viewModel.EmailAddress} with returnUrl {viewModel.LoginLink}"));
         }
 
-        public async Task SendPasswordReset(PasswordResetEmailViewModel vm)
+        public async Task SendPasswordReset(PasswordResetEmailViewModel viewModel)
         {
-            await Task.Run(() => _logger.LogInformation($"PASSWORD RESET Email sent to {vm.EmailAddress} with returnUrl {vm.LoginLink}"));
+            await Task.Run(() => _logger.LogInformation($"PASSWORD RESET Email sent to {viewModel.EmailAddress} with returnUrl {viewModel.LoginLink}"));
+        }
+
+        public async Task SendUserExistsEmail(UserExistsEmailViewModel viewModel)
+        {
+            await Task.Run(() => _logger.LogInformation($"USER EXISTS Email sent to {viewModel.EmailAddress} with returnUrl {viewModel.LoginLink}"));
         }
     }
 }

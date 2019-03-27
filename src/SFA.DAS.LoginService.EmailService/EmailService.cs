@@ -56,71 +56,43 @@ namespace SFA.DAS.LoginService.EmailService
             _notificationApi = new NotificationsApi(httpClient, notificationsApiClientConfiguration);
         }
         
-        public async Task SendInvitationEmail(InvitationEmailViewModel vm)
+        public async Task SendInvitationEmail(InvitationEmailViewModel viewModel)
         {
-            _logger.LogInformation($"SIGN UP Email sent to {vm.EmailAddress} with signupUrl {vm.LoginLink}");
-            var tokens = GetTokens(vm);
-            
-            await _notificationApi.SendEmail(new Email()
-            {
-                RecipientsAddress = vm.EmailAddress, 
-                TemplateId = vm.TemplateId.ToString(), 
-                Tokens = tokens,
-                SystemId = "ApplyService",
-                ReplyToAddress = "digital.apprenticeship.service@notifications.service.gov.uk",
-                Subject = vm.Subject
-            });
+            await SendEmail(viewModel);
         }
 
-        public async Task SendResetPassword(ResetPasswordEmailViewModel vm)
+        public async Task SendResetPassword(ResetPasswordEmailViewModel viewModel)
         {
-            
-            var tokens = GetTokens(vm);
-            
-            _logger.LogInformation($"FORGOT PASSWORD Email sent to {vm.EmailAddress} with resetPasswordUrl {vm.LoginLink}");
-            
-            await _notificationApi.SendEmail(new Email()
-            {
-                RecipientsAddress = vm.EmailAddress, 
-                TemplateId = vm.TemplateId.ToString(), 
-                Tokens = tokens,
-                SystemId = "ApplyService",
-                ReplyToAddress = "digital.apprenticeship.service@notifications.service.gov.uk",
-                Subject = vm.Subject
-            });
+            await SendEmail(viewModel);
         }
 
-        public async Task SendResetNoAccountPassword(PasswordResetNoAccountEmailViewModel vm)
+        public async Task SendResetNoAccountPassword(PasswordResetNoAccountEmailViewModel viewModel)
         {           
-            var tokens = GetTokens(vm);
-            
-            _logger.LogInformation($"FORGOT PASSWORD BUT NO ACCOUNT Email sent to {vm.EmailAddress} with returnUrl {vm.LoginLink}");
-            
-            await _notificationApi.SendEmail(new Email()
-            {
-                RecipientsAddress = vm.EmailAddress, 
-                TemplateId = vm.TemplateId.ToString(), 
-                Tokens = tokens,
-                SystemId = "ApplyService",
-                ReplyToAddress = "digital.apprenticeship.service@notifications.service.gov.uk",
-                Subject = vm.Subject
-            });
+            await SendEmail(viewModel);
         }
 
-        public async Task SendPasswordReset(PasswordResetEmailViewModel vm)
+        public async Task SendPasswordReset(PasswordResetEmailViewModel viewModel)
         {
-            var tokens = GetTokens(vm);
-            
-            _logger.LogInformation($"PASSWORD RESET Email sent to {vm.EmailAddress} with returnUrl {vm.LoginLink}");
-            
+            await SendEmail(viewModel);
+        }
+
+        public async Task SendUserExistsEmail(UserExistsEmailViewModel viewModel)
+        {
+            await SendEmail(viewModel);
+        }
+
+        private async Task SendEmail(EmailViewModel viewModel)
+        {
+            var tokens = GetTokens(viewModel);
+
             await _notificationApi.SendEmail(new Email()
             {
-                RecipientsAddress = vm.EmailAddress, 
-                TemplateId = vm.TemplateId.ToString(), 
+                RecipientsAddress = viewModel.EmailAddress,
+                TemplateId = viewModel.TemplateId.ToString(),
                 Tokens = tokens,
                 SystemId = "ApplyService",
                 ReplyToAddress = "digital.apprenticeship.service@notifications.service.gov.uk",
-                Subject = vm.Subject
+                Subject = viewModel.Subject
             });
         }
 

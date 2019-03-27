@@ -7,5 +7,6 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
         public string Message { get; set; }
         public bool Invited { get; set; }
         public Guid InvitationId { get; set; }
+        public string ExistingUserId { get; set; }
     }
 }

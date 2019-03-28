@@ -15,12 +15,15 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
         public void Arrange()
         {   
             UserService.SignInUser(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(SignInResult.Success);
+
+            // this is always Returns(null) as Default(class) is always null
             InteractionService.GetAuthorizationContextAsync(Arg.Any<string>()).Returns(default(AuthorizationRequest));
         }
 
         [Test]
         public async Task Then_Response_CredentialsValid_should_be_false()
         {
+            // what is the ReturnUrl where does it come from?
             var result = await Handler.Handle(new ProcessLoginRequest()
                 {Username = "user", Password = "password", ReturnUrl = "https://returnurl", RememberLogin = false}, CancellationToken.None);
 

@@ -33,6 +33,31 @@ namespace SFA.DAS.LoginService.Application.ProcessLogin
             {
                 return new ProcessLoginResponse(){Message = "Invalid ReturnUrl"};
             }
+
+            var user = await _userService.FindByUsername(request.Username);
+            if(user == null)
+            {
+                return new ProcessLoginResponse() { Message = "Invalid credentials" };
+            }
+
+            var emailConfirmed = await _userService.UserHasConfirmedEmail(user);
+            if(!emailConfirmed)
+            {
+                _loginContext.UserLogs.Add(new UserLog()
+                {
+                    Id = GuidGenerator.NewGuid(),
+                    Action = "Login",
+                    Email = request.Username,
+                    DateTime = SystemTime.UtcNow(),
+                    Result = "Login Invalid Email Not Confirmed"
+                });
+                await _loginContext.SaveChangesAsync(cancellationToken);
+
+                // raise some kind of event mediatr here so that a confirmation email can be generated and sent to the user if they don't already have one
+                await _eventService.RaiseAsync(new UserLoginFailedEmailNotConfirmedEvent(user.UserName, user.Id, user.UserName));
+
+                return new ProcessLoginResponse() { Message = "Email not confirmed" };
+            }
             
             var signInResult = await _userService.SignInUser(request.Username, request.Password, request.RememberLogin);
 
@@ -52,8 +77,6 @@ namespace SFA.DAS.LoginService.Application.ProcessLogin
                     ? new ProcessLoginResponse(){Message = "User account is locked out"} 
                     : new ProcessLoginResponse(){Message = "Invalid credentials"};
             }
-
-            var user = await _userService.FindByUsername(request.Username);
 
             await _eventService.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
             

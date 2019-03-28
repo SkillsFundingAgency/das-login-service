@@ -22,6 +22,16 @@ namespace SFA.DAS.LoginService.Application.Services
              return (await _userManager.FindByIdAsync(email)) != null;
         }
 
+        /// <summary>
+        /// Gets a flag which determines if the email for specified user has been verified.
+        /// </summary>
+        /// <param name="user">The user to check for email address verification.</param>
+        /// <returns>true if the email address is verfied otherwise false</returns>
+        public async Task<bool> UserHasConfirmedEmail(LoginUser user)
+        {
+            return (await _userManager.IsEmailConfirmedAsync(user));
+        }
+
         public async Task<UserResponse> CreateUser(LoginUser newUser, string password)
         {
             var result = await _userManager.CreateAsync(newUser, password);

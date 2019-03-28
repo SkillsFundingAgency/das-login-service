@@ -69,6 +69,8 @@ namespace SFA.DAS.LoginService.Web
 
         private void AddIdentityServer(IServiceCollection services)
         {
+            services.AddScoped<IPasswordHasher<LoginUser>, LoginServicePasswordHasher<LoginUser>>();
+
             services.AddIdentity<LoginUser, IdentityRole>(
                     options =>
                     {

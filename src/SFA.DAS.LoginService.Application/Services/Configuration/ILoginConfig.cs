@@ -1,6 +1,4 @@
-using Microsoft.Extensions.Configuration;
-
-namespace SFA.DAS.LoginService.Application.Interfaces
+namespace SFA.DAS.LoginService.Application.Services.Configuration
 {
     public interface ILoginConfig
     {

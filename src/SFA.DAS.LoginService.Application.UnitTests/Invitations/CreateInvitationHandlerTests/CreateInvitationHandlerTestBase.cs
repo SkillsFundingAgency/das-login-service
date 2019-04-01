@@ -52,6 +52,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
                 {
                     ServiceName = "Acme Service", 
                     ServiceTeam = "Acme Service Team",
+                    PostPasswordResetReturnUrl = "https://serviceurl",
                     EmailTemplates = new List<EmailTemplate>(){new EmailTemplate(){Name="SignUpInvitation", TemplateId = InvitationTemplateId},new EmailTemplate(){Name="LoginSignupError", TemplateId = InvitationTemplateId}}
                 }
             });

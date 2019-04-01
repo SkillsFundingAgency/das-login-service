@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using FluentAssertions;
@@ -13,11 +14,13 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
     public class When_user_already_exists : CreateInvitationHandlerTestBase
     {
         private CreateInvitationRequest _createInvitationRequest;
+        private string _userId;
 
         [SetUp]
         public void Arrange()
         {
-            UserService.FindByEmail("invited@email.com").Returns(new LoginUser());
+            _userId = Guid.NewGuid().ToString();
+            UserService.FindByEmail("invited@email.com").Returns(new LoginUser(){Id = _userId});
             _createInvitationRequest = BuildCreateInvitationRequest();
         }
         
@@ -46,6 +49,20 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
 
             response.Message.Should().Be("User already exists");
             response.Invited.Should().Be(false);
+            response.ExistingUserId.Should().Be(_userId);
+        }
+
+        [Test]
+        public void Then_user_already_exists_email_is_sent()
+        {
+            CreateInvitationHandler.Handle(_createInvitationRequest, CancellationToken.None).Wait();
+            EmailService.Received().SendUserExistsEmail(Arg.Is<UserExistsEmailViewModel>(
+                vm => 
+                    vm.ServiceName == "Acme Service" 
+                    && vm.ServiceTeam == "Acme Service Team"
+                    && vm.Contact == _createInvitationRequest.GivenName
+                    && vm.LoginLink == "https://serviceurl"
+                    && vm.EmailAddress == _createInvitationRequest.Email));
         }
     }
 }

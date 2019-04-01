@@ -30,17 +30,7 @@ namespace SFA.DAS.LoginService.Application.BuildLoginViewModel
         public async Task<LoginViewModel> Handle(BuildLoginViewModelRequest request, CancellationToken cancellationToken)
         {
             var context = await _interaction.GetAuthorizationContextAsync(request.returnUrl);
-            if (context?.IdP != null)
-            {
-                // this is meant to short circuit the UI and only trigger the one external IdP
-                return new LoginViewModel
-                {
-                    EnableLocalLogin = false,
-                    ReturnUrl = request.returnUrl,
-                    Username = context?.LoginHint
-                };
-            }
-            
+           
             var allowLocal = true;
             if (context?.ClientId != null)
             {

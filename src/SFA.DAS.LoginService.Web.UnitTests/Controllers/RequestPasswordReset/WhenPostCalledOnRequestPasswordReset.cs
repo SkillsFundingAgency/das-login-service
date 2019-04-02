@@ -9,6 +9,29 @@ using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.ResetPassword
 {
+
+    public class When_Post_called_on_RequestPasswordRequest_with_invalid_ModelState : RequestPasswordResetControllerTestBase
+    {
+        [Test]
+        public async Task Then_RequestPasswordResetRequest_should_not_be_sent()
+        {
+            Controller.ModelState.AddModelError("Email", "Enter a valid email address");
+            await Controller.Post(ClientId, new RequestPasswordResetViewModel {Email = "forgotpassword.com"});
+            await Mediator.DidNotReceive().Send(Arg.Any<RequestPasswordResetRequest>());
+        }
+        
+        [Test]
+        public async Task Then_ViewResult_is_returned()
+        {
+            Controller.ModelState.AddModelError("Email", "Enter a valid email address");
+            var result = await Controller.Post(ClientId, new RequestPasswordResetViewModel {Email = "forgotpassword.com"});
+
+            result.Should().BeOfType<ViewResult>();
+            result.As<ViewResult>().ViewName.Should().Be("RequestPasswordReset");
+            result.As<ViewResult>().Model.Should().BeOfType<RequestPasswordResetViewModel>();
+        }
+    }
+    
     public class WhenPostCalledOnRequestPasswordReset : RequestPasswordResetControllerTestBase
     {
         [Test]

@@ -5,9 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
-using SFA.DAS.LoginService.Application.Interfaces;
 
-namespace SFA.DAS.LoginService.Application.Services
+namespace SFA.DAS.LoginService.Application.Services.Configuration
 {
     public class ConfigurationService : IConfigurationService
     {

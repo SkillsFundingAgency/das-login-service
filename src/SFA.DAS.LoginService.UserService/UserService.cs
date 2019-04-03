@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using SFA.DAS.LoginService.Application.Interfaces;
@@ -6,6 +7,7 @@ using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Application.Services
 {
+    [ExcludeFromCodeCoverage]
     public class UserService : IUserService
     {
         private readonly UserManager<LoginUser> _userManager;

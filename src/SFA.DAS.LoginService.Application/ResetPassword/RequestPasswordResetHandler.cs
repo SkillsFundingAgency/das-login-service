@@ -91,7 +91,9 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
 
         private async Task ClearOutAnyPreviousStillValidRequests(string email)
         {
-            var stillValidRequests = await _loginContext.ResetPasswordRequests.Where(r => r.ValidUntil > SystemTime.UtcNow() && r.IsComplete == false).ToListAsync();
+            var stillValidRequests = await _loginContext.ResetPasswordRequests.Where(r => r.ValidUntil > SystemTime.UtcNow() 
+                                                                                          && r.IsComplete == false
+                                                                                          && r.Email == email).ToListAsync();
             stillValidRequests.ForEach(r => r.ValidUntil = SystemTime.UtcNow().AddDays(-1));
             await _loginContext.SaveChangesAsync();
         }

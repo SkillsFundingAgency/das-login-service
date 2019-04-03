@@ -68,6 +68,7 @@
         {
             "apiVersion": "2017-05-10",
             "name": "app-service-certificate",
+            "resourceGroup": "[parameters('sharedResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",

@@ -33,8 +33,9 @@ namespace SFA.DAS.LoginService.Application.ProcessLogin
             {
                 return new ProcessLoginResponse(){Message = "Invalid ReturnUrl"};
             }
-            
+
             var signInResult = await _userService.SignInUser(request.Username, request.Password, request.RememberLogin);
+            var user = await _userService.FindByUsername(request.Username);
 
             if (!signInResult.Succeeded)
             {
@@ -47,13 +48,19 @@ namespace SFA.DAS.LoginService.Application.ProcessLogin
                     Result = "Login Invalid"
                 });
                 await _loginContext.SaveChangesAsync(cancellationToken);
-                
-                return signInResult.IsLockedOut 
-                    ? new ProcessLoginResponse(){Message = "User account is locked out"} 
-                    : new ProcessLoginResponse(){Message = "Invalid credentials"};
-            }
 
-            var user = await _userService.FindByUsername(request.Username);
+                if (signInResult.IsLockedOut)
+                    return new ProcessLoginResponse() { Message = "User account is locked out" };
+
+                if (user != null)
+                {
+                    var emailConfirmed = await _userService.UserHasConfirmedEmail(user);
+                    if (!emailConfirmed)
+                        return new ProcessLoginResponse() { Message = "Email not confirmed", EmailConfirmationRequired = true };           
+                }
+
+                return new ProcessLoginResponse() { Message = "Invalid credentials" };    
+            }
 
             await _eventService.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
             

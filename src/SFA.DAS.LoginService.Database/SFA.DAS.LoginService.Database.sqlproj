@@ -61,6 +61,8 @@
     <Folder Include="Tables\" />
     <Folder Include="Tables\IdentityServer" />
     <Folder Include="Tables\LoginService\" />
+    <Folder Include="PostDeploymentScripts" />
+    <Folder Include="ManualScripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Schemas\IdentityServer.sql" />
@@ -98,8 +100,14 @@
     <Build Include="Tables\LoginService\LoginService.ResetPasswordRequests.sql" />
     <Build Include="Tables\LoginService\LoginService.UserLogs.sql" />
     <Build Include="Tables\LoginService\LoginService.InvalidPasswords.sql" />
+    <Build Include="Tables\LoginService\LoginService.ConfirmEmailRequests.sql" />
+    <None Include="PostDeploymentScripts\UpdateEmailConfirmed.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />
+    <None Include="PostDeploymentScripts\InitialSetupData.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ManualScripts\MigrateEmployerUsers.sql" />
   </ItemGroup>
 </Project>

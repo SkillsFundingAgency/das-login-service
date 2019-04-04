@@ -29,8 +29,9 @@ namespace SFA.DAS.LoginService.Application.CreatePassword
             var newUserResponse = await _userService.CreateUser(
                 new LoginUser()
                 {
-                    UserName = invitation.Email, 
+                    UserName = invitation.Email,
                     Email = invitation.Email,
+                    EmailConfirmed = true,
                     GivenName = invitation.GivenName,
                     FamilyName = invitation.FamilyName
                 }, request.Password);
@@ -41,7 +42,7 @@ namespace SFA.DAS.LoginService.Application.CreatePassword
             }
             
             invitation.IsUserCreated = true;
-
+        
             _loginContext.UserLogs.Add(new UserLog()
             {
                 Id = GuidGenerator.NewGuid(), 

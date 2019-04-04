@@ -1,0 +1,23 @@
+@model SFA.DAS.LoginService.Web.Controllers.ConfirmEmail.ViewModels.ConfirmEmailLinkViewModel
+
+@{
+    ViewBag.Title = "Email confirmation required";
+}
+
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Email confirmation required</h1>
+            <p class="govuk-body">
+                We have found an account for @Model.Email, but we need to send you a new email with instructions to confirm your account.
+            </p>
+            <p class="govuk-body">
+                If you have previously received an email with instructions to confirm your account please disregard it.
+            </p>
+
+            <p class="govuk-body">
+                <a class="govuk-link" asp-action="Get" asp-controller="RequestConfirmEmail" asp-route-returnUrl="@Model.ReturnUrl" asp-route-email="@Model.Email">Send a new confirm email link</a>
+            </p>
+        </div>
+    </div>
+</main>

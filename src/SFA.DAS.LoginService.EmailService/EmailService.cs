@@ -27,9 +27,9 @@ namespace SFA.DAS.LoginService.EmailService
             var notificationsApiClientConfiguration = new NotificationsApiClientConfiguration()
             {
                 ApiBaseUrl = config.NotificationsApiClientConfiguration.ApiBaseUrl,
-                #pragma warning disable 618
+#pragma warning disable 618
                 ClientToken = config.NotificationsApiClientConfiguration.ClientToken,
-                #pragma warning restore 618
+#pragma warning restore 618
                 ClientId = config.NotificationsApiClientConfiguration.ClientId,
                 ClientSecret = config.NotificationsApiClientConfiguration.ClientSecret,
                 IdentifierUri = config.NotificationsApiClientConfiguration.IdentifierUri,
@@ -45,11 +45,11 @@ namespace SFA.DAS.LoginService.EmailService
                 var azureAdToken = new AzureADBearerTokenGenerator(notificationsApiClientConfiguration).Generate().Result;
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", azureAdToken);
             }
-                
-            
+
+
             _notificationApi = new NotificationsApi(httpClient, notificationsApiClientConfiguration);
         }
-        
+
         public async Task SendInvitationEmail(InvitationEmailViewModel viewModel)
         {
             await SendEmail(viewModel);
@@ -61,7 +61,7 @@ namespace SFA.DAS.LoginService.EmailService
         }
 
         public async Task SendResetNoAccountPassword(PasswordResetNoAccountEmailViewModel viewModel)
-        {           
+        {
             await SendEmail(viewModel);
         }
 
@@ -71,6 +71,11 @@ namespace SFA.DAS.LoginService.EmailService
         }
 
         public async Task SendUserExistsEmail(UserExistsEmailViewModel viewModel)
+        {
+            await SendEmail(viewModel);
+        }
+
+        public async Task SendEmailConfirmation(EmailConfirmationEmailViewModel viewModel)
         {
             await SendEmail(viewModel);
         }
@@ -89,7 +94,7 @@ namespace SFA.DAS.LoginService.EmailService
                 Subject = viewModel.Subject
             });
         }
-        
+
         private Dictionary<string, string> GetTokens(EmailViewModel vm)
         {
             return vm.GetType()

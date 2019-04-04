@@ -38,6 +38,7 @@ namespace SFA.DAS.LoginService.Data
         public DbSet<Invitation> Invitations { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<ResetPasswordRequest> ResetPasswordRequests { get; set; }
+        public DbSet<ConfirmEmailRequest> ConfirmEmailRequests { get; set; }
         public DbSet<UserLog> UserLogs { get; set; }
         public DbSet<InvalidPassword> InvalidPasswords { get; set; }
     }

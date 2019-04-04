@@ -11,5 +11,6 @@ namespace SFA.DAS.LoginService.Application.Interfaces
         Task SendResetNoAccountPassword(PasswordResetNoAccountEmailViewModel viewModel);
         Task SendPasswordReset(PasswordResetEmailViewModel viewModel);
         Task SendUserExistsEmail(UserExistsEmailViewModel viewModel);
+        Task SendEmailConfirmation(EmailConfirmationEmailViewModel viewModel);
     }
 }

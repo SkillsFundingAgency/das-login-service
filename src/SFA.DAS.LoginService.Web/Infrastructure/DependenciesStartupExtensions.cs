@@ -41,6 +41,7 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
             }
 
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IClientService, ClientService>();
             services.AddTransient<SignInManager<LoginUser>>();
             services.AddHttpClient<ICallbackService, CallbackService>()
                 .SetHandlerLifetime(TimeSpan.FromMinutes(5))

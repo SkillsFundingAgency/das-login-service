@@ -15,6 +15,8 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
     {
         public static void AddIdentityServer(this IServiceCollection services, ILoginConfig loginConfig, IHostingEnvironment environment, ILogger logger)
         {
+            services.AddScoped<IPasswordHasher<LoginUser>, LoginServicePasswordHasher<LoginUser>>();
+
             services.AddIdentity<LoginUser, IdentityRole>(
                     options =>
                     {
@@ -23,6 +25,7 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
                         options.Password.RequireUppercase = false;
                         options.Lockout.MaxFailedAccessAttempts = loginConfig.MaxFailedAccessAttempts;
                         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(14);
+                        options.SignIn.RequireConfirmedEmail = true;
                     })
                 .AddPasswordValidator<CustomPasswordValidator<LoginUser>>()
                 .AddEntityFrameworkStores<LoginUserContext>()

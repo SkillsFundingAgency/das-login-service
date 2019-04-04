@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.ProcessLogin;
+using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
 {
@@ -15,6 +16,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
         public void Arrange()
         {
             UserService.SignInUser(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(SignInResult.Failed);
+            UserService.FindByUsername("user").Returns(Task.FromResult<LoginUser>(null));
             InteractionService.GetAuthorizationContextAsync(Arg.Any<string>()).Returns(new AuthorizationRequest());
         }
         

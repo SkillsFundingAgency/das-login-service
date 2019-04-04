@@ -64,5 +64,20 @@ namespace SFA.DAS.LoginService.Application.Services
         {
             return await _userManager.GeneratePasswordResetTokenAsync(user);
         }
+
+        public async Task<IdentityResult> VerifyConfirmEmailToken(LoginUser user, string identityToken)
+        {
+            return await _userManager.ConfirmEmailAsync(user, identityToken);
+        }
+
+        public async Task<string> GenerateConfirmEmailToken(LoginUser user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
+        public async Task<bool> UserHasConfirmedEmail(LoginUser user)
+        {
+            return (await _userManager.IsEmailConfirmedAsync(user));
+        }
     }
 }

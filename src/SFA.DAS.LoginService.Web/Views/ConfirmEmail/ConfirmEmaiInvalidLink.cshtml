@@ -1,0 +1,24 @@
+@model SFA.DAS.LoginService.Web.Controllers.ConfirmEmail.ViewModels.ConfirmEmailLinkViewModel
+
+@{
+    ViewBag.Title = "Request email confirmation";
+}
+
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Expired link</h1>
+
+            <p class="govuk-body">
+                We have previously sent an email to @Model.Email with instructions to confirm your account.
+            </p>
+            <p class="govuk-body">
+                Unfortunatley the link that has been used was not valid.'
+            </p>
+
+            <p class="govuk-body">
+                <a class="govuk-link" asp-action="Get" asp-controller="RequestConfirmEmail" asp-route-returnUrl="@Model.ReturnUrl" asp-route-email="@Model.Email">Request a new confirm email link</a>
+            </p>
+        </div>
+    </div>
+</main>

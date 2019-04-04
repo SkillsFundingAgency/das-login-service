@@ -1,0 +1,20 @@
+@model SFA.DAS.LoginService.Web.Controllers.ConfirmEmail.ViewModels.ConfirmEmailSentViewModel
+
+@{
+    ViewBag.Title = "Confirm email";
+}
+
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Confirm your email</h1>
+
+            <p class="govuk-body">
+              We have sent an email to @Model.Email with instructions to confirm your account.
+            </p>
+            <p class="govuk-body">
+              If you can't find the email in your inbox, check your junk email folder.
+            </p>
+        </div>
+    </div>
+</main>

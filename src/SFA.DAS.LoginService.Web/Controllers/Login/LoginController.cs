@@ -41,7 +41,11 @@ namespace SFA.DAS.LoginService.Web.Controllers.Login
                 ReturnUrl = loginViewModel.ReturnUrl
             });
 
-            if (loginResult.CredentialsValid)
+            if( loginResult.EmailConfirmationRequired)
+            {
+                return RedirectToAction("EmailConfirmationRequired", "ConfirmEmail", new { email = loginViewModel.Username, returnUrl = loginViewModel.ReturnUrl });
+            }
+            else if (loginResult.CredentialsValid)
             {
                 return Redirect(loginViewModel.ReturnUrl);
             }

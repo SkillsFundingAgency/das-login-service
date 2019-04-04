@@ -39,5 +39,10 @@ namespace SFA.DAS.LoginService.EmailService
         {
             await Task.Run(() => _logger.LogInformation($"USER EXISTS Email sent to {viewModel.EmailAddress} with returnUrl {viewModel.LoginLink}"));
         }
+
+        public async Task SendEmailConfirmation(EmailConfirmationEmailViewModel vm)
+        {
+            await Task.Run(() => _logger.LogInformation($"CONFIRM Email sent to {vm.EmailAddress} with confirmLink {vm.ConfirmLink}"));
+        }
     }
 }

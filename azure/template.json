@@ -42,14 +42,20 @@
             "type": "string"
         },
         "customHostName": {
-           "type": "string",
-           "defaultValue": ""
+            "type": "string",
+            "defaultValue": ""
         },
         "keyVaultCertificateName": {
-           "type": "string"
+            "type": "string"
         },
         "loggingRedisConnectionString": {
-           "type": "string"
+            "type": "string"
+        },
+        "sharedKeyVaultName": {
+            "type": "string"
+        },
+        "sharedKeyVaultResourceGroupName": {
+            "type": "string"
         }
     },
     "variables": {
@@ -59,6 +65,33 @@
         "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]"
     },
     "resources": [
+        {
+            "apiVersion": "2017-05-10",
+            "name": "app-service-certificate",
+            "resourceGroup": "[parameters('sharedResourceGroup')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'app-service-certificate.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "keyVaultCertificateName": {
+                        "value": "[parameters('keyVaultCertificateName')]"
+                    },
+                    "keyVaultName": {
+                        "value": "[parameters('sharedKeyVaultName')]"
+                    },
+                    "keyVaultResourceGroup": {
+                        "value": "[parameters('sharedKeyVaultResourceGroupName')]"
+                    },
+                    "serverFarmId": {
+                        "value": "[resourceId(parameters('sharedResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedAppServicePlanName'))]"
+                    }
+                }
+            }
+        },
         {
             "apiVersion": "2017-05-10",
             "name": "application-insights",
@@ -119,7 +152,7 @@
                             },
                             {
                                 "name": "WEBSITE_LOAD_CERTIFICATES",
-                                "value": "[reference(resourceId(parameters('sharedResourceGroup'), 'Microsoft.Web/certificates', parameters('keyVaultCertificateName')), '2016-03-01').Thumbprint]"
+                                "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
                             }
                         ]
                     },
@@ -136,7 +169,7 @@
                         "value": "[parameters('customHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[if(greater(length(parameters('customHostname')), 0), reference(resourceId(parameters('sharedResourceGroup'), 'Microsoft.Web/certificates', parameters('keyVaultCertificateName')), '2016-03-01').Thumbprint, '')]"
+                        "value": "[if(greater(length(parameters('customHostname')), 0), reference('app-service-certificate').outputs.certificateThumbprint.value, '')]"
                     }
                 }
             }

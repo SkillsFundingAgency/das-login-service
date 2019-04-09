@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Services;
+using SFA.DAS.LoginService.Application.Services.Configuration;
 using SFA.DAS.LoginService.Application.Services.EmailServiceViewModels;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
@@ -91,7 +92,9 @@ namespace SFA.DAS.LoginService.Application.ResetPassword
 
         private async Task ClearOutAnyPreviousStillValidRequests(string email)
         {
-            var stillValidRequests = await _loginContext.ResetPasswordRequests.Where(r => r.ValidUntil > SystemTime.UtcNow() && r.IsComplete == false).ToListAsync();
+            var stillValidRequests = await _loginContext.ResetPasswordRequests.Where(r => r.ValidUntil > SystemTime.UtcNow() 
+                                                                                          && r.IsComplete == false
+                                                                                          && r.Email == email).ToListAsync();
             stillValidRequests.ForEach(r => r.ValidUntil = SystemTime.UtcNow().AddDays(-1));
             await _loginContext.SaveChangesAsync();
         }

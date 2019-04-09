@@ -97,6 +97,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
 
             var validRequestIds = new[] {Guid.NewGuid(), Guid.NewGuid()};
             
+            LoginContext.ResetPasswordRequests.Add(new ResetPasswordRequest() { Id= Guid.NewGuid(), Email = "someother@emailaddress.com", ValidUntil = SystemTime.UtcNow().AddMinutes(5), IsComplete = false});
             LoginContext.ResetPasswordRequests.Add(new ResetPasswordRequest() { Id= validRequestIds[0], Email = "email@emailaddress.com", ValidUntil = SystemTime.UtcNow().AddMinutes(5), IsComplete = false});
             LoginContext.ResetPasswordRequests.Add(new ResetPasswordRequest() { Id= validRequestIds[1], Email = "email@emailaddress.com", ValidUntil = SystemTime.UtcNow().AddMinutes(1), IsComplete = false});
             LoginContext.ResetPasswordRequests.Add(new ResetPasswordRequest() { Id= Guid.NewGuid(), Email = "email@emailaddress.com", ValidUntil = SystemTime.UtcNow().AddMinutes(10), IsComplete = true});
@@ -104,8 +105,14 @@ namespace SFA.DAS.LoginService.Application.UnitTests.ResetPassword.RequestPasswo
             await LoginContext.SaveChangesAsync();
 
             await Act();
+            
+            var otherPasswordRequests = LoginContext.ResetPasswordRequests
+                .Where(r => r.Email != "email@emailaddress.com" && r.ValidUntil > SystemTime.UtcNow() && r.IsComplete == false);
 
-            var passwordRequestsWithValidExpiry = LoginContext.ResetPasswordRequests.Where(r => r.Email == "email@emailaddress.com" && r.ValidUntil > SystemTime.UtcNow() && r.IsComplete == false);
+            otherPasswordRequests.Count().Should().Be(1);
+            
+            var passwordRequestsWithValidExpiry = LoginContext.ResetPasswordRequests
+                .Where(r => r.Email == "email@emailaddress.com" && r.ValidUntil > SystemTime.UtcNow() && r.IsComplete == false);
 
             passwordRequestsWithValidExpiry.Count().Should().Be(1);
             passwordRequestsWithValidExpiry.Any(r => validRequestIds.Contains(r.Id)).Should().BeFalse();

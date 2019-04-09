@@ -11,6 +11,7 @@ using Polly.Extensions.Http;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 using SFA.DAS.LoginService.Application.Services;
+using SFA.DAS.LoginService.Application.Services.Configuration;
 using SFA.DAS.LoginService.Data.Entities;
 
 namespace SFA.DAS.LoginService.Web.Infrastructure

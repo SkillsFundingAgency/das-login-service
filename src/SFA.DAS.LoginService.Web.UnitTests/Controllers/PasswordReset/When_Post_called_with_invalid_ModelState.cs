@@ -17,7 +17,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.PasswordReset
             Controller.ModelState.AddModelError("PasswordViewModel.Password", "Must not be blank");
             _result = await Controller.Post(Guid.NewGuid(), Guid.NewGuid(), new ResetPasswordViewModel
             {
-                PasswordViewModel = new PasswordViewModel() {Password = "one", ConfirmPassword = "two"}
+                Password = "one", ConfirmPassword = "one"
             });
         }
 

@@ -15,7 +15,7 @@
             <form asp-route="PostLogin">
                 <input type="hidden" asp-for="ReturnUrl" />
                 
-                <div class="govuk-form-group" sfa-anyvalidationerror-class="govuk-form-group--error">
+                <div class="govuk-form-group" sfa-validation-for="Username" sfa-validationerror-class="govuk-form-group--error">
                     <label class="govuk-label govuk-label--m" asp-for="Username">
                         Email address
                     </label>
@@ -23,10 +23,10 @@
                     {
                       <span id="username-error" asp-validation-for="Username" class="govuk-error-message"></span>
                     }
-                    <input class="govuk-input" asp-for="Username" type="text" autocomplete="username" sfa-anyvalidationerror-class="govuk-input--error">
+                    <input class="govuk-input" asp-for="Username" type="text" autocomplete="username" sfa-validation-for="Username" sfa-validationerror-class="govuk-input--error">
                 </div>
 
-                <div class="govuk-form-group" sfa-anyvalidationerror-class="govuk-form-group--error">
+                <div class="govuk-form-group" sfa-validation-for="Password" sfa-validationerror-class="govuk-form-group--error">
                     <label class="govuk-label govuk-label--m" asp-for="Password">
                         Password
                     </label>
@@ -35,7 +35,7 @@
                       <span id="password-error" asp-validation-for="Password" class="govuk-error-message"></span>
                     }
                     <div class="show-password-container">
-                      <input sfa-anyvalidationerror-class="govuk-input--error" class="govuk-input govuk-input--width-20 show-hide-password-input" asp-for="Password" type="password" autocomplete="current-password" data-show-hide="password" />
+                      <input class="govuk-input govuk-input--width-20 show-hide-password-input" asp-for="Password" type="password" autocomplete="current-password" data-show-hide="password" sfa-validation-for="Password" sfa-validationerror-class="govuk-input--error" />
                       <div class="show-password-control-container">
                         <input type="checkbox" class="show-hide-checkbox" name="show-hide" id="show-hide" />
                         <label for="show-hide" class="govuk-label govuk-label--show-hide"><span class="govuk-label__show-hide-text">show</span><span class="govuk-visually-hidden"> password</span></label>

@@ -24,7 +24,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
             var controller = new CreatePasswordController(mediator);
 
             var invitationId = Guid.NewGuid();
-            controller.Post(new CreatePasswordViewModel() {InvitationId = invitationId, PasswordViewModel  = new PasswordViewModel{ Password = "Pa55word", ConfirmPassword = "Pa55word"}}).Wait();
+            controller.Post(new CreatePasswordViewModel() {InvitationId = invitationId, Password = "Pa55word", ConfirmPassword = "Pa55word"}).Wait();
 
             mediator.Received().Send(Arg.Is<CreatePasswordRequest>(r => r.InvitationId == invitationId && r.Password == "Pa55word"));
         }

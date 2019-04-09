@@ -24,7 +24,9 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
             var checkRequestResponse = await _mediator.Send(new CheckPasswordResetRequest {RequestId = requestId});
             return checkRequestResponse.IsValid 
                 ? View("ResetPassword", new ResetPasswordViewModel(){
-                    PasswordViewModel = new PasswordViewModel(){Password = "", ConfirmPassword = "", Username = checkRequestResponse.Email},
+                    Username = checkRequestResponse.Email,
+                    Password = "",
+                    ConfirmPassword = "", 
                     RequestId = requestId, 
                     ClientId = clientId}) 
                 : View("ExpiredLink", new ExpiredLinkViewModel(){ClientId = clientId});
@@ -38,27 +40,29 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
                 return View("ResetPassword", viewModel);
             }
 
-            if (viewModel.PasswordViewModel.Password != viewModel.PasswordViewModel.ConfirmPassword)
+            if (viewModel.Password != viewModel.ConfirmPassword)
             {
-                ModelState.AddModelError("PasswordViewModel.Password", "Passwords should match");
+                ModelState.AddModelError("ConfirmPassword", "Passwords should match");
                 return View("ResetPassword",
                     new ResetPasswordViewModel()
                     {
                         ClientId = clientId, RequestId = requestId,
-                        PasswordViewModel = new PasswordViewModel() {ConfirmPassword = viewModel.PasswordViewModel.ConfirmPassword, Password = viewModel.PasswordViewModel.Password}
+                        Password = viewModel.Password,
+                        ConfirmPassword = viewModel.ConfirmPassword
                     });
             }
 
-            var resetPasswordResponse = await _mediator.Send(new ResetUserPasswordRequest() {ClientId = clientId, Password = viewModel.PasswordViewModel.Password, RequestId = requestId});
+            var resetPasswordResponse = await _mediator.Send(new ResetUserPasswordRequest() {ClientId = clientId, Password = viewModel.Password, RequestId = requestId});
 
             if (!resetPasswordResponse.IsSuccessful)
             {
-                ModelState.AddModelError("PasswordViewModel.Password", "Password does not meet minimum complexity requirements");
+                ModelState.AddModelError("Password", "Password does not meet minimum complexity requirements");
                 return View("ResetPassword",
                     new ResetPasswordViewModel()
                     {
                         ClientId = clientId, RequestId = requestId,
-                        PasswordViewModel = new PasswordViewModel() {ConfirmPassword = viewModel.PasswordViewModel.ConfirmPassword, Password = viewModel.PasswordViewModel.Password}
+                        Password = viewModel.Password,
+                        ConfirmPassword = viewModel.ConfirmPassword
                     });
             }
 

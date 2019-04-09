@@ -21,14 +21,14 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.PasswordReset
             _clientId = Guid.NewGuid();
             _result = await Controller.Post(_clientId, Guid.NewGuid(), new ResetPasswordViewModel
             {
-                PasswordViewModel = new PasswordViewModel() {Password = "one", ConfirmPassword = "one"}
+                Password = "one", ConfirmPassword = "one"
             });
         }
         
         [Test]
         public void Then_ModelState_has_no_errors_added()
         {
-            Controller.ModelState["PasswordViewModel.Password"].Should().BeNull();    
+            Controller.ModelState["Password"].Should().BeNull();    
         }
 
         [Test]

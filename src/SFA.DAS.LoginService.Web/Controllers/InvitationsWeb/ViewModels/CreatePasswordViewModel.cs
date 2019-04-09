@@ -5,9 +5,8 @@ using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels
 {
-  public class CreatePasswordViewModel
+  public class CreatePasswordViewModel : PasswordViewModel
   {
     public Guid InvitationId { get; set; }
-    public PasswordViewModel PasswordViewModel { get; set; }
   }
 }

@@ -39,13 +39,10 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
 
             return View("CreatePassword", new CreatePasswordViewModel()
             {
-                InvitationId = id, 
-                PasswordViewModel = new PasswordViewModel()
-                {
-                    ConfirmPassword = "", 
-                    Password = "", 
-                    Username = invitation.Email
-                }
+                InvitationId = id,
+                Username = invitation.Email,
+                Password = "",
+                ConfirmPassword = ""
             });
         }
 
@@ -63,9 +60,9 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
                 return BadRequest("Invitation does not exist");
             }
             
-            if (vm.PasswordViewModel.Password == vm.PasswordViewModel.ConfirmPassword)
+            if (vm.Password == vm.ConfirmPassword)
             {
-                var response = await _mediator.Send(new CreatePasswordRequest {InvitationId = vm.InvitationId, Password = vm.PasswordViewModel.Password});
+                var response = await _mediator.Send(new CreatePasswordRequest {InvitationId = vm.InvitationId, Password = vm.Password});
                 if (response.PasswordValid)
                 {
                     return RedirectToAction("Get", "SignUpComplete", new {id = vm.InvitationId});
@@ -77,11 +74,8 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
                     new CreatePasswordViewModel()
                     {
                         InvitationId = vm.InvitationId, 
-                        PasswordViewModel = new PasswordViewModel
-                        {
-                            Password = vm.PasswordViewModel.Password, 
-                            ConfirmPassword = vm.PasswordViewModel.ConfirmPassword
-                        }
+                        Password = vm.Password, 
+                        ConfirmPassword = vm.ConfirmPassword
                     });
             }
             
@@ -90,11 +84,8 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
             return View("CreatePassword", new CreatePasswordViewModel()
             {
                 InvitationId = vm.InvitationId, 
-                PasswordViewModel = new PasswordViewModel
-                {
-                    Password = vm.PasswordViewModel.Password, 
-                    ConfirmPassword = vm.PasswordViewModel.ConfirmPassword
-                }
+                Password = vm.Password, 
+                ConfirmPassword = vm.ConfirmPassword
             });
         }
         

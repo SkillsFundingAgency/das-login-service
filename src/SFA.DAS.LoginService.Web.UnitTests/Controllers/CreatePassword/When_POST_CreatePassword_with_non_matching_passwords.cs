@@ -34,7 +34,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         [Test]
         public void Then_mediator_is_not_called()
         {
-            _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, PasswordViewModel = new PasswordViewModel{ Password = "Pa55word", ConfirmPassword = "P4ssword"}}).Wait();
+            _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, Password = "Pa55word", ConfirmPassword = "P4ssword"}).Wait();
             _mediator.DidNotReceiveWithAnyArgs().Send(Arg.Any<CreatePasswordRequest>());
         }
 
@@ -42,7 +42,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         public void Then_CreatePassword_ViewResult_is_returned()
         {
             _mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation());
-            var result = _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, PasswordViewModel = new PasswordViewModel{ Password = "Pa55word", ConfirmPassword = "P4ssword"}}).Result;
+            var result = _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, Password = "Pa55word", ConfirmPassword = "P4ssword"}).Result;
 
             result.Should().BeOfType<ViewResult>();
             ((ViewResult) result).ViewName.Should().Be("CreatePassword");
@@ -57,11 +57,11 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         public void Then_CreatePassword_ViewResult_contains_CreatePasswordViewModel()
         {
             _mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation());
-            var result = _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, PasswordViewModel = new PasswordViewModel{ Password = "Pa55word", ConfirmPassword = "P4ssword"}}).Result;
+            var result = _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, Password = "Pa55word", ConfirmPassword = "P4ssword"}).Result;
 
             ((ViewResult) result).Model.Should().BeOfType<CreatePasswordViewModel>();
-            ((CreatePasswordViewModel) ((ViewResult) result).Model).PasswordViewModel.Password.Should().Be("Pa55word");
-            ((CreatePasswordViewModel) ((ViewResult) result).Model).PasswordViewModel.ConfirmPassword.Should().Be("P4ssword");
+            ((CreatePasswordViewModel) ((ViewResult) result).Model).Password.Should().Be("Pa55word");
+            ((CreatePasswordViewModel) ((ViewResult) result).Model).ConfirmPassword.Should().Be("P4ssword");
         }
     }
 }

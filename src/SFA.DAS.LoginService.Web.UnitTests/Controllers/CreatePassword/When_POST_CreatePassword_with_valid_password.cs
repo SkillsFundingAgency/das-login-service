@@ -26,7 +26,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
             var controller = new CreatePasswordController(mediator);
 
             var invitationId = Guid.NewGuid();
-            var result = controller.Post(new CreatePasswordViewModel() {InvitationId = invitationId, PasswordViewModel = new PasswordViewModel{ Password = "Pa55word", ConfirmPassword = "Pa55word"}}).Result;
+            var result = controller.Post(new CreatePasswordViewModel() {InvitationId = invitationId, Password = "Pa55word", ConfirmPassword = "Pa55word" }).Result;
 
             result.Should().BeOfType<RedirectToActionResult>();
             ((RedirectToActionResult) result).ActionName.Should().Be("Get");

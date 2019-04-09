@@ -13,7 +13,7 @@ namespace SFA.DAS.LoginService.Web.IntegrationTests.Login
         public async Task Then_404_is_not_received()
         {
             var client = new WebApplicationFactory<Startup>().CreateClient(new WebApplicationFactoryClientOptions()
-                {AllowAutoRedirect = false});
+            { AllowAutoRedirect = false });
 
             var requestUri = "/connect/authorize?client_id=apply&redirect_uri="
                 + "https%3A%2F%2Fapply.apprenticeships.education.gov.uk%2Fsignin-oidc" // [ClientRedirectUri] entry for client_id=apply in local database
@@ -23,12 +23,12 @@ namespace SFA.DAS.LoginService.Web.IntegrationTests.Login
 
             response.StatusCode.Should().NotBe(HttpStatusCode.NotFound);
         }
-        
+
         [Test]
         public async Task Then_302_Redirect_is_received_with_correct_redirect_location()
         {
             var client = new WebApplicationFactory<Startup>().CreateClient(new WebApplicationFactoryClientOptions()
-                {AllowAutoRedirect = false});
+            { AllowAutoRedirect = false });
 
             var requestUri = "/connect/authorize?client_id=apply&redirect_uri="
                 + "https%3A%2F%2Fapply.apprenticeships.education.gov.uk%2Fsignin-oidc" // [ClientRedirectUri] entry for client_id=apply in local database

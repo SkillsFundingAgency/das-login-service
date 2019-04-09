@@ -19,16 +19,16 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.PasswordReset
             Mediator.Send(Arg.Any<ResetUserPasswordRequest>()).Returns(new ResetPasswordResponse() {IsSuccessful = false});
             _result = await Controller.Post(Guid.NewGuid(), Guid.NewGuid(), new ResetPasswordViewModel
             {
-                PasswordViewModel = new PasswordViewModel() {Password = "one", ConfirmPassword = "one"}
+                Password = "one", ConfirmPassword = "one"
             });
         }
         
         [Test]
         public void Then_ModelState_has_an_error_added()
         {
-            Controller.ModelState["PasswordViewModel.Password"].Should().NotBeNull();
-            Controller.ModelState["PasswordViewModel.Password"].Errors.Count.Should().Be(1);
-            Controller.ModelState["PasswordViewModel.Password"].Errors[0].ErrorMessage.Should().Be("Password does not meet minimum complexity requirements");
+            Controller.ModelState["Password"].Should().NotBeNull();
+            Controller.ModelState["Password"].Errors.Count.Should().Be(1);
+            Controller.ModelState["Password"].Errors[0].ErrorMessage.Should().Be("Password does not meet minimum complexity requirements");
         }
 
         [Test]

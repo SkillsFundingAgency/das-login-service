@@ -41,8 +41,8 @@ namespace SFA.DAS.LoginService.Application.CreatePassword
                 return new CreatePasswordResponse(){PasswordValid = false};    
             }
 
-            await _userService.AddUserClaim(newUserResponse.User, JwtClaimTypes.GivenName, newUserResponse.User.GivenName);
-            await _userService.AddUserClaim(newUserResponse.User, JwtClaimTypes.FamilyName, newUserResponse.User.FamilyName);
+            await _userService.AddUserClaim(newUserResponse.User, JwtClaimTypes.GivenName, invitation.GivenName);
+            await _userService.AddUserClaim(newUserResponse.User, JwtClaimTypes.FamilyName, invitation.FamilyName);
             
             invitation.IsUserCreated = true;
 

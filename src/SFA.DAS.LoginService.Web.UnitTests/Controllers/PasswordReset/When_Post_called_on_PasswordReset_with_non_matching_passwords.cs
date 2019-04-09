@@ -16,16 +16,16 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.PasswordReset
         {
             _result = await Controller.Post(Guid.NewGuid(), Guid.NewGuid(), new ResetPasswordViewModel
             {
-                PasswordViewModel = new PasswordViewModel() {Password = "one", ConfirmPassword = "two"}
+                Password = "one", ConfirmPassword = "two"
             });
         }
         
         [Test]
         public void Then_ModelState_has_an_error_added()
         {
-            Controller.ModelState["PasswordViewModel.Password"].Should().NotBeNull();
-            Controller.ModelState["PasswordViewModel.Password"].Errors.Count.Should().Be(1);
-            Controller.ModelState["PasswordViewModel.Password"].Errors[0].ErrorMessage.Should().Be("Passwords should match");
+            Controller.ModelState["ConfirmPassword"].Should().NotBeNull();
+            Controller.ModelState["ConfirmPassword"].Errors.Count.Should().Be(1);
+            Controller.ModelState["ConfirmPassword"].Errors[0].ErrorMessage.Should().Be("Passwords should match");
         }
 
         [Test]

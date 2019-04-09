@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace SFA.DAS.LoginService.Web.Infrastructure
 {
+    [ExcludeFromCodeCoverage]
     public static class IdentityServerExtensions
     {
         public static void AddCertificateFromStore(this 

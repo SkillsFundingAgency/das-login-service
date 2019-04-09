@@ -5,6 +5,7 @@ using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
+using SFA.DAS.LoginService.Application.Services.Configuration;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Data.JsonObjects;
@@ -52,6 +53,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
                 {
                     ServiceName = "Acme Service", 
                     ServiceTeam = "Acme Service Team",
+                    PostPasswordResetReturnUrl = "https://serviceurl",
                     EmailTemplates = new List<EmailTemplate>(){new EmailTemplate(){Name="SignUpInvitation", TemplateId = InvitationTemplateId},new EmailTemplate(){Name="LoginSignupError", TemplateId = InvitationTemplateId}}
                 }
             });

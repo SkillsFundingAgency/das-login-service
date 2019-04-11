@@ -11,8 +11,7 @@ using SFA.DAS.LoginService.Application.GetInvitationById;
 using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
-using SFA.DAS.LoginService.Web.Controllers.ResetPassword;
-using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
+using SFA.DAS.LoginService.Web.Controllers.Password.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
 {
@@ -34,7 +33,12 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         [Test]
         public void Then_mediator_is_not_called()
         {
+            // the actual values passed in the view model are not validated by the controller action, this is a test of 
+            // the controller when it is called with a model state containing an error
+            _controller.ModelState.AddModelError("ConfirmPassword", "Passwords should match");
+
             _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, Password = "Pa55word", ConfirmPassword = "P4ssword"}).Wait();
+
             _mediator.DidNotReceiveWithAnyArgs().Send(Arg.Any<CreatePasswordRequest>());
         }
 
@@ -42,14 +46,19 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         public void Then_CreatePassword_ViewResult_is_returned()
         {
             _mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation());
-            var result = _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, Password = "Pa55word", ConfirmPassword = "P4ssword"}).Result;
+
+            // the actual values passed in the view model are not validated by the controller action, this is a test of 
+            // the controller when it is called with a model state containing an error
+            _controller.ModelState.AddModelError("ConfirmPassword", "Passwords should match");
+
+            var result = _controller.Post(new CreatePasswordViewModel() { InvitationId = _invitationId, Password = "Pa55word", ConfirmPassword = "P4ssword" }).Result;
 
             result.Should().BeOfType<ViewResult>();
             ((ViewResult) result).ViewName.Should().Be("CreatePassword");
             
             _controller.ModelState.Count.Should().Be(1);
             _controller.ModelState.ValidationState.Should().Be(ModelValidationState.Invalid);
-            _controller.ModelState.First().Key.Should().Be("Password");
+            _controller.ModelState.First().Key.Should().Be("ConfirmPassword");
             _controller.ModelState.First().Value.Errors.First().ErrorMessage.Should().Be("Passwords should match");
         }
         
@@ -57,7 +66,12 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         public void Then_CreatePassword_ViewResult_contains_CreatePasswordViewModel()
         {
             _mediator.Send(Arg.Any<GetInvitationByIdRequest>()).Returns(new Invitation());
-            var result = _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId, Password = "Pa55word", ConfirmPassword = "P4ssword"}).Result;
+            
+            // the actual values passed in the view model are not validated by the controller action, this is a test of 
+            // the controller when it is called with a model state containing an error
+            _controller.ModelState.AddModelError("ConfirmPassword", "Passwords should match");
+
+            var result = _controller.Post(new CreatePasswordViewModel() {InvitationId = _invitationId,  Password = "Pa55word", ConfirmPassword = "P4ssword"}).Result;
 
             ((ViewResult) result).Model.Should().BeOfType<CreatePasswordViewModel>();
             ((CreatePasswordViewModel) ((ViewResult) result).Model).Password.Should().Be("Pa55word");

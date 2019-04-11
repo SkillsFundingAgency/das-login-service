@@ -14,6 +14,7 @@ namespace SFA.DAS.LoginService.Application.Interfaces
         Task<LoginUser> FindByEmail(string email);
         Task<UserResponse> ResetPassword(string email, string password, string identityToken);
         Task<string> GeneratePasswordResetToken(LoginUser user);
+        Task<IdentityResult> ValidatePassword(string password, LoginUser user = null);
         Task<string> GenerateConfirmEmailToken(LoginUser user);
         Task<IdentityResult> VerifyConfirmEmailToken(LoginUser user, string identityToken);
         Task<bool> UserHasConfirmedEmail(LoginUser user);

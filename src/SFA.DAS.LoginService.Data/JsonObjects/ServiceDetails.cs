@@ -8,8 +8,8 @@ namespace SFA.DAS.LoginService.Data.JsonObjects
         public string ServiceTeam { get; set; }
         public string SupportUrl { get; set; }
         public string PostPasswordResetReturnUrl { get; set; }
-
         public List<EmailTemplate> EmailTemplates { get; set; }
         public string CreateAccountUrl { get; set; }
+        public string CreateAccountPurpose { get; set; }
     }
 }

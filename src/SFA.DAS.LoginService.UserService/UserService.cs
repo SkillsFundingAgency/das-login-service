@@ -30,6 +30,18 @@ namespace SFA.DAS.LoginService.Application.Services
             return new UserResponse {Result = result, User = newUser};
         }
 
+        public async Task<IdentityResult> ValidatePassword(string password, LoginUser user = null)
+        {
+            foreach (var passwordValidator in _userManager.PasswordValidators)
+            {
+                var identityResult = await passwordValidator.ValidateAsync(_userManager, user, password);
+                if(identityResult != IdentityResult.Success)
+                    return identityResult;
+            }
+
+            return IdentityResult.Success;
+        }
+
         public async Task<SignInResult> SignInUser(string username, string password, bool rememberLogin)
         {
             return await _signInManager.PasswordSignInAsync(username, password, rememberLogin, lockoutOnFailure: true);

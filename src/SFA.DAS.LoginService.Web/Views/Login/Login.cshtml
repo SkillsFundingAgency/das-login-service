@@ -1,4 +1,5 @@
 @model SFA.DAS.LoginService.Application.BuildLoginViewModel.LoginViewModel
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 
 @{
     ViewBag.Title = (!ViewData.ModelState.IsValid ? "Error: " : "") + "Sign in to " + @Model.ServiceName;
@@ -7,39 +8,53 @@
 <main class="govuk-main-wrapper " id="main-content" role="main">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            
-            <partial name="/Views/Partials/_validationErrorSummary.cshtml"/>
+
+            <partial name="/Views/Partials/_validationErrorSummary.cshtml" />
 
             <h1 class="govuk-heading-xl">Sign in to @Model.ServiceName</h1>
-            
+
+            @if (Model.CreateAccountDetails.ShowCreateAccountLink)
+            {
+            <div class="govuk-form-group">
+                @if (Model.CreateAccountDetails.LocalSignUp)
+                {
+                    <span class="govuk-body">Sign in or <a class="govuk-link" asp-action="Get" asp-controller="CreateAccount" asp-route-returnUrl="@Model.ReturnUrl">create an account</a> @Model.CreateAccountDetails.Purpose</span>
+                }
+                else
+                {
+                    <span class="govuk-body">Sign in or <a class="govuk-link" href="@Model.CreateAccountDetails.CreateAccountUrl">create an account</a> @Model.CreateAccountDetails.Purpose</span>
+                }
+            </div>
+            }
+
             <form asp-route="PostLogin">
                 <input type="hidden" asp-for="ReturnUrl" />
                 
-                <div class="govuk-form-group" sfa-validation-for="Username" sfa-validationerror-class="govuk-form-group--error">
+                <div class="govuk-form-group" sfa-anyvalidationerror-class="govuk-form-group--error">
                     <label class="govuk-label govuk-label--m" asp-for="Username">
                         Email address
                     </label>
                     @if (!ViewData.ModelState.IsValid)
                     {
-                      <span id="username-error" asp-validation-for="Username" class="govuk-error-message"></span>
+                        <span id="username-error" asp-validation-for="Username" class="govuk-error-message"></span>
                     }
                     <input class="govuk-input" asp-for="Username" type="text" autocomplete="username" sfa-validation-for="Username" sfa-validationerror-class="govuk-input--error">
                 </div>
 
-                <div class="govuk-form-group" sfa-validation-for="Password" sfa-validationerror-class="govuk-form-group--error">
+                <div class="govuk-form-group" sfa-validationerror-class="govuk-form-group--error" sfa-validation-for="Password">
                     <label class="govuk-label govuk-label--m" asp-for="Password">
                         Password
                     </label>
                     @if (!ViewData.ModelState.IsValid)
                     {
-                      <span id="password-error" asp-validation-for="Password" class="govuk-error-message"></span>
+                        <span id="password-error" asp-validation-for="Password" class="govuk-error-message"></span>
                     }
                     <div class="show-password-container">
-                      <input class="govuk-input govuk-input--width-20 show-hide-password-input" asp-for="Password" type="password" autocomplete="current-password" data-show-hide="password" sfa-validation-for="Password" sfa-validationerror-class="govuk-input--error" />
-                      <div class="show-password-control-container">
-                        <input type="checkbox" class="show-hide-checkbox" name="show-hide" id="show-hide" />
-                        <label for="show-hide" class="govuk-label govuk-label--show-hide"><span class="govuk-label__show-hide-text">show</span><span class="govuk-visually-hidden"> password</span></label>
-                      </div>
+                        <input sfa-validationerror-class="govuk-input--error" sfa-validation-for="Password" class="govuk-input govuk-input--width-20 show-hide-password-input" asp-for="Password" type="password" autocomplete="current-password" data-show-hide="password" />
+                        <div class="show-password-control-container">
+                            <input type="checkbox" class="show-hide-checkbox" name="show-hide" id="show-hide" />
+                            <label for="show-hide" class="govuk-label govuk-label--show-hide"><span class="govuk-label__show-hide-text">show</span><span class="govuk-visually-hidden"> password</span></label>
+                        </div>
                     </div>
                 </div>
 
@@ -57,33 +72,17 @@
                     <button type="submit" class="govuk-button">
                         Sign in
                     </button>
-                    
-                    @if (Model.CreateAccount.ShowCreateAccountLink)
-                    {
-                        <div class="das-inline-button-link">
-                            @if (Model.CreateAccount.LocalSignUp)
-                            {
-@*                                 <span class="govuk-body">or <a class="govuk-link" asp-action="Get" asp-controller="CreateAccount">create an account</a></span> *@
-                            }
-                            else
-                            {
-                                <span class="govuk-body">or <a class="govuk-link" href="@Model.CreateAccount.CreateAccountUrl">create an account</a></span>
-                            }
-                        </div>
-                    }
                 </div>
 
-                
-                
                 <div class="govuk-form-group">
-                  <h2 class="govuk-heading-m">Problems signing in</h2>
-                  <p class="govuk-body">
-                    <a class="govuk-link" asp-action="Get" asp-controller="RequestPasswordReset" asp-route-clientId="@Model.ClientId">I have forgotten my password</a>
-                  </p>
+                    <h2 class="govuk-heading-m">Problems signing in</h2>
+                    <p class="govuk-body">
+                        <a class="govuk-link" asp-action="Get" asp-controller="RequestPasswordReset" asp-route-clientId="@Model.ClientId">I have forgotten my password</a>
+                    </p>
                 </div>
-                
+
             </form>
-            
+
             <!-- <p class="govuk-body"><a class="govuk-link" href="@Model.ServiceSupportUrl">Having problems with sign in?</a></p> -->
         </div>
     </div>

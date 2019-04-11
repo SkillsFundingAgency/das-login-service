@@ -1,24 +1,21 @@
-using System;
 using MediatR;
 using NSubstitute;
 using NUnit.Framework;
-using SFA.DAS.LoginService.Application.Services;
-using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
+using SFA.DAS.LoginService.Web.Controllers.CreateAccountController;
 
-namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
+namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreateAccount
 {
     [TestFixture]
-    public class CreatePasswordTestsBase
+    public class CreateAccountTestBase
     {
         protected IMediator Mediator;
-        protected CreatePasswordController Controller;
+        protected CreateAccountController Controller;
         
         [SetUp]
         public void SetUp()
         {
             Mediator = Substitute.For<IMediator>();
-            Controller = new CreatePasswordController(Mediator);
-            SystemTime.UtcNow = () => new DateTime(2019,1,1,1,1,1);
+            Controller = new CreateAccountController(Mediator);
         }
     }
 }

@@ -31,8 +31,8 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.BuildLoginViewModel
             result.ServiceSupportUrl.Should().Be("https://acme.gov.uk/Support");
             result.ReturnUrl.Should().Be("https://returnurl");
             result.ClientId.Should().Be(ClientId);
-            result.CreateAccount.LocalSignUp.Should().BeFalse();
-            result.CreateAccount.ShowCreateAccountLink.Should().BeFalse();
+            result.CreateAccountDetails.LocalSignUp.Should().BeFalse();
+            result.CreateAccountDetails.ShowCreateAccountLink.Should().BeFalse();
         }
     }
 }

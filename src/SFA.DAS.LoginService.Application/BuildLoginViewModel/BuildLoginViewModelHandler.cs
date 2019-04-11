@@ -52,19 +52,24 @@ namespace SFA.DAS.LoginService.Application.BuildLoginViewModel
                 ServiceName = client.ServiceDetails.ServiceName,
                 ServiceSupportUrl = client.ServiceDetails.SupportUrl,
                 ClientId = client.Id,
-                CreateAccount = new CreateAccount()
+                CreateAccountDetails = new CreateAccountDetails()
             };
 
             if (client.AllowLocalSignUp)
             {
-                loginViewModel.CreateAccount.LocalSignUp = true;
+                loginViewModel.CreateAccountDetails.LocalSignUp = true;
             }
 
             if (!string.IsNullOrWhiteSpace(client.ServiceDetails.CreateAccountUrl))
             {
-                loginViewModel.CreateAccount.CreateAccountUrl = client.ServiceDetails.CreateAccountUrl;
+                loginViewModel.CreateAccountDetails.CreateAccountUrl = client.ServiceDetails.CreateAccountUrl;
             }
-            
+
+            if (!string.IsNullOrWhiteSpace(client.ServiceDetails.CreateAccountPurpose))
+            {
+                loginViewModel.CreateAccountDetails.Purpose = client.ServiceDetails.CreateAccountPurpose;
+            }
+
             return loginViewModel;
         }
     }

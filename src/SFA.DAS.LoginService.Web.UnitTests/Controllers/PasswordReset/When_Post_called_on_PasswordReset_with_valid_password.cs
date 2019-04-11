@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.ResetPassword;
+using SFA.DAS.LoginService.Web.Controllers.Password.ViewModels;
 using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.PasswordReset
@@ -21,7 +22,8 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.PasswordReset
             _clientId = Guid.NewGuid();
             _result = await Controller.Post(_clientId, Guid.NewGuid(), new ResetPasswordViewModel
             {
-                Password = "one", ConfirmPassword = "one"
+                Password = "one",
+                ConfirmPassword = "one"
             });
         }
         

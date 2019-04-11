@@ -8,8 +8,7 @@ using SFA.DAS.LoginService.Application.GetInvitationById;
 using SFA.DAS.LoginService.Application.Reinvite;
 using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
-using SFA.DAS.LoginService.Web.Controllers.ResetPassword;
-using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
+using SFA.DAS.LoginService.Web.Controllers.Password.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
 {
@@ -52,40 +51,28 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
             {
                 return View("CreatePassword", vm);
             }
-            
+
             var invitation = await _mediator.Send(new GetInvitationByIdRequest(vm.InvitationId));
             if (invitation == null)
             {
                 return BadRequest("Invitation does not exist");
             }
-            
-            if (vm.Password == vm.ConfirmPassword)
+
+            var response = await _mediator.Send(new CreatePasswordRequest { InvitationId = vm.InvitationId, Password = vm.Password });
+            if (response.PasswordValid)
             {
-                var response = await _mediator.Send(new CreatePasswordRequest {InvitationId = vm.InvitationId, Password = vm.Password});
-                if (response.PasswordValid)
-                {
-                    return RedirectToAction("Get", "SignUpComplete", new {id = vm.InvitationId});
-                }
-
-                ModelState.AddModelError("Password", "Password does not meet minimum complexity requirements");
-
-                return View("CreatePassword",
-                    new CreatePasswordViewModel()
-                    {
-                        InvitationId = vm.InvitationId, 
-                        Password = vm.Password, 
-                        ConfirmPassword = vm.ConfirmPassword
-                    });
+                return RedirectToAction("Get", "SignUpComplete", new { id = vm.InvitationId });
             }
-            
-            ModelState.AddModelError("Password", "Passwords should match");
-            
-            return View("CreatePassword", new CreatePasswordViewModel()
-            {
-                InvitationId = vm.InvitationId, 
-                Password = vm.Password, 
-                ConfirmPassword = vm.ConfirmPassword
-            });
+
+            ModelState.AddModelError("Password", "Password does not meet minimum complexity requirements");
+
+            return View("CreatePassword",
+                new CreatePasswordViewModel()
+                {
+                    InvitationId = vm.InvitationId,
+                    Password = vm.Password,
+                    ConfirmPassword = vm.ConfirmPassword
+                });
         }
         
         [HttpPost("/Invitations/Reinvite/{invitationId}")]

@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.LoginService.Application.GetClientById;
 using SFA.DAS.LoginService.Application.ResetPassword;
-using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
+using SFA.DAS.LoginService.Web.Controllers.Password.ViewModels;
 using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
@@ -40,18 +40,6 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
                 return View("ResetPassword", viewModel);
             }
 
-            if (viewModel.Password != viewModel.ConfirmPassword)
-            {
-                ModelState.AddModelError("ConfirmPassword", "Passwords should match");
-                return View("ResetPassword",
-                    new ResetPasswordViewModel()
-                    {
-                        ClientId = clientId, RequestId = requestId,
-                        Password = viewModel.Password,
-                        ConfirmPassword = viewModel.ConfirmPassword
-                    });
-            }
-
             var resetPasswordResponse = await _mediator.Send(new ResetUserPasswordRequest() {ClientId = clientId, Password = viewModel.Password, RequestId = requestId});
 
             if (!resetPasswordResponse.IsSuccessful)
@@ -60,7 +48,8 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
                 return View("ResetPassword",
                     new ResetPasswordViewModel()
                     {
-                        ClientId = clientId, RequestId = requestId,
+                        ClientId = clientId,
+                        RequestId = requestId,
                         Password = viewModel.Password,
                         ConfirmPassword = viewModel.ConfirmPassword
                     });

@@ -1,0 +1,63 @@
+@model SFA.DAS.LoginService.Web.Controllers.CreateAccount.ViewModels.CreateAccountViewModel
+
+@{
+    ViewBag.Title = "Create account";
+}
+
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <partial name="/Views/Partials/_validationErrorSummary.cshtml" />
+
+            <h1 class="govuk-heading-xl">Create a user</h1>
+
+            <div class="govuk-form-group">
+                <span class="govuk-body">If you already have an account <a class="govuk-link" asp-action="Get" asp-controller="@Model.ReturnUrl">sign in</a></span>
+            </div>
+
+            <form asp-action="Post" asp-controller="CreateAccount">
+                <input id="ReturnUrl" name="ReturnUrl" autocomplete="off" class="govuk-visually-hidden" value="@Model.ReturnUrl">
+
+                <div class="govuk-form-group" sfa-validationerror-class="govuk-form-group--error" sfa-validation-for="GivenName">
+                    <label class="govuk-label govuk-label--m" asp-for="GivenName">
+                        First name
+                    </label>
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <span id="givenname-error" asp-validation-for="GivenName" class="govuk-error-message"></span>
+                    }
+                    <input sfa-validationerror-class="govuk-input--error" sfa-validation-for="GivenName" class="govuk-input govuk-input--width-20" name="GivenName" id="GivenName" value="@Model.GivenName" />
+                </div>
+
+                <div class="govuk-form-group" sfa-validationerror-class="govuk-form-group--error" sfa-validation-for="FamilyName">
+                    <label class="govuk-label govuk-label--m" asp-for="FamilyName">
+                        Last name
+                    </label>
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <span id="familyname-error" asp-validation-for="FamilyName" class="govuk-error-message"></span>
+                    }
+                    <input sfa-validationerror-class="govuk-input--error" sfa-validation-for="FamilyName" class="govuk-input govuk-input--width-20" name="FamilyName" id="FamilyName" value="@Model.FamilyName" />
+                </div>
+
+                <div class="govuk-form-group" sfa-validationerror-class="govuk-form-group--error" sfa-validation-for="Username">
+                    <label class="govuk-label govuk-label--m" asp-for="Username">
+                        Email
+                    </label>
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <span id="username-error" asp-validation-for="Username" class="govuk-error-message"></span>
+                    }
+                    <input sfa-validationerror-class="govuk-input--error" sfa-validation-for="Username" class="govuk-input govuk-input--width-20" name="Username" id="Username" value="@Model.Username" />
+                </div>
+
+                <partial name="_PasswordForm" model="@Model" />
+
+                <button type="submit" class="govuk-button">
+                    Create my account
+                </button>
+            </form>
+        </div>
+    </div>
+</main>

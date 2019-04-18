@@ -15,15 +15,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.LoginService.Applic
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SFA.DAS.LoginService.Database", "SFA.DAS.LoginService.Database\SFA.DAS.LoginService.Database.sqlproj", "{0A541A6E-C679-4D1F-80BC-54CAEC6C734C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.LoginService.Web.IntegrationTests", "SFA.DAS.LoginService.Web.IntegrationTests\SFA.DAS.LoginService.Web.IntegrationTests.csproj", "{C9DB6533-1CE8-4463-B32A-CEEFC6846CCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.LoginService.Web.IntegrationTests", "SFA.DAS.LoginService.Web.IntegrationTests\SFA.DAS.LoginService.Web.IntegrationTests.csproj", "{C9DB6533-1CE8-4463-B32A-CEEFC6846CCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.LoginService.EmailService", "SFA.DAS.LoginService.EmailService\SFA.DAS.LoginService.EmailService.csproj", "{C5A203A5-DC02-4092-A086-80FB67F706B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.LoginService.EmailService", "SFA.DAS.LoginService.EmailService\SFA.DAS.LoginService.EmailService.csproj", "{C5A203A5-DC02-4092-A086-80FB67F706B5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{BF1F0A40-8B07-48F1-B64F-0B7B3ABB2AF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.LoginService.Samples.MvcInvitationClient", "SFA.DAS.LoginService.Samples.MvcInvitationClient\SFA.DAS.LoginService.Samples.MvcInvitationClient.csproj", "{C920D43E-929B-4E77-8A58-9B8207B0C159}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.LoginService.Samples.MvcInvitationClient", "SFA.DAS.LoginService.Samples.MvcInvitationClient\SFA.DAS.LoginService.Samples.MvcInvitationClient.csproj", "{C920D43E-929B-4E77-8A58-9B8207B0C159}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.LoginService.UserService", "SFA.DAS.LoginService.UserService\SFA.DAS.LoginService.UserService.csproj", "{AE5D6FCC-1070-4F81-BEAF-0194FD6418E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.LoginService.UserService", "SFA.DAS.LoginService.UserService\SFA.DAS.LoginService.UserService.csproj", "{AE5D6FCC-1070-4F81-BEAF-0194FD6418E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.LoginService.Web.ClientComponents", "SFA.DAS.LoginService.Web.ClientComponents\SFA.DAS.LoginService.Web.ClientComponents.csproj", "{F0723F8A-1449-43B1-B7FA-5AFAB71466FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.LoginService.Samples.MvcLocalClient", "SFA.DAS.LoginService.Samples.MvcLocalClient\SFA.DAS.LoginService.Samples.MvcLocalClient.csproj", "{3495A4B3-1E95-4BBC-BE64-0C09A4D6A4FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.LoginService.Samples.MvcLocalClient.NetFramework", "SFA.DAS.LoginService.Samples.MvcLocalClient.NetFramework\SFA.DAS.LoginService.Samples.MvcLocalClient.NetFramework.csproj", "{CA05F9BF-0A92-4207-B33C-57D9FF528564}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,14 +79,28 @@ Global
 		{AE5D6FCC-1070-4F81-BEAF-0194FD6418E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE5D6FCC-1070-4F81-BEAF-0194FD6418E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE5D6FCC-1070-4F81-BEAF-0194FD6418E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0723F8A-1449-43B1-B7FA-5AFAB71466FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0723F8A-1449-43B1-B7FA-5AFAB71466FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0723F8A-1449-43B1-B7FA-5AFAB71466FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0723F8A-1449-43B1-B7FA-5AFAB71466FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3495A4B3-1E95-4BBC-BE64-0C09A4D6A4FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3495A4B3-1E95-4BBC-BE64-0C09A4D6A4FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3495A4B3-1E95-4BBC-BE64-0C09A4D6A4FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3495A4B3-1E95-4BBC-BE64-0C09A4D6A4FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA05F9BF-0A92-4207-B33C-57D9FF528564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA05F9BF-0A92-4207-B33C-57D9FF528564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA05F9BF-0A92-4207-B33C-57D9FF528564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA05F9BF-0A92-4207-B33C-57D9FF528564}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {4860D79B-81B1-453D-9B14-B73378C0F212}
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C920D43E-929B-4E77-8A58-9B8207B0C159} = {BF1F0A40-8B07-48F1-B64F-0B7B3ABB2AF8}
+		{3495A4B3-1E95-4BBC-BE64-0C09A4D6A4FF} = {BF1F0A40-8B07-48F1-B64F-0B7B3ABB2AF8}
+		{CA05F9BF-0A92-4207-B33C-57D9FF528564} = {BF1F0A40-8B07-48F1-B64F-0B7B3ABB2AF8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4860D79B-81B1-453D-9B14-B73378C0F212}
 	EndGlobalSection
 EndGlobal

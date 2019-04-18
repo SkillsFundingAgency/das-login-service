@@ -1,8 +1,14 @@
+using System;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Primitives;
 using SFA.DAS.LoginService.Application.BuildLoginViewModel;
 using SFA.DAS.LoginService.Application.ProcessLogin;
+using SFA.DAS.LoginService.Web.ClientComponents;
 
 namespace SFA.DAS.LoginService.Web.Controllers.Login
 {
@@ -18,6 +24,13 @@ namespace SFA.DAS.LoginService.Web.Controllers.Login
         [HttpGet("/Account/Login")]
         public async Task<IActionResult> GetLogin(string returnUrl)
         {
+            if(CreateAccountRedirect.GetCreateAccountRedirect(returnUrl) == true)
+            {
+                // clear the request to redirect to Create Account before redirecting
+                returnUrl = CreateAccountRedirect.SetCreateAccountRedirect(returnUrl, false);
+                return RedirectToAction("Get", "CreateAccount", new { returnUrl });
+            }
+
             var viewModel = await _mediator.Send(new BuildLoginViewModelRequest() {returnUrl = returnUrl});
             return View("Login", viewModel);
         }

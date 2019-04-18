@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseUrl>https://github.com/SkillsFundingAgency/das-login-service/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/SkillsFundingAgency/das-login-service</PackageProjectUrl>
+    <Description>Client components needed to consume login service identity server from a web client</Description>
+    <Authors>DAS</Authors>
+  </PropertyGroup>
+
+</Project>

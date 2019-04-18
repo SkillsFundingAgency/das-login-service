@@ -13,20 +13,6 @@
 
             <h1 class="govuk-heading-xl">Sign in to @Model.ServiceName</h1>
 
-            @if (Model.CreateAccountDetails.ShowCreateAccountLink)
-            {
-            <div class="govuk-form-group">
-                @if (Model.CreateAccountDetails.LocalSignUp)
-                {
-                    <span class="govuk-body">Sign in or <a class="govuk-link" asp-action="Get" asp-controller="CreateAccount" asp-route-returnUrl="@Model.ReturnUrl">create an account</a> @Model.CreateAccountDetails.Purpose</span>
-                }
-                else
-                {
-                    <span class="govuk-body">Sign in or <a class="govuk-link" href="@Model.CreateAccountDetails.CreateAccountUrl">create an account</a> @Model.CreateAccountDetails.Purpose</span>
-                }
-            </div>
-            }
-
             <form asp-route="PostLogin">
                 <input type="hidden" asp-for="ReturnUrl" />
                 
@@ -72,6 +58,19 @@
                     <button type="submit" class="govuk-button">
                         Sign in
                     </button>
+                    @if (Model.CreateAccountDetails.ShowCreateAccountLink)
+                    {
+                        <div class="das-inline-button-link">
+                            @if (Model.CreateAccountDetails.LocalSignUp)
+                            {
+                                <span class="govuk-body">or <a class="govuk-link" asp-action="Get" asp-controller="CreateAccount" asp-route-returnUrl="@Model.ReturnUrl">create an account</a> @Model.CreateAccountDetails.Purpose</span>
+                            }
+                            else
+                            {
+                                <span class="govuk-body">or <a class="govuk-link" href="@Model.CreateAccountDetails.CreateAccountUrl">create an account</a> @Model.CreateAccountDetails.Purpose</span>
+                            }
+                        </div>
+                    }
                 </div>
 
                 <div class="govuk-form-group">

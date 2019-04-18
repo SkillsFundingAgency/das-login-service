@@ -5,5 +5,5 @@ CREATE TABLE [LoginService].[ConfirmEmailRequests]
 	[ValidUntil] [datetime2](7) NOT NULL,
 	[IsComplete] [bit] NOT NULL,
 	[RequestedDate] [datetime2](7) NOT NULL,
-	[IdentityToken] [nvarchar](250) NOT NULL,
+	[IdentityToken] [nvarchar](MAX) NOT NULL,
 ) ON [PRIMARY]

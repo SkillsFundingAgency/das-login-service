@@ -12,10 +12,6 @@
 
             <h1 class="govuk-heading-xl">Create a user</h1>
 
-            <div class="govuk-form-group">
-                <span class="govuk-body">If you already have an account <a class="govuk-link" asp-action="Get" asp-controller="@Model.ReturnUrl">sign in</a></span>
-            </div>
-
             <form asp-action="Post" asp-controller="CreateAccount">
                 <input id="ReturnUrl" name="ReturnUrl" autocomplete="off" class="govuk-visually-hidden" value="@Model.ReturnUrl">
 
@@ -54,9 +50,14 @@
 
                 <partial name="_PasswordForm" model="@Model" />
 
-                <button type="submit" class="govuk-button">
-                    Create my account
-                </button>
+                <div class="govuk-form-group">
+                    <button type="submit" class="govuk-button">
+                        Create my account
+                    </button>
+                    <div class="das-inline-button-link">
+                        <span class="govuk-body">or if you already have an account <a class="govuk-link" asp-action="GetLogin" asp-controller="Login" asp-route-returnUrl="@Model.ReturnUrl">sign in</a></span>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

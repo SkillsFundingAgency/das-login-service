@@ -32,6 +32,7 @@
         <ProjectReference Include="..\SFA.DAS.LoginService.Application\SFA.DAS.LoginService.Application.csproj" />
         <ProjectReference Include="..\SFA.DAS.LoginService.EmailService\SFA.DAS.LoginService.EmailService.csproj" />
         <ProjectReference Include="..\SFA.DAS.LoginService.UserService\SFA.DAS.LoginService.UserService.csproj" />
+        <ProjectReference Include="..\SFA.DAS.LoginService.Web.ClientComponents\SFA.DAS.LoginService.Web.ClientComponents.csproj" />
     </ItemGroup>
 
 </Project>

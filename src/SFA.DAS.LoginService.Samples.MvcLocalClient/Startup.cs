@@ -84,7 +84,6 @@ namespace SFA.DAS.LoginService.Samples.MvcLocalClient
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else

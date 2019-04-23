@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Data.Entities;
@@ -78,6 +80,11 @@ namespace SFA.DAS.LoginService.Application.Services
         public async Task<bool> UserHasConfirmedEmail(LoginUser user)
         {
             return (await _userManager.IsEmailConfirmedAsync(user));
+        }
+
+        public async Task AddUserClaim(LoginUser user, string claimType, string value)
+        {
+            await _userManager.AddClaimAsync(user, new Claim(claimType, value));
         }
     }
 }

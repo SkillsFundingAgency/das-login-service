@@ -102,6 +102,8 @@
     <Build Include="Tables\LoginService\LoginService.InvalidPasswords.sql" />
     <Build Include="Tables\LoginService\LoginService.ConfirmEmailRequests.sql" />
     <None Include="PostDeploymentScripts\UpdateEmailConfirmed.sql" />
+    <None Include="PostDeploymentScripts\UpdateEmailTemplates.sql" />
+    <None Include="PostDeploymentScripts\UpdateProfileClaims.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />

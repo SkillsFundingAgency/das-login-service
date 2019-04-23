@@ -17,6 +17,7 @@ namespace SFA.DAS.LoginService.Application.Interfaces
         Task<string> GenerateConfirmEmailToken(LoginUser user);
         Task<IdentityResult> VerifyConfirmEmailToken(LoginUser user, string identityToken);
         Task<bool> UserHasConfirmedEmail(LoginUser user);
+        Task AddUserClaim(LoginUser user, string claimType, string value);
     }
 
     public class UserResponse

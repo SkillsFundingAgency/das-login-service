@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using IdentityModel;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,9 @@ namespace SFA.DAS.LoginService.Application.CreatePassword
             {
                 return new CreatePasswordResponse(){PasswordValid = false};    
             }
+
+            await _userService.AddUserClaim(newUserResponse.User, JwtClaimTypes.GivenName, invitation.GivenName);
+            await _userService.AddUserClaim(newUserResponse.User, JwtClaimTypes.FamilyName, invitation.FamilyName);
             
             invitation.IsUserCreated = true;
         

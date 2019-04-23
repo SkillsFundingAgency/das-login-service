@@ -2,43 +2,6 @@
 	Script to to create a SQL script of insert statements which will migrate [EmployerUsersDB].[dbo].[User] into [LoginServiceDB].[IdentityService].[AspNetUsers] 
 	whilst transforming the seperate salt and password to a single hash which is marked as a migrated hash and can be verfifed in the LoginService by a custom hash
 	verifier.
-
-	Test Cases:
-
-	1) User has confirmed their email in EmployerUsers service and is logging via Login service with a migrated user 
-	   => Login will succeed, the password will be hashed in new .Net Core password hash format.
-
-	2) User has not confirmed their email in EmployerUsers service and is logging via Login service with a migrated user
-	   => Login will not succeed, the user will be given a message asking them to confirm their email, this is customized to a migrated
-	      user where can be mentioned that the code is no longer required.
-
-	3) User is partially locked out e.g. 2/3 attempts made whilst in the EmployerUsers service.
-	   => User can continue to attempt logins in Login service upto the Login service limit (currently 10 attempts before lockout)
-	
-	4) User is locked out in EmployerUsers service
-	  => Login will not succeed the standard user is locked out flow will apply when logging into the Login service i.e. reset password.
-
-	5) User has not confirmed their email in EmployerUsers service and is currently locked out and is logging via Login service with a migrated user
-	   => Login will not succeed the standard user is locked out flow will apply when logging into the Login service i.e. reset password.
-	   => After user changes their password they will not have confirmed their email
-	      Login will not succeed, the user will be given a message asking them to confirm their email, this is customized to a migrated
-	      user where can be mentioned that the code is no longer required.
-
-	6) User is an existing user in Logon service that was invited prior to the migration;
-	  => Login will succeed as the user has been updated to be Email confirmed during the deployment of the database prior to migration.
-	  
-
-	Notes:
-	  In the EmployerUsers service the user creates a login, entering their name, email and password; user then receives a code and link via email; they follow the link enter the 
-	  code and activate their account.
-	  
-	  In the LoginService the user is currently invited to the service so this itself is validating their email; they reply to the email and enter their password (there is no code)
-
-	  If a user is migrated to the new system with an unconfirmed email, they would probably reply to their previously sent confirmation link.
-
-	  The Link e.g. 'https://accounts.at-eas.apprenticeships.education.gov.uk/service/register/new' sends them back to Manage Apprentices
-	  where they are redirected back to the IdentityServer (EmployerUsers) as this is an link which needs authorization; this will after migration sent to the Login service
-	  where they would need to confirm their email by using a new confirmation link.
 */
 				
 DECLARE EmployeeUser_User_AspNetUsers_Cursor CURSOR FOR  

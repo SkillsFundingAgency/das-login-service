@@ -135,3 +135,23 @@ Once the user has successfully signed up, the Login Service will use the `callba
   "sourceid": "[Your local user id]"
 }
 ```
+
+##  Sample Applications
+
+There are 3 sample applications.
+
+1. Sample 1 is an invitation from client application (.Net Core) and callback with created user details (TO BE COMPLETED)
+
+2. Samples 2 & 3 are create an account (.Net Core) and (.Net Framework)
+
+For sample application 2 & 3 there is a Setup Script which inserts the required client details into a Login Service database which
+are required to run the sample applications; this assumes that the database to which the sample app will connect has been created
+and populated with standard test data during publishing and that the confirmation of the Login Service has been completed to run
+locally or in a test environment.
+
+##  Employer Users Service
+
+###  Migration to Login Service
+
+The users which have already been created in the Employer Users service can be migrated to the Login Service whilst retaining their
+current password see [Employer Users](docs/EmployerUsers.md "Migration")

@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.LoginService.UserSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.LoginService.Web.ClientComponents", "SFA.DAS.LoginService.Web.ClientComponents\SFA.DAS.LoginService.Web.ClientComponents.csproj", "{F0723F8A-1449-43B1-B7FA-5AFAB71466FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.LoginService.Samples.MvcLocalClient", "SFA.DAS.LoginService.Samples.MvcLocalClient\SFA.DAS.LoginService.Samples.MvcLocalClient.csproj", "{3495A4B3-1E95-4BBC-BE64-0C09A4D6A4FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.LoginService.Samples.MvcLocalClient", "SFA.DAS.LoginService.Samples.MvcLocalClient\SFA.DAS.LoginService.Samples.MvcLocalClient.csproj", "{3495A4B3-1E95-4BBC-BE64-0C09A4D6A4FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.LoginService.Samples.MvcLocalClient.NetFramework", "SFA.DAS.LoginService.Samples.MvcLocalClient.NetFramework\SFA.DAS.LoginService.Samples.MvcLocalClient.NetFramework.csproj", "{CA05F9BF-0A92-4207-B33C-57D9FF528564}"
 EndProject
@@ -88,9 +88,7 @@ Global
 		{3495A4B3-1E95-4BBC-BE64-0C09A4D6A4FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3495A4B3-1E95-4BBC-BE64-0C09A4D6A4FF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA05F9BF-0A92-4207-B33C-57D9FF528564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA05F9BF-0A92-4207-B33C-57D9FF528564}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA05F9BF-0A92-4207-B33C-57D9FF528564}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA05F9BF-0A92-4207-B33C-57D9FF528564}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

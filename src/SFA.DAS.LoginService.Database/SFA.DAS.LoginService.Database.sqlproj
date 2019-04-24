@@ -104,10 +104,10 @@
     <None Include="PostDeploymentScripts\UpdateEmailConfirmed.sql" />
     <None Include="PostDeploymentScripts\UpdateEmailTemplates.sql" />
     <None Include="PostDeploymentScripts\UpdateProfileClaims.sql" />
+    <None Include="ManualScripts\AddApplyAndAssessorClients.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />
-    <None Include="PostDeploymentScripts\InitialSetupData.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ManualScripts\MigrateEmployerUsers.sql" />

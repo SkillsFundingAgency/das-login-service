@@ -1,5 +1,6 @@
 ﻿/*
-	This script will create initial setup data for a new login service database which has no clients; 
+	This script will create initial setup data for a new login service database which has no clients; it uses the first two client of the service
+	as the intial clients - these will only be added if the database currently has no clients to avoid adding duplicates.
 */
 IF NOT EXISTS(SELECT * FROM [IdentityServer].[Clients])
 BEGIN

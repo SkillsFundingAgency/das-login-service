@@ -45,7 +45,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreatePasswordT
         }
         
         [Test]
-        public void Then_Invitation_is_updated_to_IsComplete_true()
+        public void Then_Invitation_is_updated_to_IsUserCreated_true()
         {
             Handler.Handle(new CreatePasswordRequest {InvitationId = InvitationId, Password = "Password"}, CancellationToken.None).Wait();
 

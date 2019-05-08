@@ -31,7 +31,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
                 return BadRequest("Invitation does not exist");
             }
 
-            if (invitation.ValidUntil < SystemTime.UtcNow())
+            if (invitation.IsUserCreated || invitation.ValidUntil < SystemTime.UtcNow())
             {
                 return View("InvitationExpired", new InvitationExpiredViewModel(){InvitationId = id});
             }

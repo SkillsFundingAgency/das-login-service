@@ -16,6 +16,11 @@
                     <a class="PostLogoutRedirectUri govuk-link" href="@Model.PostLogoutRedirectUri">Return to <span>@Model.ClientName</span></a>
                 </p>
             }
+            
+            @if (Model.SignOutIframeUrl != null)
+            {
+                <iframe width="0" height="0" src="@Model.SignOutIframeUrl"></iframe>
+            }
         </div>
     </div>
 </main>

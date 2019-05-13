@@ -22,6 +22,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.BuildLoginViewModel
         public void SetUp()
         {
             var inMemoryClientStore = new InMemoryClientStore(new[] {new Client() {ClientId = "mvc"}});
+
             var identityServerInteractionService = Substitute.For<IIdentityServerInteractionService>();
             identityServerInteractionService.GetAuthorizationContextAsync("https://returnurl")
                 .Returns(new AuthorizationRequest(){ClientId = "mvc"});

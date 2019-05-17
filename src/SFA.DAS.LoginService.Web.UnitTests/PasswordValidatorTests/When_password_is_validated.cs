@@ -18,39 +18,45 @@ namespace SFA.DAS.LoginService.Web.UnitTests.PasswordValidatorTests
     [TestFixture]
     public class When_password_is_validated
     {
-        [TestCase("11aaa222", true)]
-        [TestCase(" 11AAA 222 ", true)]
-        [TestCase("11AAA222!!", true)]
-        [TestCase(null, false)]
-        [TestCase("        ", false)]
-        [TestCase("", false)]
-        [TestCase("\t", false)]
-        [TestCase("\u0009", false)]
-        [TestCase("\u00A0", false)]
-        [TestCase("11aa333", false)]
-        [TestCase("11553333", false)]
-        [TestCase("abcDEFGH", false)]
-        [TestCase("qwertyu1", false)]
-        public async Task Then_password_is_validated_correctly(string newpassword, bool expectedValidity)
-        {           
+        private LoginContext _loginContext;
+        private CustomPasswordValidator<LoginUser> _validator;
+        private UserManager<LoginUser> _userManager;
+
+        [SetUp]
+        public void SetUp()
+        {
             var dbContextOptions = new DbContextOptionsBuilder<LoginContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
-            var _loginContext = new LoginContext(dbContextOptions);
+            _loginContext = new LoginContext(dbContextOptions);
 
-            _loginContext.InvalidPasswords.Add(new InvalidPassword() {Password = "pa55word"});
-            _loginContext.InvalidPasswords.Add(new InvalidPassword() {Password = "qwertyu1"});
-            _loginContext.InvalidPasswords.Add(new InvalidPassword() {Password = "l3tm31n!"});
-            await _loginContext.SaveChangesAsync();
+            _validator = new CustomPasswordValidator<LoginUser>(Substitute.For<ILogger<CustomPasswordValidator<LoginUser>>>(), _loginContext);
 
-            var validator = new CustomPasswordValidator<LoginUser>(Substitute.For<ILogger<CustomPasswordValidator<LoginUser>>>(), _loginContext);
-
-            var userManager = new UserManager<LoginUser>(Substitute.For<IUserStore<LoginUser>>(), Substitute.For<IOptions<IdentityOptions>>(), Substitute.For<IPasswordHasher<LoginUser>>()
+            _userManager = new UserManager<LoginUser>(Substitute.For<IUserStore<LoginUser>>(), Substitute.For<IOptions<IdentityOptions>>(), Substitute.For<IPasswordHasher<LoginUser>>()
                 , Substitute.For<IEnumerable<IUserValidator<LoginUser>>>(), new List<IPasswordValidator<LoginUser>>(), Substitute.For<ILookupNormalizer>(), new IdentityErrorDescriber(), Substitute.For<IServiceProvider>(),
                 Substitute.For<ILogger<UserManager<LoginUser>>>());
-            
-            var result = await validator.ValidateAsync(userManager, new LoginUser(), newpassword);
+        }
+
+        [TestCase(null, false)]
+        [TestCase("", false)]
+        [TestCase(" ", false)]
+        [TestCase("\t", false)]
+        [TestCase("\u0009", false)] // Unicode for TAB
+        [TestCase("\u00A0", false)] // Unicode for non-breaking space
+        [TestCase("       ", false)] // 8 spaces for whitespace check
+        [TestCase("1234567", false)] // 7 digits
+        [TestCase("abcdefg", false)] // 7 letters
+        [TestCase("1234abc", false)] // 7 with only digits & letters
+        [TestCase("123 abc", false)] // 7 with a mixture
+        [TestCase("12345678", false)] // 8 digits
+        [TestCase("abcdefgh", false)] // 8 letters
+        [TestCase("11aaa222", true)]
+        [TestCase(" 11AAA 222 ", true)]
+        [TestCase("11AAA222!!", true)]
+        public async Task Then_password_is_validated_against_rules_correctly(string newpassword, bool expectedValidity)
+        {                       
+            var result = await _validator.ValidateAsync(_userManager, new LoginUser(), newpassword);
 
             (result == IdentityResult.Success).Should().Be(expectedValidity);
         }
@@ -65,24 +71,12 @@ namespace SFA.DAS.LoginService.Web.UnitTests.PasswordValidatorTests
         [TestCase("1234Testabc@~#123", false)]
         [TestCase("a1234Test", true)]
         [TestCase("a1234Testa", true)]
-        public async Task Then_blacklisted_password_is_validated_correctly(string newpassword, bool expectedValidity)
+        public async Task Then_password_is_validated_against_blacklist_correctly(string newpassword, bool expectedValidity)
         {
-            var dbContextOptions = new DbContextOptionsBuilder<LoginContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .Options;
-
-            var _loginContext = new LoginContext(dbContextOptions);
-
             _loginContext.InvalidPasswords.Add(new InvalidPassword() { Password = "1234Test" });
             await _loginContext.SaveChangesAsync();
 
-            var validator = new CustomPasswordValidator<LoginUser>(Substitute.For<ILogger<CustomPasswordValidator<LoginUser>>>(), _loginContext);
-
-            var userManager = new UserManager<LoginUser>(Substitute.For<IUserStore<LoginUser>>(), Substitute.For<IOptions<IdentityOptions>>(), Substitute.For<IPasswordHasher<LoginUser>>()
-                , Substitute.For<IEnumerable<IUserValidator<LoginUser>>>(), new List<IPasswordValidator<LoginUser>>(), Substitute.For<ILookupNormalizer>(), new IdentityErrorDescriber(), Substitute.For<IServiceProvider>(),
-                Substitute.For<ILogger<UserManager<LoginUser>>>());
-
-            var result = await validator.ValidateAsync(userManager, new LoginUser(), newpassword);
+            var result = await _validator.ValidateAsync(_userManager, new LoginUser(), newpassword);
 
             (result == IdentityResult.Success).Should().Be(expectedValidity);
         }

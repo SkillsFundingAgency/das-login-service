@@ -22,11 +22,10 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
         
         public async Task<IdentityResult> ValidateAsync(UserManager<TUser> manager, TUser user, string password)
         {
-            if (password is null ||
+            if (string.IsNullOrWhiteSpace(password) ||
                 password.Length < 8 || 
                 password.All(char.IsDigit) || 
-                password.All(char.IsLetter) || 
-                password.All(p => p == ' '))
+                password.All(char.IsLetter))
             {
                 return IdentityResult.Failed(new IdentityError(){Code = "PasswordValidity", Description = "Password does not meet validity rules"});
             }

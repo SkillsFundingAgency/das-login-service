@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -21,7 +22,8 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
         
         public async Task<IdentityResult> ValidateAsync(UserManager<TUser> manager, TUser user, string password)
         {
-            if (password.Length < 8 || 
+            if (password is null ||
+                password.Length < 8 || 
                 password.All(char.IsDigit) || 
                 password.All(char.IsLetter) || 
                 password.All(p => p == ' '))
@@ -29,7 +31,7 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
                 return IdentityResult.Failed(new IdentityError(){Code = "PasswordValidity", Description = "Password does not meet validity rules"});
             }
 
-            if (await _loginContext.InvalidPasswords.AnyAsync(p => p.Password == password))
+            if (await _loginContext.InvalidPasswords.AnyAsync(p => password.StartsWith(p.Password, StringComparison.InvariantCultureIgnoreCase)))
             {
                 return IdentityResult.Failed(new IdentityError(){Code = "CommonPassword", Description = "Password must not be a common password"});
             }

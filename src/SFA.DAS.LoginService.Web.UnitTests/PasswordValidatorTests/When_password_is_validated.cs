@@ -53,6 +53,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.PasswordValidatorTests
 
         [TestCase("1234Test", false)]
         [TestCase("1234Testing", false)]
+        [TestCase("1234testinG", false)]
         [TestCase("1234TestinG", false)]
         [TestCase("1234TesTING", false)]
         [TestCase("1234TESting", false)]

@@ -30,7 +30,7 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
                 return IdentityResult.Failed(new IdentityError(){Code = "PasswordValidity", Description = "Password does not meet validity rules"});
             }
 
-            if (await _loginContext.InvalidPasswords.AnyAsync(p => password.StartsWith(p.Password, StringComparison.InvariantCultureIgnoreCase)))
+            if (await _loginContext.InvalidPasswords.AnyAsync(p => password.Contains(p.Password, StringComparison.InvariantCultureIgnoreCase)))
             {
                 return IdentityResult.Failed(new IdentityError(){Code = "CommonPassword", Description = "Password must not be a common password"});
             }

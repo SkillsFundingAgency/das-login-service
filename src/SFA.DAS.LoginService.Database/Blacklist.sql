@@ -1,6 +1,7 @@
 delete from [LoginService].[InvalidPasswords]
 
 insert into [LoginService].[InvalidPasswords] values (NEWID(),'year')
+insert into [LoginService].[InvalidPasswords] values (NEWID(),'   ')
 insert into [LoginService].[InvalidPasswords] values (NEWID(),'aaa')
 insert into [LoginService].[InvalidPasswords] values (NEWID(),'bbb')
 insert into [LoginService].[InvalidPasswords] values (NEWID(),'ccc')

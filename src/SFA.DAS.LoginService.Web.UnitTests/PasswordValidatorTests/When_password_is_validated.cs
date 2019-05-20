@@ -61,6 +61,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.PasswordValidatorTests
             (result == IdentityResult.Success).Should().Be(expectedValidity);
         }
 
+        [TestCase("aa1357Test", false)]
         [TestCase("1357Test", false)]
         [TestCase("1357Testing", false)]
         [TestCase("1357testinG", false)]
@@ -70,7 +71,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.PasswordValidatorTests
         [TestCase("1357TESTING", false)]
         [TestCase("1357Testabc@~#123", false)]
         [TestCase("a1234Test", true)]
-        [TestCase("apassworda", true)]
+        [TestCase("a1234Testa", true)]
         public async Task Then_password_is_validated_against_blacklist_correctly(string newpassword, bool expectedValidity)
         {
             _loginContext.InvalidPasswords.Add(new InvalidPassword() { Password = "1357Test" });

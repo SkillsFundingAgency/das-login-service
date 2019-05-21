@@ -5,7 +5,7 @@ using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.ResetPassword;
-using SFA.DAS.LoginService.Application.Services.Configuration;
+using SFA.DAS.LoginService.Configuration;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
 

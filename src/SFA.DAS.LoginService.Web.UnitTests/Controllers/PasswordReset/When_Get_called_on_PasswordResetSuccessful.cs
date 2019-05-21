@@ -7,6 +7,7 @@ using NUnit.Framework;
 using SFA.DAS.LoginService.Application.GetClientById;
 using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Data.JsonObjects;
+using SFA.DAS.LoginService.Types.GetClientById;
 using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.PasswordReset

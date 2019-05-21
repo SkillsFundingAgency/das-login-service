@@ -37,7 +37,6 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
             var newInvitationId = Guid.NewGuid();
             mediator.Send(Arg.Any<ReinviteRequest>(), CancellationToken.None).Returns(new CreateInvitationResponse()
                 {Invited = true, Message = "", InvitationId = newInvitationId});
-            
             var controller = new CreatePasswordController(mediator);
             var invitationId = Guid.NewGuid();
             

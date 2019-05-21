@@ -8,28 +8,26 @@ using SFA.DAS.LoginService.Application.GetInvitationById;
 using SFA.DAS.LoginService.Application.Reinvite;
 using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
-using SFA.DAS.LoginService.Web.Controllers.ResetPassword;
-using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
 {
-    public class CreatePasswordController : Controller
+    public class CreatePasswordController : BaseController
     {
-        private readonly IMediator _mediator;
-
         public CreatePasswordController(IMediator mediator)
+            : base(mediator)
         {
-            _mediator = mediator;
         }
 
         [HttpGet("/Invitations/CreatePassword/{id}")]
         public async Task<ActionResult> Get(Guid id)
         {
-            var invitation = await _mediator.Send(new GetInvitationByIdRequest(id));
+            var invitation = await Mediator.Send(new GetInvitationByIdRequest(id));
             if (invitation == null)
             {
                 return BadRequest("Invitation does not exist");
             }
+
+            SetViewBagClientId(invitation.ClientId);
 
             if (invitation.IsUserCreated || invitation.ValidUntil < SystemTime.UtcNow())
             {
@@ -53,15 +51,17 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
                 return View("CreatePassword", vm);
             }
             
-            var invitation = await _mediator.Send(new GetInvitationByIdRequest(vm.InvitationId));
+            var invitation = await Mediator.Send(new GetInvitationByIdRequest(vm.InvitationId));
             if (invitation == null)
             {
                 return BadRequest("Invitation does not exist");
             }
+
+            SetViewBagClientId(invitation.ClientId);
             
             if (vm.Password == vm.ConfirmPassword)
             {
-                var response = await _mediator.Send(new CreatePasswordRequest {InvitationId = vm.InvitationId, Password = vm.Password});
+                var response = await Mediator.Send(new CreatePasswordRequest {InvitationId = vm.InvitationId, Password = vm.Password});
                 if (response.PasswordValid)
                 {
                     return RedirectToAction("Get", "SignUpComplete", new {id = vm.InvitationId});
@@ -91,7 +91,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
         [HttpPost("/Invitations/Reinvite/{invitationId}")]
         public async Task<IActionResult> Reinvite(Guid invitationId)
         {
-            var result = await _mediator.Send(new ReinviteRequest() { InvitationId = invitationId });
+            var result = await Mediator.Send(new ReinviteRequest() { InvitationId = invitationId });
             if (result.Invited == false)
             {
                 return BadRequest();
@@ -102,7 +102,8 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
         [HttpGet("/Invitations/Reinvite/{invitationId}")]
         public async Task<IActionResult> Reinvited(Guid invitationId)
         {
-            var invitation = await _mediator.Send(new GetInvitationByIdRequest(invitationId), CancellationToken.None);
+            var invitation = await Mediator.Send(new GetInvitationByIdRequest(invitationId), CancellationToken.None);
+            SetViewBagClientId(invitation.ClientId);
 
             return View("Reinvited", new ReinvitedViewModel() { Email = invitation.Email });
         }

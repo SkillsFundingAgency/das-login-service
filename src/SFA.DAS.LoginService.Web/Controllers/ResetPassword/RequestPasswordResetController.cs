@@ -7,18 +7,18 @@ using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
 {
-    public class RequestPasswordResetController : Controller
+    public class RequestPasswordResetController : BaseController
     {
-        private readonly IMediator _mediator;
-
         public RequestPasswordResetController(IMediator mediator)
+            : base(mediator)
         {
-            _mediator = mediator;
         }
 
         [HttpGet("/ForgottenPassword/{clientId}")]
         public IActionResult Get(string clientId)
         {
+            SetViewBagClientId(new Guid(clientId));
+
             var vm = new RequestPasswordResetViewModel(){ClientId = Guid.Parse(clientId)};
             return View("RequestPasswordReset", vm);            
         }
@@ -26,18 +26,22 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
         [HttpPost("/ForgottenPassword/{clientId}")]
         public async Task<IActionResult> Post(Guid clientId, RequestPasswordResetViewModel requestPasswordResetViewModel)
         {
+            SetViewBagClientId(clientId);
+
             if (!ModelState.IsValid)
             {
                 return View("RequestPasswordReset", requestPasswordResetViewModel);
             }
             
-            await _mediator.Send(new RequestPasswordResetRequest {ClientId = clientId, Email = requestPasswordResetViewModel.Email});
-            return RedirectToAction("CodeSent", new {email=requestPasswordResetViewModel.Email});
+            await Mediator.Send(new RequestPasswordResetRequest {ClientId = clientId, Email = requestPasswordResetViewModel.Email});
+            return RedirectToAction("CodeSent", new { clientId, email=requestPasswordResetViewModel.Email});
         }
 
         [HttpGet("/CodeSent")]
-        public IActionResult CodeSent(string email)
+        public IActionResult CodeSent(Guid clientId, string email)
         {
+            SetViewBagClientId(clientId);
+
             return View("CodeSent", new CodeSentViewModel(){Email = email});
         }
     }

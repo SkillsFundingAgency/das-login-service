@@ -2,26 +2,25 @@ using System;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.LoginService.Application.GetClientById;
 using SFA.DAS.LoginService.Application.ResetPassword;
-using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
+using SFA.DAS.LoginService.Types.GetClientById;
 using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
 {
-    public class ResetPasswordController : Controller
+    public class ResetPasswordController : BaseController
     {
-        private readonly IMediator _mediator;
-
         public ResetPasswordController(IMediator mediator)
+            : base(mediator)
         {
-            _mediator = mediator;
         }
 
         [HttpGet("/NewPassword/{clientId}/{requestId}")]
         public async Task<IActionResult> Get(Guid clientId, Guid requestId)
         {
-            var checkRequestResponse = await _mediator.Send(new CheckPasswordResetRequest {RequestId = requestId});
+            SetViewBagClientId(clientId);
+
+            var checkRequestResponse = await Mediator.Send(new CheckPasswordResetRequest {RequestId = requestId});
             return checkRequestResponse.IsValid 
                 ? View("ResetPassword", new ResetPasswordViewModel(){
                     Username = checkRequestResponse.Email,
@@ -35,6 +34,8 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
         [HttpPost("/NewPassword/{clientId}/{requestId}")]
         public async Task<IActionResult> Post(Guid clientId, Guid requestId, ResetPasswordViewModel viewModel)
         {
+            SetViewBagClientId(clientId);
+
             if (!ModelState.IsValid)
             {
                 return View("ResetPassword", viewModel);
@@ -52,7 +53,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
                     });
             }
 
-            var resetPasswordResponse = await _mediator.Send(new ResetUserPasswordRequest() {ClientId = clientId, Password = viewModel.Password, RequestId = requestId});
+            var resetPasswordResponse = await Mediator.Send(new ResetUserPasswordRequest() {ClientId = clientId, Password = viewModel.Password, RequestId = requestId});
 
             if (!resetPasswordResponse.IsSuccessful)
             {
@@ -69,13 +70,13 @@ namespace SFA.DAS.LoginService.Web.Controllers.ResetPassword
             return RedirectToAction("PasswordResetSuccessful", new {clientId = clientId});
         }
 
-        public async Task<IActionResult> PasswordResetSuccessful(Guid clientid)
+        public async Task<IActionResult> PasswordResetSuccessful(Guid clientId)
         {
-            var client = await _mediator.Send(new GetClientByIdRequest() {ClientId = clientid});
+            SetViewBagClientId(clientId);
+
+            var client = await Mediator.Send(new GetClientByIdRequest() {ClientId = clientId });
 
             return View("PasswordResetSuccessful", new PasswordResetSuccessfulViewModel() {ReturnUrl = client.ServiceDetails.PostPasswordResetReturnUrl, ServiceName = client.ServiceDetails.ServiceName});
         }
-
-       
     }
 }

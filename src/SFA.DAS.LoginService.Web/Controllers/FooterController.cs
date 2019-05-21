@@ -1,22 +1,35 @@
+using System;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SFA.DAS.LoginService.Web.Controllers
 {
-    public class FooterController : Controller
+    public class FooterController : BaseController
     {
-        [HttpGet("/TermsOfUse")]
-        public IActionResult TermsOfUse()
+        public FooterController(IMediator mediator)
+            : base(mediator)
         {
+        }
+
+        [HttpGet("/TermsOfUse")]
+        public IActionResult TermsOfUse(Guid clientId)
+        {
+            SetViewBagClientId(clientId);
+
             return View();
         }
         [HttpGet("/Privacy")]
-        public IActionResult Privacy()
+        public IActionResult Privacy(Guid clientId)
         {
+            SetViewBagClientId(clientId);
+
             return View();
         }
         [HttpGet("/Cookies")]
-        public IActionResult Cookies()
+        public IActionResult Cookies(Guid clientId)
         {
+            SetViewBagClientId(clientId);
+
             return View();
         }
     }

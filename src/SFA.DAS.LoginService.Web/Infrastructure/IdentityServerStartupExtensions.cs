@@ -35,6 +35,8 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
             {
                 options.Cookie.Name = ".Login.Identity.Application";
                 options.Cookie.HttpOnly = true;
+                options.SlidingExpiration = true;
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
             });
 
             var isBuilder = services

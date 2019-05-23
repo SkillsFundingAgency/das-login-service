@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.LoginService.Web.Controllers.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.Controllers
 {
@@ -7,7 +8,7 @@ namespace SFA.DAS.LoginService.Web.Controllers
         [HttpGet("/Error")]
         public IActionResult Error()
         {
-            return View();
+            return View(new ErrorViewModel { RequestId = HttpContext.TraceIdentifier });
         }
     }
 }

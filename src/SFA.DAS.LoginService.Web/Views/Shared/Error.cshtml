@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SFA.DAS.LoginService.Web.Controllers.ViewModels.ErrorViewModel
+@{
     ViewData["Title"] = "Error";
 }
 
@@ -7,6 +8,12 @@
         <div class="govuk-grid-column-two-thirds">
 
             <h1 class="govuk-heading-xl">Sorry, there is a problem with the service</h1>
+            @if (Model.ShowRequestId)
+            {
+                <p class="govuk-body">
+                    <strong>Request ID:</strong> <code>@Model.RequestId</code>
+                </p>
+            }
             <p class="govuk-body">Try again later.</p>
             <p class="govuk-body">
                 <a class="govuk-link" href="#">Contact the manage apprenticeships service helpdesk</a> to get help.

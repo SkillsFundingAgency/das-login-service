@@ -86,16 +86,33 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
             var linkUri = new Uri(_loginConfig.BaseUrl);
             var linkUrl = new Uri(linkUri, "Invitations/CreatePassword/" + newInvitation.Id).ToString();
 
-            await _emailService.SendInvitationEmail(new InvitationEmailViewModel()
+            if (request.IsInvitationToOrganisation)
             {
-                Subject = "Sign up",
-                Contact = newInvitation.GivenName, 
-                LoginLink = linkUrl, 
-                ServiceName = client.ServiceDetails.ServiceName, 
-                ServiceTeam = client.ServiceDetails.ServiceTeam, 
-                EmailAddress = newInvitation.Email,
-                TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "SignUpInvitation").TemplateId
-            });
+                await _emailService.SendInvitationEmail(new InvitationEmailViewModel()
+                {
+                    Subject = "Sign up",
+                    Contact = newInvitation.GivenName, 
+                    LoginLink = linkUrl, 
+                    ServiceName = client.ServiceDetails.ServiceName, 
+                    ServiceTeam = client.ServiceDetails.ServiceTeam, 
+                    EmailAddress = newInvitation.Email,
+                    TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "LoginSignupInvite").TemplateId,
+                    Inviter = $"{request.Inviter} of {request.OrganisationName}" 
+                });
+            }
+            else
+            {
+                await _emailService.SendInvitationEmail(new InvitationEmailViewModel()
+                {
+                    Subject = "Sign up",
+                    Contact = newInvitation.GivenName, 
+                    LoginLink = linkUrl, 
+                    ServiceName = client.ServiceDetails.ServiceName, 
+                    ServiceTeam = client.ServiceDetails.ServiceTeam, 
+                    EmailAddress = newInvitation.Email,
+                    TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "SignUpInvitation").TemplateId
+                });
+            }
 
             _loginContext.UserLogs.Add(new UserLog()
             {

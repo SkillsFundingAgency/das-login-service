@@ -6,5 +6,6 @@ namespace SFA.DAS.LoginService.Application.Services.EmailServiceViewModels
         public string ServiceName { get; set; }
         public string ServiceTeam { get; set; }
         public string LoginLink { get; set; }
+        public string Inviter { get; set; }
     }
 }

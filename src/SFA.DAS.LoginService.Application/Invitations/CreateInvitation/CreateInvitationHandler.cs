@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Services;
 using SFA.DAS.LoginService.Application.Services.Configuration;
@@ -21,19 +23,24 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
         private readonly IEmailService _emailService;
         private readonly ILoginConfig _loginConfig;
         private readonly IUserService _userService;
+        private readonly ILogger<CreateInvitationHandler> _logger;
 
         public CreateInvitationHandler(LoginContext loginContext, IEmailService emailService, ILoginConfig loginConfig,
-            IUserService userService)
+            IUserService userService, ILogger<CreateInvitationHandler> logger)
         {
             _loginContext = loginContext;
             _emailService = emailService;
             _loginConfig = loginConfig;
             _userService = userService;
+            _logger = logger;
         }
 
         public async Task<CreateInvitationResponse> Handle(CreateInvitationRequest request,
             CancellationToken cancellationToken)
         {
+            
+            _logger.LogInformation($"CreateInvitationHandler : Create Invitation call received: {JsonConvert.SerializeObject(request)}");
+            
             ValidateRequest(request);
 
             var client = await _loginContext.Clients.SingleOrDefaultAsync(c => c.Id == request.ClientId, cancellationToken: cancellationToken);
@@ -46,6 +53,8 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
             {
                 return new CreateInvitationResponse() {Message = "Client is not authorised for Invitiation Signup"};
             }
+            
+            _logger.LogInformation($"CreateInvitationHandler : Client: {JsonConvert.SerializeObject(client)}");
             
             var existingUser = await _userService.FindByEmail(request.Email);
             if (existingUser != null)
@@ -86,6 +95,8 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
             var linkUri = new Uri(_loginConfig.BaseUrl);
             var linkUrl = new Uri(linkUri, "Invitations/CreatePassword/" + newInvitation.Id).ToString();
 
+            
+            
             if (request.IsInvitationToOrganisation)
             {
                 await _emailService.SendInvitationEmail(new InvitationEmailViewModel()

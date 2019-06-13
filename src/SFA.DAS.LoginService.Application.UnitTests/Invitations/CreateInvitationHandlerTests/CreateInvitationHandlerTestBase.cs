@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Application.Interfaces;
@@ -91,7 +92,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
 
         private CreateInvitationHandler BuildCreateInvitationHandler()
         {
-            return new CreateInvitationHandler(LoginContext, EmailService, LoginConfig, UserService);
+            return new CreateInvitationHandler(LoginContext, EmailService, LoginConfig, UserService, Substitute.For<ILogger<CreateInvitationHandler>>());
         }
     }
 }

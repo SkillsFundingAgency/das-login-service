@@ -121,7 +121,8 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
                     ServiceName = client.ServiceDetails.ServiceName, 
                     ServiceTeam = client.ServiceDetails.ServiceTeam, 
                     EmailAddress = newInvitation.Email,
-                    TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "SignUpInvitation").TemplateId
+                    TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "SignUpInvitation").TemplateId,
+                    Inviter = ""
                 });
             }
 

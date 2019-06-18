@@ -1,39 +1,44 @@
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.LoginService.Application.BuildLoginViewModel;
 using SFA.DAS.LoginService.Application.ProcessLogin;
+using SFA.DAS.LoginService.Configuration;
 
 namespace SFA.DAS.LoginService.Web.Controllers.Login
 {
-    public class LoginController : Controller
+    public class LoginController : BaseController
     {
-        private readonly IMediator _mediator;
-
         public LoginController(IMediator mediator)
+             : base(mediator)
         {
-            _mediator = mediator;
         }
 
         [HttpGet("/Account/Login")]
         public async Task<IActionResult> GetLogin(string returnUrl)
         {
-            var viewModel = await _mediator.Send(new BuildLoginViewModelRequest() {returnUrl = returnUrl});
+            await SetViewBagClientIdByReturnUrl(returnUrl);
+            
+            var viewModel = await Mediator.Send(new BuildLoginViewModelRequest() {returnUrl = returnUrl});
             return View("Login", viewModel);
         }
 
         [HttpPost("/Account/Login")]
         public async Task<IActionResult> PostLogin(LoginViewModel loginViewModel)
         {
+            await SetViewBagClientIdByReturnUrl(loginViewModel.ReturnUrl);
+            
             if (!ModelState.IsValid)
             {
-                var viewModel = await _mediator.Send(new BuildLoginViewModelRequest()
+                var viewModel = await Mediator.Send(new BuildLoginViewModelRequest()
                     {returnUrl = loginViewModel.ReturnUrl});
                 
                 return View("Login", viewModel);
             }
 
-            var loginResult = await _mediator.Send(new ProcessLoginRequest
+            var loginResult = await Mediator.Send(new ProcessLoginRequest
             {
                 Username = loginViewModel.Username, 
                 Password = loginViewModel.Password,
@@ -48,7 +53,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.Login
 
             ModelState.AddModelError("Username", loginResult.Message);
 
-            var vm = await _mediator.Send(new BuildLoginViewModelRequest() {returnUrl = loginViewModel.ReturnUrl});
+            var vm = await Mediator.Send(new BuildLoginViewModelRequest() {returnUrl = loginViewModel.ReturnUrl});
             vm.Password = loginViewModel.Password;
             vm.Username = loginViewModel.Username;
             

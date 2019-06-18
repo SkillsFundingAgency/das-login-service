@@ -9,8 +9,6 @@ using SFA.DAS.LoginService.Application.GetInvitationById;
 using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
-using SFA.DAS.LoginService.Web.Controllers.ResetPassword;
-using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
 {

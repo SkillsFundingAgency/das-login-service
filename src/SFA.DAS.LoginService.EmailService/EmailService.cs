@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using SFA.DAS.Http.TokenGenerators;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Services.Configuration;
@@ -77,6 +78,8 @@ namespace SFA.DAS.LoginService.EmailService
 
         private async Task SendEmail(EmailViewModel viewModel)
         {
+            _logger.LogInformation($"CreateInvitationHandler : SendEmail : ViewModel: {JsonConvert.SerializeObject(viewModel)}");
+            
             var tokens = GetTokens(viewModel);
 
             await _notificationApi.SendEmail(new Email()
@@ -92,6 +95,8 @@ namespace SFA.DAS.LoginService.EmailService
         
         private Dictionary<string, string> GetTokens(EmailViewModel vm)
         {
+            _logger.LogInformation($"CreateInvitationHandler : GetTokens : ViewModel: {JsonConvert.SerializeObject(vm)}");
+            
             return vm.GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
                 .ToDictionary(propertyInfo => propertyInfo.Name, propertyInfo => propertyInfo.GetValue(vm).ToString());

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SFA.DAS.LoginService.Application.Services.Configuration;
+using SFA.DAS.LoginService.Configuration;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Web.Infrastructure;
 
@@ -17,12 +17,14 @@ namespace SFA.DAS.LoginService.Web
     {
         private readonly IHostingEnvironment _environment;
         private readonly ILogger<Startup> _logger;
+        private readonly IServiceProvider _serviceProvider;
         private ILoginConfig _loginConfig;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment environment, ILogger<Startup> logger)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment, ILogger<Startup> logger, IServiceProvider serviceProvider)
         {
             _environment = environment;
             _logger = logger;
+            _serviceProvider = serviceProvider;
             Configuration = configuration;
         }
 
@@ -36,7 +38,7 @@ namespace SFA.DAS.LoginService.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            _loginConfig = services.WireUpDependencies(_loginConfig, Configuration, _environment);
+            _loginConfig = services.WireUpDependencies(_loginConfig, Configuration, _environment, _serviceProvider);
 
             services.AddDbContext<LoginContext>(options => options.UseSqlServer(_loginConfig.SqlConnectionString));
             services.AddDbContext<LoginUserContext>(options => options.UseSqlServer(_loginConfig.SqlConnectionString));
@@ -44,6 +46,17 @@ namespace SFA.DAS.LoginService.Web
             services.AddIdentityServer(_loginConfig, _environment, _logger);
 
             services.AddAntiforgery(options => options.Cookie = new CookieBuilder() {Name = ".Login.AntiForgery", HttpOnly = true});
+
+            services.AddSession(opt =>
+            {
+                opt.IdleTimeout = TimeSpan.FromHours(1);
+                opt.Cookie = new CookieBuilder()
+                {
+                    Name = ".Login.Session",
+                    HttpOnly = true,
+                    IsEssential = true
+            };
+            });
 
             services.AddAuthentication()
                 .AddJwtBearer(jwt =>
@@ -70,6 +83,7 @@ namespace SFA.DAS.LoginService.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
             app.UseIdentityServer();
             app.UseCookiePolicy();
             app.UseMvc(routes =>

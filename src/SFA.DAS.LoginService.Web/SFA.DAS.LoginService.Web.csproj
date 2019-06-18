@@ -18,6 +18,7 @@
         <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
         <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="2.2.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
         <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.0" />
         <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.2.1" />
     </ItemGroup>
@@ -30,7 +31,9 @@
 
     <ItemGroup>
         <ProjectReference Include="..\SFA.DAS.LoginService.Application\SFA.DAS.LoginService.Application.csproj" />
+        <ProjectReference Include="..\SFA.DAS.LoginService.Configuration\SFA.DAS.LoginService.Configuration.csproj" />
         <ProjectReference Include="..\SFA.DAS.LoginService.EmailService\SFA.DAS.LoginService.EmailService.csproj" />
+        <ProjectReference Include="..\SFA.DAS.LoginService.Types\SFA.DAS.LoginService.Types.csproj" />
         <ProjectReference Include="..\SFA.DAS.LoginService.UserService\SFA.DAS.LoginService.UserService.csproj" />
     </ItemGroup>
 

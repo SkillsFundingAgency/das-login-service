@@ -13,7 +13,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\SFA.DAS.LoginService.Configuration\SFA.DAS.LoginService.Configuration.csproj" />
       <ProjectReference Include="..\SFA.DAS.LoginService.Data\SFA.DAS.LoginService.Data.csproj" />
+      <ProjectReference Include="..\SFA.DAS.LoginService.Types\SFA.DAS.LoginService.Types.csproj" />
     </ItemGroup>
 
 </Project>

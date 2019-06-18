@@ -7,8 +7,6 @@ using NSubstitute;
 using NUnit.Framework;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
-using SFA.DAS.LoginService.Web.Controllers.ResetPassword;
-using SFA.DAS.LoginService.Web.Controllers.ResetPassword.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
 {
@@ -18,7 +16,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         private CreatePasswordController _controller;
         private Guid _invitationId;
         private IMediator _mediator;
-
+        
         [SetUp]
         public void SetUp()
         {

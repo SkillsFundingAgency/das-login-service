@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SFA.DAS.LoginService.Application.Interfaces;
-using SFA.DAS.LoginService.Application.Services.Configuration;
+using SFA.DAS.LoginService.Configuration;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
 

@@ -10,8 +10,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SFA.DAS.LoginService.Application.Interfaces;
 using SFA.DAS.LoginService.Application.Services;
-using SFA.DAS.LoginService.Application.Services.Configuration;
 using SFA.DAS.LoginService.Application.Services.EmailServiceViewModels;
+using SFA.DAS.LoginService.Configuration;
 using SFA.DAS.LoginService.Data;
 using SFA.DAS.LoginService.Data.Entities;
 

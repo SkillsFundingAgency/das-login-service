@@ -32,10 +32,38 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsApi
                    SourceId = createInvitationRequest.SourceId,
                    Callback = createInvitationRequest.Callback,
                    UserRedirect = createInvitationRequest.UserRedirect,
-                   ClientId = clientId
+                   ClientId = clientId,
+                   IsInvitationToOrganisation = false,
                });
                _logger.LogDebug($"Received Response from CreateInvitationHandler: Invited: {response.Invited} Message: {response.Message}");
                return response;
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        
+        [HttpPost("/Invitations/{clientId}/inviteToOrganisation")]
+        public async Task<ActionResult<CreateInvitationResponse>> InviteToOrganisation(Guid clientId, [FromBody] InvitationRequestViewModel createInvitationRequest)
+        {
+            try
+            {
+                var response = await _mediator.Send(new CreateInvitationRequest()
+                {
+                    Email = createInvitationRequest.Email,
+                    GivenName = createInvitationRequest.GivenName,
+                    FamilyName = createInvitationRequest.FamilyName,
+                    SourceId = createInvitationRequest.SourceId,
+                    Callback = createInvitationRequest.Callback,
+                    UserRedirect = createInvitationRequest.UserRedirect,
+                    ClientId = clientId,
+                    IsInvitationToOrganisation = true,
+                    Inviter = createInvitationRequest.Inviter,
+                    OrganisationName = createInvitationRequest.OrganisationName
+                });
+                _logger.LogDebug($"Received Response from CreateInvitationHandler: Invited: {response.Invited} Message: {response.Message}");
+                return response;
             }
             catch (ArgumentException e)
             {

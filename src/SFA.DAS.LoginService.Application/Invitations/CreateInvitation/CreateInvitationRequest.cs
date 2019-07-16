@@ -13,5 +13,8 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
         public Uri UserRedirect { get; set; }
         public Uri Callback { get; set; }
         public Guid ClientId { get; set; }
+        public bool IsInvitationToOrganisation { get; set; }
+        public string Inviter { get; set; }
+        public string OrganisationName { get; set; }
     }
 }

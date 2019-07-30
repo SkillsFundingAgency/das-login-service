@@ -33,7 +33,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Login.ProcessLogin
             var result = await Handler.Handle(new ProcessLoginRequest()
                 {Username = "user", Password = "password", ReturnUrl = "https://returnurl", RememberLogin = false}, CancellationToken.None);
 
-            result.Message.Should().Be("Invalid credentials");
+            result.Message.Should().NotBeEmpty();
         }
     }
 }

@@ -50,7 +50,7 @@ namespace SFA.DAS.LoginService.Application.ProcessLogin
                 
                 return signInResult.IsLockedOut 
                     ? new ProcessLoginResponse(){Message = "User account is locked out"} 
-                    : new ProcessLoginResponse(){Message = "Invalid credentials"};
+                    : new ProcessLoginResponse(){Message = "Make sure you've entered the correct email address and password. If you've forgotten your password you can reset it by clicking 'I have forgotten my password' below."};
             }
 
             var user = await _userService.FindByUsername(request.Username);

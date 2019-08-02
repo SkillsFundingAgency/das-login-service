@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,7 +19,7 @@ namespace SFA.DAS.LoginService.Web.Views.TagHelpers
             output.TagName = null;
             foreach (var modelState in ViewContext.ModelState)
             {
-                foreach (var error in modelState.Value.Errors)
+                foreach (var error in modelState.Value.Errors.Where(e => !string.IsNullOrWhiteSpace(e.ErrorMessage)))
                 {
                     var liTagBuilder = new TagBuilder("li");
                     var aTagBuilder = new TagBuilder("a");

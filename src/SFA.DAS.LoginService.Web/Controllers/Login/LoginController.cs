@@ -52,6 +52,7 @@ namespace SFA.DAS.LoginService.Web.Controllers.Login
             }
 
             ModelState.AddModelError("Username", loginResult.Message);
+            ModelState.AddModelError("Password", "");
 
             var vm = await Mediator.Send(new BuildLoginViewModelRequest() {returnUrl = loginViewModel.ReturnUrl});
             vm.Password = loginViewModel.Password;

@@ -28,7 +28,9 @@ namespace SFA.DAS.LoginService.Application.Reinvite
                     Email = invitation.Email,
                     FamilyName = invitation.FamilyName,
                     GivenName = invitation.GivenName,
-                    UserRedirect = invitation.UserRedirectUri
+                    UserRedirect = invitation.UserRedirectUri,
+                    Inviter = invitation.Inviter,
+                    InviterEmail = invitation.InviterEmail              
                 }, CancellationToken.None);
 
             return response;

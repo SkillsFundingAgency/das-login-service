@@ -12,4 +12,6 @@ CREATE TABLE [LoginService].[Invitations]
 	[IsCalledBack] [bit] NOT NULL DEFAULT 0,
 	[CallbackDate] [datetime2](7) NULL,
 	[ClientId] [uniqueidentifier] NOT NULL,
+	[Inviter] [nvarchar](500) NULL,
+    [InviterEmail] [nvarchar](250) NULL,
 ) ON [PRIMARY]

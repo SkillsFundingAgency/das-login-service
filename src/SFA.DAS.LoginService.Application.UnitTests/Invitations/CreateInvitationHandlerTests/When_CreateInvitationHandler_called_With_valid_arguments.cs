@@ -37,6 +37,8 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
             insertedInvitation.CallbackUri.Should().Be(createInvitationRequest.Callback.ToString());
             insertedInvitation.UserRedirectUri.Should().Be(createInvitationRequest.UserRedirect.ToString());
             insertedInvitation.ClientId.Should().Be(createInvitationRequest.ClientId.ToString());
+            insertedInvitation.Inviter.Should().Be(createInvitationRequest.Inviter.ToString());
+            insertedInvitation.InviterEmail.Should().Be(createInvitationRequest.InviterEmail.ToString());
         }
 
         [Test]

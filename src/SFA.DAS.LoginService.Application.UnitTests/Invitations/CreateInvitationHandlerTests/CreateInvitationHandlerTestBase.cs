@@ -79,7 +79,9 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
                 SourceId = "InvitedSourceId",
                 UserRedirect = new Uri("https://localhost/userredirect"),
                 Callback = new Uri("https://localhost/callback"),
-                ClientId = ClientId
+                ClientId = ClientId,
+                Inviter = "Inviter",
+                InviterEmail = "inviter@email.com"
             };
             return createInvitationRequest;
         }

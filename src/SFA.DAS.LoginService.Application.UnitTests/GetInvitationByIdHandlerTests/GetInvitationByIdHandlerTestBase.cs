@@ -45,7 +45,9 @@ namespace SFA.DAS.LoginService.Application.UnitTests.GetInvitationByIdHandlerTes
                 SourceId = Guid.NewGuid().ToString(),
                 CallbackUri = new Uri("https://callback"),
                 UserRedirectUri = new Uri("https://redirect"),
-                ValidUntil = SystemTime.UtcNow().AddHours(1)
+                ValidUntil = SystemTime.UtcNow().AddHours(1),
+                Inviter = "Mr Inviter",
+                InviterEmail = "inviter@address.com"
             };
             _loginContext.Invitations.Add(GoodInvitation);
             _loginContext.SaveChanges();
@@ -63,7 +65,9 @@ namespace SFA.DAS.LoginService.Application.UnitTests.GetInvitationByIdHandlerTes
                 SourceId = Guid.NewGuid().ToString(),
                 CallbackUri = new Uri("https://callback"),
                 UserRedirectUri = new Uri("https://redirect"),
-                ValidUntil = SystemTime.UtcNow().AddHours(-1)
+                ValidUntil = SystemTime.UtcNow().AddHours(-1),
+                Inviter = "Mr Inviter",
+                InviterEmail = "inviter@address.com"
             };
             _loginContext.Invitations.Add(ExpiredInvitation);
             _loginContext.SaveChanges();

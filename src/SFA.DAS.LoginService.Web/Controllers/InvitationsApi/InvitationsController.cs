@@ -34,6 +34,9 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsApi
                    UserRedirect = createInvitationRequest.UserRedirect,
                    ClientId = clientId,
                    IsInvitationToOrganisation = false,
+                   OrganisationName = null,
+                   Inviter = createInvitationRequest.Inviter,
+                   InviterEmail = createInvitationRequest.InviterEmail
                });
                _logger.LogDebug($"Received Response from CreateInvitationHandler: Invited: {response.Invited} Message: {response.Message}");
                return response;
@@ -59,8 +62,9 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsApi
                     UserRedirect = createInvitationRequest.UserRedirect,
                     ClientId = clientId,
                     IsInvitationToOrganisation = true,
+                    OrganisationName = createInvitationRequest.OrganisationName,
                     Inviter = createInvitationRequest.Inviter,
-                    OrganisationName = createInvitationRequest.OrganisationName
+                    InviterEmail = createInvitationRequest.InviterEmail    
                 });
                 _logger.LogDebug($"Received Response from CreateInvitationHandler: Invited: {response.Invited} Message: {response.Message}");
                 return response;

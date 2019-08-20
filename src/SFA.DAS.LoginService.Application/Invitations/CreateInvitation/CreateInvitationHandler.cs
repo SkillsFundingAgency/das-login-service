@@ -49,7 +49,7 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
                 return new CreateInvitationResponse() {Message = "Client does not exist"};
             }
 
-            if (client.AllowInvitationSignUp == false)
+            if (!client.AllowInvitationSignUp)
             {
                 return new CreateInvitationResponse() {Message = "Client is not authorised for Invitiation Signup"};
             }
@@ -87,7 +87,9 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
                 ValidUntil = SystemTime.UtcNow().AddHours(1),
                 CallbackUri = request.Callback,
                 UserRedirectUri = request.UserRedirect,
-                ClientId = request.ClientId
+                ClientId = request.ClientId,
+                Inviter = request.Inviter,
+                InviterEmail = request.InviterEmail
             };
             
             _loginContext.Invitations.Add(newInvitation);
@@ -108,7 +110,7 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
                     ServiceTeam = client.ServiceDetails.ServiceTeam, 
                     EmailAddress = newInvitation.Email,
                     TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "LoginSignupInvite").TemplateId,
-                    Inviter = $"{request.Inviter} of {request.OrganisationName}" 
+                    Inviter = $"{request.Inviter} of {request.OrganisationName}"
                 });
             }
             else
@@ -152,7 +154,7 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
 
             if (errors.Any())
             {
-                throw new ArgumentException(errors.ToArray().Join());
+                throw new ArgumentException(errors.Join());
             }
         }
     }

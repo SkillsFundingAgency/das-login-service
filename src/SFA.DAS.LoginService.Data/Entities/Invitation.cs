@@ -16,5 +16,12 @@ namespace SFA.DAS.LoginService.Data.Entities
         public bool IsCalledBack { get; set; }
         public DateTime? CallbackDate { get; set; }
         public Guid ClientId { get; set; }
+        // This is intended to be generic and would likely contain either:
+        // 1. Inviter's 'GivenName + FamilyName'
+        // 2. Inviter's 'OrganisationName'
+        // 3. 'GivenName + FamilyName' of 'OrganisationName'
+        public string Inviter { get; set; }
+        // Having the email of the inviter is useful such that we can send notifications directly
+        public string InviterEmail { get; set; }
     }
 }

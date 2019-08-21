@@ -30,7 +30,7 @@ namespace SFA.DAS.LoginService.Application.Reinvite
                     GivenName = invitation.GivenName,
                     UserRedirect = invitation.UserRedirectUri,
                     Inviter = invitation.Inviter,
-                    InviterEmail = invitation.InviterEmail              
+                    InviterId = invitation.InviterId              
                 }, CancellationToken.None);
 
             return response;

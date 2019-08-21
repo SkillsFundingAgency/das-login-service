@@ -81,7 +81,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CreateInvitatio
                 Callback = new Uri("https://localhost/callback"),
                 ClientId = ClientId,
                 Inviter = "Inviter",
-                InviterEmail = "inviter@email.com"
+                InviterId = Guid.NewGuid().ToString()
             };
             return createInvitationRequest;
         }

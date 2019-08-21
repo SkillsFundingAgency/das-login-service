@@ -21,7 +21,6 @@ namespace SFA.DAS.LoginService.Data.Entities
         // 2. Inviter's 'OrganisationName'
         // 3. 'GivenName + FamilyName' of 'OrganisationName'
         public string Inviter { get; set; }
-        // Having the email of the inviter is useful such that we can send notifications directly
-        public string InviterEmail { get; set; }
+        public string InviterId { get; set; }
     }
 }

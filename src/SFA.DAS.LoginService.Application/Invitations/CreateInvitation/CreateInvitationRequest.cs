@@ -15,7 +15,7 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
         public Guid ClientId { get; set; }
         public bool IsInvitationToOrganisation { get; set; }
         public string Inviter { get; set; }
-        public string InviterEmail { get; set; }
+        public string InviterId { get; set; }
         public string OrganisationName { get; set; }
     }
 }

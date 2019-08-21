@@ -89,7 +89,7 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
                 UserRedirectUri = request.UserRedirect,
                 ClientId = request.ClientId,
                 Inviter = request.Inviter,
-                InviterEmail = request.InviterEmail
+                InviterId = request.InviterId
             };
             
             _loginContext.Invitations.Add(newInvitation);

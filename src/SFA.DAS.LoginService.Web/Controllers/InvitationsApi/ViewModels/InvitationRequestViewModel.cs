@@ -15,6 +15,6 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsApi.ViewModels
         public Uri UserRedirect { get; set; }
         public string OrganisationName { get; set; }
         public string Inviter { get; set; }
-        public string InviterEmail { get; set; }
+        public string InviterId { get; set; }
     }
 }

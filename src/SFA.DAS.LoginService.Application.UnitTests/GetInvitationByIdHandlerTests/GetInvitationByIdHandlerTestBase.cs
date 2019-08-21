@@ -47,7 +47,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.GetInvitationByIdHandlerTes
                 UserRedirectUri = new Uri("https://redirect"),
                 ValidUntil = SystemTime.UtcNow().AddHours(1),
                 Inviter = "Mr Inviter",
-                InviterEmail = "inviter@address.com"
+                InviterId = Guid.NewGuid().ToString()
             };
             _loginContext.Invitations.Add(GoodInvitation);
             _loginContext.SaveChanges();
@@ -67,7 +67,7 @@ namespace SFA.DAS.LoginService.Application.UnitTests.GetInvitationByIdHandlerTes
                 UserRedirectUri = new Uri("https://redirect"),
                 ValidUntil = SystemTime.UtcNow().AddHours(-1),
                 Inviter = "Mr Inviter",
-                InviterEmail = "inviter@address.com"
+                InviterId = Guid.NewGuid().ToString()
             };
             _loginContext.Invitations.Add(ExpiredInvitation);
             _loginContext.SaveChanges();

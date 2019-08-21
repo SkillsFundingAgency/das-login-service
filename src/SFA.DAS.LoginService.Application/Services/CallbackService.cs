@@ -40,7 +40,8 @@ namespace SFA.DAS.LoginService.Application.Services
                         new
                         {
                             sub=loginUserId, 
-                            sourceId = invitation.SourceId
+                            sourceId = invitation.SourceId,
+                            inviterId = invitation.InviterId
                         }), Encoding.UTF8, "application/json"));
             }
             catch (HttpRequestException ex)

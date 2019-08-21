@@ -33,14 +33,15 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CallbackService
         [Test]
         public void Then_correct_json_is_posted_to_callback_uri()
         {
-            _mockHttp.Expect("https://localhost/callback").WithContent(JsonConvert.SerializeObject(new {sub = "LOGINUSERID", sourceId = "S0U4C31D"}));
+            _mockHttp.Expect("https://localhost/callback").WithContent(JsonConvert.SerializeObject(new {sub = "LOGINUSERID", sourceId = "S0U4C31D", inviterId = "INVITERID" }));
             
             var callbackService = new CallbackService(_mockHttp.ToHttpClient(), _loginContext);
 
             var invitation = new Invitation
             {
                 SourceId = "S0U4C31D",
-                CallbackUri = new Uri("https://localhost/callback")
+                CallbackUri = new Uri("https://localhost/callback"),
+                InviterId = "INVITERID"
             };
             
             callbackService.Callback(invitation, "LOGINUSERID");
@@ -59,7 +60,8 @@ namespace SFA.DAS.LoginService.Application.UnitTests.Invitations.CallbackService
             {
                 Email = "email@provider.com",
                 SourceId = "S0U4C31D",
-                CallbackUri = new Uri("https://localhost/callback")
+                CallbackUri = new Uri("https://localhost/callback"),
+                InviterId = "INVITERID"
             };
             
             SystemTime.UtcNow = () => new DateTime(2019, 1, 1, 1, 1, 1);

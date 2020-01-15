@@ -46,12 +46,12 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
             var client = await _loginContext.Clients.SingleOrDefaultAsync(c => c.Id == request.ClientId, cancellationToken: cancellationToken);
             if (client == null)
             {
-                return new CreateInvitationResponse() {Message = "Client does not exist"};
+                return new CreateInvitationResponse() {Message = "Client does not exist", ClientId = request.ClientId, Invited = false };
             }
 
             if (client.AllowInvitationSignUp == false)
             {
-                return new CreateInvitationResponse() {Message = "Client is not authorised for Invitiation Signup"};
+                return new CreateInvitationResponse() {Message = "Client is not authorised for Invitiation Signup", Invited = false, ClientId = request.ClientId, ServiceName = client.ServiceDetails?.ServiceName };
             }
             
             _logger.LogInformation($"CreateInvitationHandler : Client: {JsonConvert.SerializeObject(client)}");
@@ -69,7 +69,7 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
                     EmailAddress = request.Email,
                     TemplateId = client.ServiceDetails.EmailTemplates.Single(t => t.Name == "LoginSignupError").TemplateId
                 });
-                return new CreateInvitationResponse {Message = "User already exists", ExistingUserId = existingUser.Id};
+                return new CreateInvitationResponse {Message = "User already exists", ExistingUserId = existingUser.Id, Invited = false, ClientId = request.ClientId, ServiceName = client.ServiceDetails?.ServiceName, LoginLink = client.ServiceDetails?.PostPasswordResetReturnUrl };
             }
 
             var inviteExists = _loginContext.Invitations.SingleOrDefault(i => i.Email == request.Email);
@@ -136,7 +136,7 @@ namespace SFA.DAS.LoginService.Application.Invitations.CreateInvitation
             });
             
             await _loginContext.SaveChangesAsync(cancellationToken);
-            return new CreateInvitationResponse(){Invited = true, InvitationId = newInvitation.Id};
+            return new CreateInvitationResponse(){Invited = true, InvitationId = newInvitation.Id, ClientId = request.ClientId, ServiceName = client.ServiceDetails?.ServiceName, LoginLink = client.ServiceDetails?.PostPasswordResetReturnUrl };
         }
 
         private static void ValidateRequest(CreateInvitationRequest request)

@@ -50,7 +50,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         }
         
         [Test]
-        public async Task And_unsuccessful_reinvite_with_NonExistingUser_Then_RedirectToActionResult()
+        public async Task And_unsuccessful_reinvite_with_NonExistingUser_Then_BadRequestResult()
         {
             var mediator = Substitute.For<IMediator>();
             mediator.Send(Arg.Any<ReinviteRequest>(), CancellationToken.None).Returns(new CreateInvitationResponse()
@@ -64,7 +64,7 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         }
 
         [Test]
-        public async Task And_unsuccessful_reinvite_with_ExistingUser_Then_RedirectToActionResult()
+        public async Task And_unsuccessful_reinvite_with_ExistingUser_Then_ViewResult()
         {
             var mediator = Substitute.For<IMediator>();
             mediator.Send(Arg.Any<ReinviteRequest>(), CancellationToken.None).Returns(new CreateInvitationResponse()
@@ -78,7 +78,8 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
 
             var result = await controller.Reinvite(invitationId);
 
-            result.Should().BeOfType<RedirectToActionResult>();
+            result.Should().BeOfType<ViewResult>();
+            ((ViewResult)result).ViewName.Should().Be("AccountExists");
         }
     }
 }

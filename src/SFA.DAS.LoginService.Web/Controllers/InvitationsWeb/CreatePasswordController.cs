@@ -94,7 +94,12 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
             var result = await Mediator.Send(new ReinviteRequest() { InvitationId = invitationId });
             if (result.Invited == false)
             {
-                return BadRequest();
+                if (string.IsNullOrEmpty(result.ExistingUserId))
+                {
+                    return BadRequest();
+                }
+
+                return RedirectToAction("Get", "RequestPasswordReset", new { clientId = result.ExistingUserId });
             }
             return RedirectToAction("Reinvited", new { result.InvitationId });
         }

@@ -48,17 +48,31 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         }
         
         [Test]
-        public async Task And_unsuccessful_reinvite_Then_RedirectToActionResult()
+        public async Task And_unsuccessful_reinvite_with_NonExistingUser_Then_RedirectToActionResult()
         {
             var mediator = Substitute.For<IMediator>();
             mediator.Send(Arg.Any<ReinviteRequest>(), CancellationToken.None).Returns(new CreateInvitationResponse()
-                {Invited = false, Message = "Error message"});
+            { Invited = false, ExistingUserId = null, Message = "Error message" }) ;
             var controller = new CreatePasswordController(mediator);
             var invitationId = Guid.NewGuid();
             
             var result = await controller.Reinvite(invitationId);
 
             result.Should().BeOfType<BadRequestResult>();
+        }
+
+        [Test]
+        public async Task And_unsuccessful_reinvite_with_ExistingUser_Then_RedirectToActionResult()
+        {
+            var mediator = Substitute.For<IMediator>();
+            mediator.Send(Arg.Any<ReinviteRequest>(), CancellationToken.None).Returns(new CreateInvitationResponse()
+            { Invited = false, ExistingUserId = Guid.NewGuid().ToString(), Message = "Error message" });
+            var controller = new CreatePasswordController(mediator);
+            var invitationId = Guid.NewGuid();
+
+            var result = await controller.Reinvite(invitationId);
+
+            result.Should().BeOfType<RedirectToActionResult>();
         }
     }
 }

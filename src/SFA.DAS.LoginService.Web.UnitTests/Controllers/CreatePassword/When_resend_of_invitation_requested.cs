@@ -6,8 +6,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NUnit.Framework;
+using SFA.DAS.LoginService.Application.GetInvitationById;
 using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 using SFA.DAS.LoginService.Application.Reinvite;
+using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
@@ -67,6 +69,10 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
             var mediator = Substitute.For<IMediator>();
             mediator.Send(Arg.Any<ReinviteRequest>(), CancellationToken.None).Returns(new CreateInvitationResponse()
             { Invited = false, ExistingUserId = Guid.NewGuid().ToString(), Message = "Error message" });
+
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>(), CancellationToken.None).Returns(new Invitation()
+            { ClientId = Guid.NewGuid() });
+
             var controller = new CreatePasswordController(mediator);
             var invitationId = Guid.NewGuid();
 

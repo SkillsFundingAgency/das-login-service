@@ -11,7 +11,7 @@
         "environmentName": {
             "type": "string"
         },
-        "sharedAppServicePlanName": {
+        "sharedFrontendAppServicePlanName": {
             "type": "string"
         },
         "sharedSqlServerName": {
@@ -42,14 +42,13 @@
             "type": "string"
         },
         "customHostName": {
-            "type": "string",
-            "defaultValue": ""
+            "type": "string"
         },
         "keyVaultCertificateName": {
             "type": "string"
         },
         "loggingRedisConnectionString": {
-            "type": "string"
+            "type": "securestring"
         },
         "sharedKeyVaultName": {
             "type": "string"
@@ -87,7 +86,7 @@
                         "value": "[parameters('sharedKeyVaultResourceGroupName')]"
                     },
                     "serverFarmId": {
-                        "value": "[resourceId(parameters('sharedResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedAppServicePlanName'))]"
+                        "value": "[resourceId(parameters('sharedResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedFrontendAppServicePlanName'))]"
                     }
                 }
             }
@@ -127,7 +126,7 @@
                         "value": "[variables('appServiceName')]"
                     },
                     "appServicePlanName": {
-                        "value": "[parameters('sharedAppServicePlanName')]"
+                        "value": "[parameters('sharedFrontendAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
                         "value": "[parameters('sharedResourceGroup')]"
@@ -169,7 +168,7 @@
                         "value": "[parameters('customHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[if(greater(length(parameters('customHostname')), 0), reference('app-service-certificate').outputs.certificateThumbprint.value, '')]"
+                        "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
                     }
                 }
             }

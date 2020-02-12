@@ -30,7 +30,7 @@ WHERE JSON_QUERY(ServiceDetails, '$.EmailTemplates[5]') IS NULL
 
 -- Apply to be setup for RoATP
 UPDATE LoginService.Clients
-SET ServiceDetails =  JSON_MODIFY(JSON_MODIFY(ServiceDetails,'$.ServiceName','Apply to join the register of apprenticeship training providers service'),'$.ServiceTeam','The Apprenticeship Service')
+SET ServiceDetails =  JSON_MODIFY(JSON_MODIFY(ServiceDetails,'$.ServiceName','Register of apprenticeship training providers service'),'$.ServiceTeam','The Apprenticeship Service')
 WHERE  IdentityServerClientId = 'apply'
 
 -- setup Password Blacklist

@@ -1,63 +1,87 @@
-# ![crest](https://assets.publishing.service.gov.uk/government/assets/crests/org_crest_27px-916806dcf065e7273830577de490d5c7c42f36ddec83e907efe62086785f24fb.png) Digital Apprenticeships Service
+# Digital Apprenticeships Service
 
 ##  Login Service
+Licensed under the [MIT license](https://github.com/SkillsFundingAgency/das-login-service/blob/master/LICENSE)
 
-[comment]: # (![Build Status](https://sfa-gov-uk.visualstudio.com/_apis/public/build/definitions/c39e0c0b-7aff-4606-b160-3566f3bbce23/1496/badge)
+|               |               |
+| ------------- | ------------- |
+|![crest](https://assets.publishing.service.gov.uk/government/assets/crests/org_crest_27px-916806dcf065e7273830577de490d5c7c42f36ddec83e907efe62086785f24fb.png)|Login Service Web|
+| Info | An [OpenID Connect](https://openid.net/connect/) implementation built using Identity Server 4 on Asp.Net Core 2.2 |
+| Build | [![Build Status](https://sfa-gov-uk.visualstudio.com/Digital%20Apprenticeship%20Service/_apis/build/status/Endpoint%20Assessment%20Organisation/das-login-service?branchName=master)](https://sfa-gov-uk.visualstudio.com/Digital%20Apprenticeship%20Service/_build/latest?definitionId=1496&branchName=master) |
+| Web  | N/A  |
 
-An [OpenID Connect](https://openid.net/connect/) implementation built using Identity Server 4 on aspnet core 2.2
+See [Support Site](https://skillsfundingagency.atlassian.net/wiki/spaces/NDL/pages/1731559639/Login+Service+-+Developer+Overview) for EFSA developer details.
 
 ### Developer Setup
 
 #### Requirements
 
-- Install [.NET Core 2.2](https://www.microsoft.com/net/download)
-- Install [Azure Storage Emulator](https://go.microsoft.com/fwlink/?linkid=717179&clcid=0x409) (Make sure you are on v5.3)
-- Install [Azure Storage Explorer](http://storageexplorer.com/)
+- Install [.NET Core 2.2 SDK](https://www.microsoft.com/net/download)
+- Install [Visual Studio 2019](https://www.visualstudio.com/downloads/) with these workloads:
+    - ASP.NET and web development
+- Install [SQL Server 2017 Developer Edition](https://go.microsoft.com/fwlink/?linkid=853016)
+- Install [SQL Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms)
+- Install [Azure Storage Emulator](https://go.microsoft.com/fwlink/?linkid=717179&clcid=0x409) (Make sure you are on atleast v5.3)
+- Install [Azure Storage Explorer](http://storageexplorer.com/) 
 
 #### Setup
 
 - Clone this repository
+- Open Visual Studio as an administrator
 
-##### Database
+##### Publish Database
 
-- Create a database
-- Either use Visual Studio's `Publish Database` tool to publish the .Database project to your database or run the `.sql` scripts manually.
+- Build the solution SFA.DAS.LoginService.sln
+- Either use Visual Studio's `Publish Database` tool to publish the database project SFA.DAS.LoginService.Database to name {{database name}} on {{local instance name}}
+
+	or
+
+- Create a database manually named {{database name}} on {{local instance name}} and run each of the `.sql` scripts in the SFA.DAS.LoginService.Database project.
 
 ##### Config
 
-- Get the das-login-service configuration json file from [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-login-service/SFA.DAS.LoginService.json)
+- Get the das-login-service configuration json file from [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-login-service/SFA.DAS.LoginService.json); which is a non-public repository.
 - Create a Configuration table in your (Development) local Azure Storage account.
-- Add a row to the Configuration table with fields: PartitionKey: LOCAL, RowKey: SFA.DAS.LoginService_1.0, Data: {The contents of the local config json file}.
-- Alter the SqlConnectionString value in the json to point to your database.
+- Add a row to the Configuration table with fields: PartitionKey: LOCAL, RowKey: SFA.DAS.LoginService_1.0, Data: {{The contents of the local config json file}}.
+- Update Configuration SFA.DAS.LoginService_1.0, Data { "SqlConnectionstring":"Server={{local instance name}};Initial Catalog={{database name}};Trusted_Connection=True;" }
 
-##### Setup
-- `dotnet run` the app
-- POST an empty request to `https://localhost:5001/DevSetup`.  This will populate your database.
+##### Complete Data Setup
 
+For an example follow the [EPAO Dev Setup Guide](https://skillsfundingagency.atlassian.net/wiki/spaces/NDL/pages/1533345867/EPAO+Dev+Setup) to populate a local database; scripts show the Assessor service being added to the Login service as a client.
+
+##### Run the Solution
+
+- Navigate to src/SFA.DAS.LoginService.Web/
+- run `dotnet restore`
+- run `dotnet run`
 
 ##### Client setup
+The following example client configuration is taken from the Assessor service when running locally and configured with a Login service running locally.
 
 ```json
 {
   "MetadataAddress": "https://localhost:5001/.well-known/openid-configuration",
-  "ClientId": "mvc",
+  "ClientId": "assessor",
   "ApiClientSecret": "",
-  "ApiUri": "https://localhost:5001/Invitations/2350df68-e325-4ccc-9027-e1051e48d4a7",   <- This GUID needs to be the Id of the record in LoginService.Clients table
-  "RedirectUri": "https://localhost:6016/Users/SignIn",
-  "CallbackUri": "https://localhost:6016/Account/Callback",
-  "SignOutRedirectUri": "https://localhost:6016/Users/SignedOut"
+  "ApiUri": "https://localhost:5001/Invitations/08372E20-BECD-415C-9925-4D33DDF67FAF",   <- This GUID needs to be the Id of the record in LoginService.Clients table
+  "RedirectUri": "https://localhost:5015/Account/SignIn",
+  "CallbackUri": "https://localhost:5015/Account/Callback",
+  "SignOutRedirectUri": "https://localhost:5015/Account/SignedOut"
 }
   ```
   
-##  Login Service
+
+##  Getting Started
 
 ### Invitations
+
+Users of the login service and added by invitation; that is a user registers details i.e email address and name; which prompts the login service to send an email; responding to a link in the email prompts the Login service to request a password; which completes the addition of the user. 
 
 To invite users, your client app needs to POST the following JSON to the `ApiUrl` specified above.  
 
 ```json
 {
-  "sourceId": "[the id of your local user]",
+  "sourceId": "[the id of a user in a client database]",
   "given_name" : "[Given name of user]",
   "family_name" : "[Family name of user]",
   "email": "[User's email address]",
@@ -135,3 +159,4 @@ Once the user has successfully signed up, the Login Service will use the `callba
   "sourceid": "[Your local user id]"
 }
 ```
+A client app must make an association between the ``sub`` and the ``sourceid`` in the client database so that the users local client details can be acccess after a succesfull login.

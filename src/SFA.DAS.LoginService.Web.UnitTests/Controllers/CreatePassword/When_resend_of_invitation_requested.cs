@@ -6,8 +6,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NUnit.Framework;
+using SFA.DAS.LoginService.Application.GetInvitationById;
 using SFA.DAS.LoginService.Application.Invitations.CreateInvitation;
 using SFA.DAS.LoginService.Application.Reinvite;
+using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb;
 
 namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
@@ -48,17 +50,36 @@ namespace SFA.DAS.LoginService.Web.UnitTests.Controllers.CreatePassword
         }
         
         [Test]
-        public async Task And_unsuccessful_reinvite_Then_RedirectToActionResult()
+        public async Task And_unsuccessful_reinvite_with_NonExistingUser_Then_BadRequestResult()
         {
             var mediator = Substitute.For<IMediator>();
             mediator.Send(Arg.Any<ReinviteRequest>(), CancellationToken.None).Returns(new CreateInvitationResponse()
-                {Invited = false, Message = "Error message"});
+            { Invited = false, ExistingUserId = null, Message = "Error message" }) ;
             var controller = new CreatePasswordController(mediator);
             var invitationId = Guid.NewGuid();
             
             var result = await controller.Reinvite(invitationId);
 
             result.Should().BeOfType<BadRequestResult>();
+        }
+
+        [Test]
+        public async Task And_unsuccessful_reinvite_with_ExistingUser_Then_ViewResult()
+        {
+            var mediator = Substitute.For<IMediator>();
+            mediator.Send(Arg.Any<ReinviteRequest>(), CancellationToken.None).Returns(new CreateInvitationResponse()
+            { Invited = false, ExistingUserId = Guid.NewGuid().ToString(), Message = "Error message" });
+
+            mediator.Send(Arg.Any<GetInvitationByIdRequest>(), CancellationToken.None).Returns(new Invitation()
+            { ClientId = Guid.NewGuid() });
+
+            var controller = new CreatePasswordController(mediator);
+            var invitationId = Guid.NewGuid();
+
+            var result = await controller.Reinvite(invitationId);
+
+            result.Should().BeOfType<ViewResult>();
+            ((ViewResult)result).ViewName.Should().Be("AccountExists");
         }
     }
 }

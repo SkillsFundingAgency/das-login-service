@@ -8,12 +8,18 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
 
-            <h1 class="govuk-heading-xl">Signed out</h1>
-            
+            <h1 class="govuk-heading-xl">You have successfully signed out</h1>
+
             @if (Model.PostLogoutRedirectUri != null)
             {
                 <p class="govuk-body">
-                    <a class="PostLogoutRedirectUri govuk-link" href="@Model.PostLogoutRedirectUri">Return to <span>@Model.ClientName</span></a>
+                    You can go <a class="govuk-link" href="https://www.gov.uk"><span>back to GOV.UK</span></a> or <a class="govuk-link" href="@Model.PostLogoutRedirectUri"><span>sign back in</span>.</a>
+                </p>
+            }
+            else
+            {
+                <p class="govuk-body">
+                    You can go <a class="govuk-link" href="https://www.gov.uk"><span>back to GOV.UK</span>.</a>
                 </p>
             }
         </div>

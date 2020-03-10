@@ -7,6 +7,7 @@ using SFA.DAS.LoginService.Application.CreatePassword;
 using SFA.DAS.LoginService.Application.GetInvitationById;
 using SFA.DAS.LoginService.Application.Reinvite;
 using SFA.DAS.LoginService.Application.Services;
+using SFA.DAS.LoginService.Types.GetClientById;
 using SFA.DAS.LoginService.Web.Controllers.InvitationsWeb.ViewModels;
 
 namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
@@ -94,7 +95,21 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsWeb
             var result = await Mediator.Send(new ReinviteRequest() { InvitationId = invitationId });
             if (result.Invited == false)
             {
-                return BadRequest();
+                if (string.IsNullOrEmpty(result.ExistingUserId))
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    SetViewBagClientId(result.ClientId);
+
+                    // Send to static page saying already created
+                    return View("AccountExists", new AccountExistsViewModel()
+                    {
+                        ServiceName = result.ServiceName,
+                        LoginLink = result.LoginLink
+                    });
+                }
             }
             return RedirectToAction("Reinvited", new { result.InvitationId });
         }

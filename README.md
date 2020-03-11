@@ -47,7 +47,7 @@ See [Support Site](https://skillsfundingagency.atlassian.net/wiki/spaces/NDL/pag
 
 ##### Complete Data Setup
 
-For an example follow the [EPAO Dev Setup Guide](https://skillsfundingagency.atlassian.net/wiki/spaces/NDL/pages/1533345867/EPAO+Dev+Setup) to populate a local database; scripts show the Assessor service being added to the Login service as a client.
+For an example follow the [EPAO Dev Setup Guide](https://skillsfundingagency.atlassian.net/wiki/spaces/NDL/pages/1731395918/EPAO+-+Data+Setup+Guide#Login-Service---Initial-Setup) to populate a local database; scripts show the Assessor service being added to the Login service as a client.
 
 ##### Run the Solution
 
@@ -55,7 +55,16 @@ For an example follow the [EPAO Dev Setup Guide](https://skillsfundingagency.atl
 - run `dotnet restore`
 - run `dotnet run`
 
-##### Client setup
+The Logic service is now running waiting to recevie OpenId requests to authenticate a client application.
+
+##  Getting Started with Programmatic Integration
+
+If you want to integrate your client application with the Login service then the below basic guide is an overview of what is required.
+
+### Database setup
+In the data setup guide above is an example of the database entries required to declare that a client application depends on the Login service for authentication; the example above is for the Assessor service.
+
+### Client setup
 The following example client configuration is taken from the Assessor service when running locally and configured with a Login service running locally.
 
 ```json
@@ -69,13 +78,10 @@ The following example client configuration is taken from the Assessor service wh
   "SignOutRedirectUri": "https://localhost:5015/Account/SignedOut"
 }
   ```
-  
-
-##  Getting Started
 
 ### Invitations
 
-Users of the login service and added by invitation; that is a user registers details i.e email address and name; which prompts the login service to send an email; responding to a link in the email prompts the Login service to request a password; which completes the addition of the user. 
+Users of the login service are added by invitation; that is a user registers details i.e email address and name; which prompts the login service to send an email; responding to a link in the email prompts the Login service to request a password; which completes the addition of the user. 
 
 To invite users, your client app needs to POST the following JSON to the `ApiUrl` specified above.  
 

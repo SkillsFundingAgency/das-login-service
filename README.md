@@ -55,7 +55,9 @@ For an example follow the [EPAO Dev Setup Guide](https://skillsfundingagency.atl
 - run `dotnet restore`
 - run `dotnet run`
 
-The Logic service is now running waiting to recevie OpenId requests to authenticate a client application.
+The Login service is now running waiting to recevie OpenId requests to authenticate a client application on port 5001 by default.
+
+Please not that if this is run from VS using IIS Express (not recomended) the port number is different and would need to be configured in a client app as the valid ranges of SSL ports in IIS Express are 44300 to 44399.
 
 ##  Getting Started with Programmatic Integration
 

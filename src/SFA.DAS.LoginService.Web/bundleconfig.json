@@ -9,9 +9,7 @@
         "outputFileName": "wwwroot/javascripts/application.min.js",
         "inputFiles": [
             "wwwroot/lib/govuk-frontend/dist/govuk-frontend-2.7.0.min.js",
-            "wwwroot/javascripts/cookie-banner/_cookies.js",
-            "wwwroot/javascripts/cookie-banner/_cookieBanner.js",
-            "wwwroot/javascripts/cookie-banner/_cookieSettings.js",
+            "wwwroot/javascripts/das-cookie-banner.js",
             "wwwroot/javascripts/das-password-conditions.js",
             "wwwroot/javascripts/das-show-hide-password.js",
             "wwwroot/javascripts/application.js"

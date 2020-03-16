@@ -57,13 +57,13 @@
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-two-thirds">
                     <h2 class="govuk-heading-m das-cookie-banner__header">Tell us whether you accept cookies</h2>
-                    <p class="govuk-body">We use <a href="/Home/Cookies" class="govuk-link govuk-link--no-visited-state">cookies to collect information</a> about how you use Manage Apprenticeships. We use this information to make the website work as well as possible and improve the service.</p>
+                    <p class="govuk-body">We use <a href="/Cookies" class="govuk-link govuk-link--no-visited-state">cookies to collect information</a> about how you use Manage Apprenticeships. We use this information to make the website work as well as possible and improve the service.</p>
                     <div class="das-cookie-banner__buttons">
                         <div class="das-cookie-banner__button-wrap das-cookie-banner__button-accept">
                             <button class="govuk-button das-button--outline das-cookie-banner__button" type="submit" data-accept-cookies="true">Accept all cookies</button>
                         </div>
                         <div class="das-cookie-banner__button-wrap das-cookie-banner__button-settings">
-                            <a class="govuk-button das-button--outline das-cookie-banner__button" role="button" href="/Home/Cookies">Set cookie preferences</a>
+                            <a class="govuk-button das-button--outline das-cookie-banner__button" role="button" href="/Cookies">Set cookie preferences</a>
                         </div>
                     </div>
                     </div>
@@ -71,7 +71,7 @@
             </div>
             <div class="das-cookie-banner__confirmation govuk-width-container" tabindex="-1">
                 <p class="govuk-body das-cookie-banner__confirmation-message">
-                    You've accepted all cookies. You can <a class="govuk-link" href="/Home/Cookies">change your cookie settings</a> at any time.
+                    You've accepted all cookies. You can <a class="govuk-link" href="/Cookies">change your cookie settings</a> at any time.
                 </p>
                 <button class="das-cookie-banner__hide-button" data-hide-cookie-banner="true">Hide</button>
             </div>
@@ -162,14 +162,14 @@
     </footer>
 
     <environment include="Development">
-        <script src="/lib/govuk-frontend/dist/govuk-frontend-2.7.0.min.js"></script>
-        <script src="/javascripts/das-cookie-banner.js"></script>
-        <script src="/javascripts/das-password-conditions.js"></script>
-        <script src="/javascripts/das-show-hide-password.js"></script>
-        <script src="/javascripts/application.js"></script>
+        <script src="~/lib/govuk-frontend/dist/govuk-frontend-2.7.0.min.js"></script>
+        <script src="~/javascripts/das-cookie-banner.js"></script>
+        <script src="~/javascripts/das-password-conditions.js"></script>
+        <script src="~/javascripts/das-show-hide-password.js"></script>
+        <script src="~/javascripts/application.js"></script>
     </environment>
     <environment exclude="Development">
-        <script src="/javascripts/application.min.js"></script>
+        <script src="~/javascripts/application.min.js"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)

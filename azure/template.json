@@ -218,6 +218,10 @@
         "AppServiceName": {
             "type": "string",
             "value": "[variables('appServiceName')]"
+        },
+        "CertificateThumbprint": {
+            "type": "string",
+            "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
         }
     }
 }

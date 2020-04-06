@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SFA.DAS.LoginService.Web.Controllers
 {
-    public class FooterController : BaseController
+    public class HomeController : BaseController
     {
-        public FooterController(IMediator mediator)
+        public HomeController(IMediator mediator)
             : base(mediator)
         {
         }
@@ -27,6 +27,13 @@ namespace SFA.DAS.LoginService.Web.Controllers
         }
         [HttpGet("/Cookies")]
         public IActionResult Cookies(Guid clientId)
+        {
+            SetViewBagClientId(clientId);
+
+            return View();
+        }
+        [HttpGet("/CookieDetails")]
+        public IActionResult CookieDetails(Guid clientId)
         {
             SetViewBagClientId(clientId);
 

@@ -91,7 +91,7 @@
                             <button class="govuk-button das-button--outline das-cookie-banner__button" type="submit" data-accept-cookies="true">Accept all cookies</button>
                         </div>
                         <div class="das-cookie-banner__button-wrap das-cookie-banner__button-settings">
-                            <a class="govuk-button das-button--outline das-cookie-banner__button" role="button" href="/Cookies">Set cookie preferences</a>
+                            <a class="govuk-button das-button--outline das-cookie-banner__button" role="button" asp-controller="Home" asp-action="Cookies" asp-route-clientId="@ViewBag.ClientId">Set cookie preferences</a>
                         </div>
                     </div>
                     </div>
@@ -99,7 +99,7 @@
             </div>
             <div class="das-cookie-banner__confirmation govuk-width-container" tabindex="-1">
                 <p class="govuk-body das-cookie-banner__confirmation-message">
-                    You've accepted all cookies. You can <a class="govuk-link" href="/Cookies">change your cookie settings</a> at any time.
+                    You've accepted all cookies. You can <a class="govuk-link" asp-controller="Home" asp-action="Cookies" asp-route-clientId="@ViewBag.ClientId">change your cookie settings</a> at any time.
                 </p>
                 <button class="das-cookie-banner__hide-button" data-hide-cookie-banner="true">Hide</button>
             </div>
@@ -165,6 +165,9 @@
                         </li>
                         <li class="govuk-footer__inline-list-item">
                             <a class="govuk-footer__link" asp-controller="Home" asp-action="Privacy" asp-route-clientId="@ViewBag.ClientId">Privacy</a>
+                        </li>
+                        <li class="govuk-footer__inline-list-item">
+                            <a class="govuk-footer__link" asp-controller="Home" asp-action="Accessibility" asp-route-clientId="@ViewBag.ClientId">Accessibility statement</a>
                         </li>
                     </ul>
                     <svg role="presentation" focusable="false" class="govuk-footer__licence-logo" xmlns="http://www.w3.org/2000/svg"

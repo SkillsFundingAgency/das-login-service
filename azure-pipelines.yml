@@ -60,6 +60,19 @@ jobs:
       publishWebProjects: true
       arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory)/publish --no-restore --no-build'
 
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+    inputs:
+      Contents: |
+        azure/**
+      TargetFolder: '$(build.artifactstagingdirectory)/publish'
+      OverWrite: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)/publish'
+
 - job: DACPACBuild
   pool:
     name: 'DAS - Continuous Integration'
@@ -80,7 +93,6 @@ jobs:
     displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
     inputs:
       Contents: |
-        azure\**
         src\**\*.dacpac
       TargetFolder: '$(build.artifactstagingdirectory)/publish'
       OverWrite: true

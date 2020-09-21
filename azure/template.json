@@ -14,10 +14,13 @@
         "sharedFrontendAppServicePlanName": {
             "type": "string"
         },
+        "sharedFrontEndSubnetResourceId": {
+            "type": "string"
+        },
         "sharedSqlServerName": {
             "type": "string"
         },
-        "sharedResourceGroup": {
+        "sharedEnvResourceGroup": {
             "type": "string"
         },
         "configurationStorageConnectionString": {
@@ -68,7 +71,7 @@
         {
             "apiVersion": "2017-05-10",
             "name": "app-service-certificate",
-            "resourceGroup": "[parameters('sharedResourceGroup')]",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -87,7 +90,7 @@
                         "value": "[parameters('sharedManagementResourceGroup')]"
                     },
                     "serverFarmId": {
-                        "value": "[resourceId(parameters('sharedResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedFrontendAppServicePlanName'))]"
+                        "value": "[resourceId(parameters('sharedEnvResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedFrontendAppServicePlanName'))]"
                     }
                 }
             }
@@ -130,7 +133,10 @@
                         "value": "[parameters('sharedFrontendAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
-                        "value": "[parameters('sharedResourceGroup')]"
+                        "value": "[parameters('sharedEnvResourceGroup')]"
+                    },
+                    "subnetResourceId": {
+                        "value": "[parameters('sharedFrontEndSubnetResourceId')]"
                     },
                     "appServiceAppSettings": {
                         "value": [
@@ -178,7 +184,7 @@
             "apiVersion": "2017-05-10",
             "name": "sql-database",
             "type": "Microsoft.Resources/deployments",
-            "resourceGroup": "[parameters('sharedResourceGroup')]",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {

@@ -41,6 +41,11 @@ namespace SFA.DAS.LoginService.Application.Services
         {
             return await _userManager.FindByNameAsync(username);
         }
+        
+        public async Task<LoginUser> FindById(Guid id)
+        {
+            return await _userManager.FindByIdAsync(id.ToString());
+        }
 
         public async Task SignOutUser()
         {
@@ -71,5 +76,16 @@ namespace SFA.DAS.LoginService.Application.Services
         {
             await _userManager.AddClaimAsync(user, new Claim(claimType, value));
         }
+
+        public async Task<UserResponse> ChangeEmail(Guid userId, string email)
+        {
+            var user = await FindById(userId);
+            var identityResult = await _userManager.SetUserNameAsync(user, email);
+            var emailResult = await _userManager.SetEmailAsync(user, email);
+            await _userManager.UpdateAsync(user);
+
+            return new UserResponse() { Result = identityResult, User = user };
+        }
+
     }
 }

@@ -16,4 +16,10 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsApi.ViewModels
         public string OrganisationName { get; set; }
         public string Inviter { get; set; }
     }
+
+    public class ResetEmailViewModel
+    {
+        public string Email { get; set; }
+        public Guid UserId { get; set; }
+    }
 }

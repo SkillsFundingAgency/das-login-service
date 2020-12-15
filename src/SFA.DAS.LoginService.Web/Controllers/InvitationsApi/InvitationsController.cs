@@ -70,5 +70,25 @@ namespace SFA.DAS.LoginService.Web.Controllers.InvitationsApi
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpPost("/ChangeEmail/{clientId}")]
+        public async Task<ActionResult<ResetEmailResponse>> ChangeEmail(Guid clientId, [FromBody] ResetEmailViewModel createInvitationRequest)
+        {
+            try
+            {
+                var response = await _mediator.Send(new ResetEmailRequest()
+                {
+                    ClientId = clientId,
+                    Email = createInvitationRequest.Email,
+                    UserId = createInvitationRequest.UserId,
+                });
+                _logger.LogDebug($"Received Response from ChangeEmail: Invited: {response.ChangedSuccessfully} Message: {response.Message}");
+                return response;
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

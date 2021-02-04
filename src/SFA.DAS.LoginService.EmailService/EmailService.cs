@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -82,15 +83,23 @@ namespace SFA.DAS.LoginService.EmailService
             
             var tokens = GetTokens(viewModel);
 
-            await _notificationApi.SendEmail(new Email()
+            try
             {
-                RecipientsAddress = viewModel.EmailAddress,
-                TemplateId = viewModel.TemplateId.ToString(),
-                Tokens = tokens,
-                SystemId = "ApplyService",
-                ReplyToAddress = "digital.apprenticeship.service@notifications.service.gov.uk",
-                Subject = viewModel.Subject
-            });
+                await _notificationApi.SendEmail(new Email()
+                {
+                    RecipientsAddress = viewModel.EmailAddress,
+                    TemplateId = viewModel.TemplateId.ToString(),
+                    Tokens = tokens,
+                    SystemId = "ApplyService",
+                    ReplyToAddress = "digital.apprenticeship.service@notifications.service.gov.uk",
+                    Subject = viewModel.Subject
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error sending email template ({viewModel.TemplateId}) to: '{viewModel.EmailAddress}'");
+                throw;
+            }
         }
         
         private Dictionary<string, string> GetTokens(EmailViewModel vm)

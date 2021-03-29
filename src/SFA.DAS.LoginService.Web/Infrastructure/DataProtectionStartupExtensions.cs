@@ -27,11 +27,11 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
 
                 if (loginConfig != null)
                 {
-                    var redisConnectionString = loginConfig.RedisConnectionString;
+                    var defaultSessionRedisConnectionString = loginConfig.DefaultSessionRedisConnectionString;
                     var dataProtectionKeysDatabase = loginConfig.DataProtectionKeysDatabase;
 
                     var redis = ConnectionMultiplexer
-                        .Connect($"{redisConnectionString},{dataProtectionKeysDatabase}");
+                        .Connect($"{defaultSessionRedisConnectionString},{dataProtectionKeysDatabase}");
 
                     services.AddDataProtection()
                         .SetApplicationName("das-login-service")

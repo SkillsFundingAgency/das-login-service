@@ -8,7 +8,7 @@ namespace SFA.DAS.LoginService.Configuration
         string CertificateThumbprint { get; set; }
         NotificationsApiConfiguration NotificationsApiClientConfiguration { get; set; }
         int MaxFailedAccessAttempts { get; set; }
-        string RedisConnectionString { get; set; }
+        string DefaultSessionRedisConnectionString { get; set; }
         string DataProtectionKeysDatabase { get; set; }
     }
 }

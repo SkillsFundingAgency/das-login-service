@@ -68,6 +68,7 @@ namespace SFA.DAS.LoginService.Web
                 });
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDataProtection(Configuration, _environment, _serviceProvider);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)

@@ -63,10 +63,12 @@ namespace SFA.DAS.LoginService.Web
                 {
                     jwt.Authority = "http://localhost:5000";
                     jwt.RequireHttpsMetadata = false;
+                    jwt.IncludeErrorDetails = _environment.IsDevelopment();
                     jwt.Audience = "api1";
                 });
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDataProtection(Configuration, _environment, _serviceProvider);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)

@@ -43,11 +43,12 @@ namespace SFA.DAS.LoginService.Web
             services.AddDbContext<LoginContext>(options =>
             {
                 var connection = new System.Data.SqlClient.SqlConnection(_loginConfig.SqlConnectionString);
-
+                _logger.LogError($"ConnectionString: {_loginConfig.SqlConnectionString}");
                 if (!_environment.IsDevelopment())
                 {
                     var generateTokenTask = SqlTokenGenerator.GenerateTokenAsync();
                     connection.AccessToken = generateTokenTask.GetAwaiter().GetResult();
+                    _logger.LogError($"AccessToken: {connection.AccessToken}");
                 }
 
                 options.UseSqlServer(connection, providerOptions => providerOptions.EnableRetryOnFailure());
@@ -56,11 +57,12 @@ namespace SFA.DAS.LoginService.Web
             services.AddDbContext<LoginUserContext>(options =>
             {
                 var connection = new System.Data.SqlClient.SqlConnection(_loginConfig.SqlConnectionString);
-
+                _logger.LogError($"ConnectionString: {_loginConfig.SqlConnectionString}");
                 if (!_environment.IsDevelopment())
                 {
                     var generateTokenTask = SqlTokenGenerator.GenerateTokenAsync();
                     connection.AccessToken = generateTokenTask.GetAwaiter().GetResult();
+                    _logger.LogError($"AccessToken: {connection.AccessToken}");
                 }
 
                 options.UseSqlServer(connection, providerOptions => providerOptions.EnableRetryOnFailure());

@@ -18,6 +18,7 @@ namespace SFA.DAS.LoginService.Web.Controllers
 
             return View();
         }
+
         [HttpGet("/Privacy")]
         public IActionResult Privacy(Guid clientId)
         {
@@ -25,6 +26,7 @@ namespace SFA.DAS.LoginService.Web.Controllers
 
             return View();
         }
+
         [HttpGet("/Cookies")]
         public IActionResult Cookies(Guid clientId)
         {
@@ -32,8 +34,17 @@ namespace SFA.DAS.LoginService.Web.Controllers
 
             return View();
         }
+
         [HttpGet("/CookieDetails")]
         public IActionResult CookieDetails(Guid clientId)
+        {
+            SetViewBagClientId(clientId);
+
+            return View();
+        }
+
+        [HttpGet("/Accessibility")]
+        public IActionResult Accessibility(Guid clientId)
         {
             SetViewBagClientId(clientId);
 

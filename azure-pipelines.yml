@@ -22,7 +22,7 @@ jobs:
 - job: Build
   pool:
     name: 'DAS - Continuous Integration Agents'
-    demands: LATEST_DOTNET_VERION -equals 2.2
+    demands: LATEST_DOTNET_VERSION -equals 2.2
   workspace:
     clean: all
 

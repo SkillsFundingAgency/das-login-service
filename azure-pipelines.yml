@@ -15,42 +15,21 @@ resources:
   - repository: das-platform-building-blocks
     type: github
     name: SkillsFundingAgency/das-platform-building-blocks
-    ref: refs/heads/master
-    endpoint: "GitHub (SFA)"
+    ref: refs/tags/0.4.10
+    endpoint: SkillsFundingAgency
 
 jobs:
 - job: Build
   pool:
-    name: 'DAS - Continuous Integration Agents'
-    demands: LATEST_DOTNET_VERSION -equals 2.2
+    name: DAS - Continuous Integration Agents
+    demands: LATEST_DOTNET_VERSION -equals 3.1
   workspace:
     clean: all
 
   steps:
-  - task: gittools.gitversion-preview.gitversion-task.GitVersion@5
-    displayName: GitVersion
-    inputs:
-      updateAssemblyInfo: true
+  - template: azure-pipelines-templates/build/step/gitversion.yml@das-platform-building-blocks
 
-  - task: DotNetCoreCLI@2
-    displayName: Restore
-    inputs:
-      command: restore
-      projects: 'src/**/*.csproj'
-      noCache: true
-
-  - task: DotNetCoreCLI@2
-    displayName: Build
-    inputs:
-      projects: 'src/**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-restore'
-
-  - task: DotNetCoreCLI@2
-    displayName: Test
-    inputs:
-      command: test
-      projects: 'src/**/*.UnitTests.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-build'
+  - template: azure-pipelines-templates/build/step/app-build.yml@das-platform-building-blocks
 
   - template: azure-pipelines-templates/build/step/dependency-check.yml@das-platform-building-blocks
 

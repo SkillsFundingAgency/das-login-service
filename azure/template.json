@@ -68,6 +68,10 @@
         },
         "sharedKeyVaultName": {
             "type": "string"
+        },
+        "utcValue": {
+            "type": "string",
+            "defaultValue": "[utcNow('yyMMddHHmmss')]"
         }
     },
     "variables": {
@@ -88,7 +92,7 @@
         },
         {
             "apiVersion": "2020-10-01",
-            "name": "app-service-certificate",
+            "name": "[concat('app-service-certificate-', parameters('utcValue'))]",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -112,7 +116,7 @@
         },
         {
             "apiVersion": "2020-10-01",
-            "name": "application-insights",
+            "name": "[concat('application-insights-', parameters('utcValue'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -133,7 +137,7 @@
         },
         {
             "apiVersion": "2020-10-01",
-            "name": "app-service",
+            "name": "[concat('app-service-', parameters('utcValue'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -168,7 +172,7 @@
                                 },
                                 {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference('application-insights').outputs.InstrumentationKey.value]"
+                                    "value": "[reference(concat('application-insights-', parameters('utcValue'))).outputs.InstrumentationKey.value]"
                                 },
                                 {
                                     "name": "ASPNETCORE_ENVIRONMENT",
@@ -176,7 +180,7 @@
                                 },
                                 {
                                     "name": "WEBSITE_LOAD_CERTIFICATES",
-                                    "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
+                                    "value": "[reference(concat('app-service-certificate-', parameters('utcValue'))).outputs.certificateThumbprint.value]"
                                 }
                             ]
                         }
@@ -196,7 +200,7 @@
                         "value": "[parameters('customHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
+                        "value": "[reference(concat('app-service-certificate-', parameters('utcValue'))).outputs.certificateThumbprint.value]"
                     },
                     "ipSecurityRestrictions": {
                         "value": "[parameters('frontEndAccessRestrictions')]"
@@ -206,7 +210,7 @@
         },
         {
             "apiVersion": "2020-10-01",
-            "name": "sql-database",
+            "name": "[concat('sql-database-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
@@ -259,7 +263,7 @@
         },
         "CertificateThumbprint": {
             "type": "string",
-            "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
+            "value": "[reference(concat('app-service-certificate-', parameters('utcValue'))).outputs.certificateThumbprint.value]"
         }
     }
 }

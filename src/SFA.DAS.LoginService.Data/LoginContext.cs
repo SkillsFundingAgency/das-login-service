@@ -33,7 +33,8 @@ namespace SFA.DAS.LoginService.Data
                     v => JsonSerializer.Serialize(v,
                           new JsonSerializerOptions {DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull}),
                     v => JsonSerializer.Deserialize<ServiceDetails>(v,
-                          new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull}));
+                          new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull}))
+                          .IsRequired();
         }
 
         public DbSet<Invitation> Invitations { get; set; }

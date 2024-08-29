@@ -42,12 +42,28 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
                 })
                 .AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = builder => builder.UseSqlServer(loginConfig.SqlConnectionString);
+                    var connection = new System.Data.SqlClient.SqlConnection(loginConfig.SqlConnectionString);
+
+                    if (!environment.IsDevelopment())
+                    {
+                        var generateTokenTask = SqlTokenGenerator.GenerateTokenAsync();
+                        connection.AccessToken = generateTokenTask.GetAwaiter().GetResult();
+                    }
+
+                    options.ConfigureDbContext = builder => builder.UseSqlServer(connection);
                     options.DefaultSchema = "IdentityServer";
                 })
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = builder => builder.UseSqlServer(loginConfig.SqlConnectionString);
+                    var connection = new System.Data.SqlClient.SqlConnection(loginConfig.SqlConnectionString);
+
+                    if (!environment.IsDevelopment())
+                    {
+                        var generateTokenTask = SqlTokenGenerator.GenerateTokenAsync();
+                        connection.AccessToken = generateTokenTask.GetAwaiter().GetResult();
+                    }
+
+                    options.ConfigureDbContext = builder => builder.UseSqlServer(connection);
                     options.DefaultSchema = "IdentityServer";
                     options.EnableTokenCleanup = true;
                 })

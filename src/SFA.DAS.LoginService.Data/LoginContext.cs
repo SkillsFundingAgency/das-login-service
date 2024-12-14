@@ -1,8 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using SFA.DAS.LoginService.Data.Entities;
 using SFA.DAS.LoginService.Data.JsonObjects;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SFA.DAS.LoginService.Data
 {
@@ -29,10 +30,11 @@ namespace SFA.DAS.LoginService.Data
             modelBuilder.Entity<Client>()
                 .Property(c => c.ServiceDetails)
                 .HasConversion(
-                    v => JsonConvert.SerializeObject(v,
-                        new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}),
-                    v => JsonConvert.DeserializeObject<ServiceDetails>(v,
-                        new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
+                    v => JsonSerializer.Serialize(v,
+                          new JsonSerializerOptions {DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull}),
+                    v => JsonSerializer.Deserialize<ServiceDetails>(v,
+                          new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull}))
+                          .IsRequired();
         }
 
         public DbSet<Invitation> Invitations { get; set; }

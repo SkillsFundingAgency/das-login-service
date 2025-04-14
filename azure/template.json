@@ -19,7 +19,7 @@
         },
         "deployPrivateLinkedScopedResource": {
             "type": "bool"
-        }.
+        },
         "sharedFrontEndAppServicePlanName": {
             "type": "string"
         },

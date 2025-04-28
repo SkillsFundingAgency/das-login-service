@@ -71,6 +71,10 @@
         },
         "sharedKeyVaultName": {
             "type": "string"
+        },
+        "utcValue": {
+            "type": "string",
+            "defaultValue": "[utcNow()]"
         }
     },
     "variables": {

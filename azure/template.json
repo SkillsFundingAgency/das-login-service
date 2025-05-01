@@ -71,6 +71,10 @@
         },
         "sharedKeyVaultName": {
             "type": "string"
+        },
+        "utcValue": {
+            "type": "string",
+            "defaultValue": "[utcNow()]"
         }
     },
     "variables": {
@@ -155,7 +159,7 @@
                         "value": "[variables('appServiceName')]"
                     },
                     "scopedResourceId": {
-                        "value": "[reference(application-insights).outputs.AppInsightsResourceId.value]"
+                        "value": "[reference('application-insights').outputs.AppInsightsResourceId.value]"
                     }
                 }
             }

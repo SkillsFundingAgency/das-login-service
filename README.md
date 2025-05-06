@@ -41,9 +41,10 @@ See [Support Site](https://skillsfundingagency.atlassian.net/wiki/spaces/NDL/pag
 ##### Config
 
 - Get the das-login-service configuration json file from [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-login-service/SFA.DAS.LoginService.json); which is a non-public repository.
-- Create a Configuration table in your (Development) local Azure Storage account.
+- If it doesn't exist already, create a table named Configuration in your local Azure Storage account.
 - Add a row to the Configuration table with fields: PartitionKey: LOCAL, RowKey: SFA.DAS.LoginService_1.0, Data: {{The contents of the local config json file}}.
-- Update Configuration SFA.DAS.LoginService_1.0, Data { "SqlConnectionstring":"Server={{local instance name}};Initial Catalog={{database name}};Trusted_Connection=True;" }
+- In the row with RowKey `SFA.DAS.LoginService_1.0`, update the `Data` property with the following value: 
+`{ "SqlConnectionstring":"Server={{local instance name}};Initial Catalog={{database name}};Trusted_Connection=True;" }`
 
 ##### Complete Data Setup
 

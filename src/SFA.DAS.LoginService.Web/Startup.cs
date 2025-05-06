@@ -40,8 +40,31 @@ namespace SFA.DAS.LoginService.Web
 
             _loginConfig = services.WireUpDependencies(_loginConfig, Configuration, _environment, _serviceProvider);
 
-            services.AddDbContext<LoginContext>(options => options.UseSqlServer(_loginConfig.SqlConnectionString));
-            services.AddDbContext<LoginUserContext>(options => options.UseSqlServer(_loginConfig.SqlConnectionString));
+            services.AddDbContext<LoginContext>(options =>
+            {
+                var connection = new System.Data.SqlClient.SqlConnection(_loginConfig.SqlConnectionString);
+
+                if (!_environment.IsDevelopment())
+                {
+                    var generateTokenTask = SqlTokenGenerator.GenerateTokenAsync();
+                    connection.AccessToken = generateTokenTask.GetAwaiter().GetResult();
+                }
+
+                options.UseSqlServer(connection, providerOptions => providerOptions.EnableRetryOnFailure());
+            });
+
+            services.AddDbContext<LoginUserContext>(options =>
+            {
+                var connection = new System.Data.SqlClient.SqlConnection(_loginConfig.SqlConnectionString);
+
+                if (!_environment.IsDevelopment())
+                {
+                    var generateTokenTask = SqlTokenGenerator.GenerateTokenAsync();
+                    connection.AccessToken = generateTokenTask.GetAwaiter().GetResult();
+                }
+
+                options.UseSqlServer(connection, providerOptions => providerOptions.EnableRetryOnFailure());
+            });
 
             services.AddIdentityServer(_loginConfig, _environment, _logger);
 

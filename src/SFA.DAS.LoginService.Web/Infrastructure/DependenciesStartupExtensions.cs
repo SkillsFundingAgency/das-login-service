@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +29,7 @@ namespace SFA.DAS.LoginService.Web.Infrastructure
                     configuration["EnvironmentName"],
                     configuration["ConfigurationStorageConnectionString"],
                     "1.0",
-                    "SFA.DAS.LoginService", environment).Result;
+                    "SFA.DAS.LoginService", environment).GetAwaiter().GetResult();
 
             services.AddTransient(sp => loginConfig);
 

@@ -40,6 +40,8 @@ namespace SFA.DAS.LoginService.Web
 
             _loginConfig = services.WireUpDependencies(_loginConfig, Configuration, _environment, _serviceProvider);
 
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
+
             services.AddDbContext<LoginContext>(options => options.UseSqlServer(_loginConfig.SqlConnectionString));
             services.AddDbContext<LoginUserContext>(options => options.UseSqlServer(_loginConfig.SqlConnectionString));
 

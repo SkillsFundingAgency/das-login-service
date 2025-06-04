@@ -73,7 +73,7 @@ namespace SFA.DAS.LoginService.Web
             services.AddDataProtection(Configuration, _environment, _serviceProvider);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -84,6 +84,10 @@ namespace SFA.DAS.LoginService.Web
                 app.UseExceptionHandler("/Error");       
                 app.UseHsts();
             }
+
+#pragma warning disable CS0618
+            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Information);
+#pragma warning restore CS0618
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
